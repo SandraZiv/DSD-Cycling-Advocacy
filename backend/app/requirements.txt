@@ -1,0 +1,10 @@
+configparser
+Flask
+pymongo
+jsonschema
+rfc3987
+webcolors
+strict-rfc3339
+python-dateutil
+pytz
+
