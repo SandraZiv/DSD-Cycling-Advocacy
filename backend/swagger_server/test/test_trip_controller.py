@@ -56,12 +56,15 @@ class TestTripController(BaseTestCase):
     def test_upload_motion_file(self):
         """Test case for upload_motion_file
 
-        Uploads a csv motion file, no checks are performed.
+        Uploads a csv motion file, only a few checks are performed.
         """
+        data = dict(file='file_example',
+                    trip_uuid='38400000-8cf0-11bd-b23e-10b96e4ef00d')
         response = self.client.open(
             '/v1/trip/uploadMotionFile',
             method='POST',
-            content_type='text/csv')
+            data=data,
+            content_type='multipart/form-data')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 

@@ -47,11 +47,15 @@ def insert_new_trip(body):  # noqa: E501
     return 'do some magic!'
 
 
-def upload_motion_file():  # noqa: E501
-    """Uploads a csv motion file, no checks are performed.
+def upload_motion_file(file, trip_uuid):  # noqa: E501
+    """Uploads a csv motion file, only a few checks are performed.
 
      # noqa: E501
 
+    :param file:
+    :type file: strstr
+    :param trip_uuid:
+    :type trip_uuid:
 
     :rtype: ApiResponse
     """

@@ -18,14 +18,13 @@ paths:
     post:
       tags:
       - trip
-      summary: Uploads a csv motion file, no checks are performed.
+      summary: Uploads a csv motion file, only a few checks are performed.
       operationId: upload_motion_file
       requestBody:
         content:
-          text/csv:
-            examples:
-              csv:
-                externalValue: https://pastebin.com/raw/ZSFR8b7X
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/body'
         required: true
       responses:
         200:
@@ -461,6 +460,15 @@ components:
         code: 0
         type: type
         message: message
+    body:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        tripUUID:
+          type: string
+          format: uuid
     Trip_gnssData:
       type: object
       properties:
