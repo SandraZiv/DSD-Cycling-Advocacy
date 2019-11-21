@@ -49,21 +49,28 @@ def new_trip_analysis_job(trip_id):
     return True
 
 
-# just a quickstart from rabbitmq tutorials
-# TODO This is a consumer, should be a class and one instance per each queue or whatever
-connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
-
-channel.queue_declare(queue='hello')
+actions = {
+    "new-trip-analysis": new_trip_analysis_job
+}
 
 
-def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
+class QueueListener:
 
+    def __init__(self, queue):
+        self.queue = queue
 
-channel.basic_consume(
-    queue='hello', on_message_callback=callback, auto_ack=True)
+    # when there is a new messages,
+    # receive a message with an action name and some data
+    # lookup for the corresponding action into the dictionary at top of this script and execute it (with params)
+    def start_listening(self):
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
+        channel.queue_declare(queue=self.queue)
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
+        def callback(ch, method, properties, body):
+            actions.get(body.action, lambda: 'Invalid')(body.params)
+        channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
+        print('[QUEUE] New QueueListener subscribed to queue: %s' % self.queue)
+        channel.start_consuming()
+
+    start_listening()
