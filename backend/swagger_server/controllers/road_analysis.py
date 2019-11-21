@@ -2,8 +2,10 @@
 
 
 # TODO build_trip()
-def build_trip():
-    pass
+def build_trip(raw_data):
+    print('[ROAD-ANALYSIS] Starting trip analysis')
+    print(raw_data)
+    print('[ROAD-ANALYSIS] Ended trip analysis')
 
 
 # TODO build_map

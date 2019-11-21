@@ -1,6 +1,7 @@
 import pika
 import json
 import uuid
+import road_analysis
 
 
 # take a message and publish on the queue
@@ -8,19 +9,14 @@ import uuid
 # TODO use a dictionary for host name, queue name, etc
 # TODO use a logger
 def send_message(message, queue):
-    routing_key = queue
-
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
-    channel.queue_declare(queue=routing_key)
-    channel.basic_publish(exchange='', routing_key='routing_key', body=message)
-
-    print('[QUEUE] New message published on queue: '+routing_key+' with message_id: ' + message.header[0].message_id)
+    channel.queue_declare(queue=queue)
+    channel.basic_publish(exchange='', routing_key=queue, body=message)
     print(message)
-
+    # print('[QUEUE] New message published on queue: %s with message_id: %s' % queue, json.loads(message)['message_id'])
     connection.close()
-
-    return True
+    return
 
 
 # retrieve raw_data from the db, build a message and publish it on the correct queue
@@ -32,32 +28,45 @@ def send_message(message, queue):
 # TODO define the message, this is dumb
 # TODO use a logger
 def new_trip_analysis_job(trip_id):
-    raw_data = {}
-    queue = 'dummy-queue-name'
-    action = 'dummy-action'
-    message_id = uuid.uuid4()
-
+    raw_data = {'trip_id': trip_id}
+    queue = 'jobs'
+    action = 'new-trip-analysis'
+    message_id = uuid.uuid4().__str__()
     # build a message to be published on the queue. the consumer will read it and consume the action
-    message = {
-        'header': [{'message_id': message_id}, {'action': action}],
-        'body': raw_data}
-
-    send_message(json.dumps(message), queue)
-
+    send_message(json.dumps({
+        'message_id': message_id,
+        'action': action,
+        'raw_data': raw_data}), queue)
     print('[QUEUE] Enqueued new trip analysis job')
+    return
 
-    return True
+
+def new_trip_analysis(raw_data):
+    road_analysis.build_trip(raw_data)
 
 
-actions = {
-    "new-trip-analysis": new_trip_analysis_job
-}
+actions = {"new-trip-analysis": new_trip_analysis}
+
+
+def on_action(channel, method, properties, body):
+    _body = json.loads(body)
+    message_id = _body['message_id']
+    action = _body['action']
+    raw_data = _body['raw_data']
+    # index of possible actions, can be move to global dictionary
+    print('[QUEUE] Running road analyzer')
+    actions.get(action, lambda: 'Invalid')(raw_data)
+    print('[QUEUE] Exit road analyzer')
 
 
 class QueueListener:
 
     def __init__(self, queue):
         self.queue = queue
+        try:
+            self.start_listening()
+        except pika.exceptions.ChannelClosedByBroker:
+            print('[QUEUE] No queue found')
 
     # when there is a new messages,
     # receive a message with an action name and some data
@@ -66,11 +75,6 @@ class QueueListener:
         connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
         channel = connection.channel()
         channel.queue_declare(queue=self.queue)
-
-        def callback(ch, method, properties, body):
-            actions.get(body.action, lambda: 'Invalid')(body.params)
-        channel.basic_consume(queue='hello', on_message_callback=callback, auto_ack=True)
+        channel.basic_consume(queue=self.queue, on_message_callback=on_action, auto_ack=True)
         print('[QUEUE] New QueueListener subscribed to queue: %s' % self.queue)
         channel.start_consuming()
-
-    start_listening()
