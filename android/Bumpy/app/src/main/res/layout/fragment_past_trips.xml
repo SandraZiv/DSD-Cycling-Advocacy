@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cyclingAdvocacyBlack">
+
+    <TextView
+        android:id="@+id/text_pastTrips"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/heading_height"
+        android:paddingLeft="@dimen/heading_padding_left"
+        android:paddingTop="@dimen/heading_padding_top"
+        android:background="@color/cyclingAdvocacyYellow"
+        android:text="@string/title_pastTrips"
+        android:textColor="@color/cyclingAdvocacyBlack"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/text_pastTrips"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

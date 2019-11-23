@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/cyclingAdvocacyYellow</item>
     </style>
 
+    <style name="SwitchCompatStyle" >
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/cyclingAdvocacyYellow</item>
+
+        <item name="android:colorForeground">@color/color_white</item>
+    </style>
+
 </resources>

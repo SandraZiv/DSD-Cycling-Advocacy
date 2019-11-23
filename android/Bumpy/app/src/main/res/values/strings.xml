@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Bumpy</string>
+
+    <string name="welcome">Welcome to Bumpy App!</string>
+    <string name="details">Bumpy is used to collect data about cycling conditions and report road issues in a fun and easy way.</string>
+    <string name="ngo">Powered by the Croatian Cyclist Union</string>
+    <string name="next">NEXT</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_reportIssue">Report Issue</string>
+    <string name="title_pastTrips">Past Trips</string>
+    <string name="title_map">Map</string>
+    <string name="title_achievements">Achievements</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="gps">GPS</string>
+    <string name="ride">Start Trip!</string>
+    <string name="submit">SUBMIT</string>
+
 </resources>

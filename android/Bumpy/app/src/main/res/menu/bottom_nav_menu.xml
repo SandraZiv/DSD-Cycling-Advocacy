@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_reportIssue"
+        android:icon="@drawable/ic_report_issue"
+        android:title="@string/title_reportIssue" />
+
+    <item
+        android:id="@+id/navigation_pastTrips"
+        android:icon="@drawable/ic_past_trips"
+        android:title="@string/title_pastTrips" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_map_cycle"
+        android:title="@string/title_map" />
+
+    <item
+        android:id="@+id/navigation_achievements"
+        android:icon="@drawable/ic_achievements"
+        android:title="@string/title_achievements" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/title_settings" />
+
+</menu>
