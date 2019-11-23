@@ -1,11 +1,15 @@
 # TODO road_analysis.py
+import logging
+
+logging.basicConfig(filename='log.log', level=logging.DEBUG)
 
 
-# TODO build_trip()
-def build_trip(raw_data):
-    print('[ROAD-ANALYSIS] Starting trip analysis')
-    print(raw_data)
-    print('[ROAD-ANALYSIS] Ended trip analysis')
+# TODO trip analysis
+def run_trip_analysis(data):
+    logging.info('[ROAD-ANALYSIS] Starting trip analysis')
+    # trip analysis
+    logging.info('[ROAD-ANALYSIS] Ended trip analysis')
+    return
 
 
 # TODO build_map

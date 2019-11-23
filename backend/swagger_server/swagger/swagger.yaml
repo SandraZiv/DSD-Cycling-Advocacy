@@ -14,39 +14,6 @@ tags:
 - name: device
   description: Operations about device
 paths:
-  /trip/uploadMotionFile:
-    post:
-      tags:
-      - trip
-      summary: Uploads a csv motion file, no checks are performed.
-      operationId: upload_motion_file
-      requestBody:
-        content:
-          text/csv:
-            examples:
-              csv:
-                externalValue: https://pastebin.com/raw/ZSFR8b7X
-        required: true
-      responses:
-        200:
-          description: Upload successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-        405:
-          description: Validation exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-        500:
-          description: Unexpected exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      x-openapi-router-controller: swagger_server.controllers.trip_controller
   /trip/insertNewTrip:
     post:
       tags:

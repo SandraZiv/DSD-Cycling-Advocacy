@@ -1,80 +1,91 @@
 import pika
 import json
 import uuid
-import road_analysis
+import logging
+from swagger_server.controllers import constants as const
+from swagger_server.controllers import road_analysis
+
+logging.basicConfig(filename='log.log', level=logging.DEBUG)
 
 
-# take a message and publish on the queue
-# we also need a consumer subscribed to some queue read the messages and perform the jobs (see below)
-# TODO use a dictionary for host name, queue name, etc
-# TODO use a logger
-def send_message(message, queue):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
-    channel.queue_declare(queue=queue)
-    channel.basic_publish(exchange='', routing_key=queue, body=message)
-    print(message)
-    # print('[QUEUE] New message published on queue: %s with message_id: %s' % queue, json.loads(message)['message_id'])
-    connection.close()
+# --- JOBS ---
+
+def get_job_type(serialized_job):
+    return json.loads(serialized_job)['type']
+
+
+def get_job_data(serialized_job):
+    return json.loads(serialized_job)['data']
+
+
+def get_job_id(serialized_job):
+    return json.loads(serialized_job)['id']
+
+
+class Job:
+
+    def __init__(self, job_type, job_data):
+        self.job_id = uuid.uuid4().__str__()
+        self.job_type = job_type
+        self.job_data = job_data
+
+    def enqueue_job(self, queue):
+        job = json.dumps({'id': self.job_id, 'type': self.job_type, 'data': self.job_data})
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=const.RABBITMQ_HOST))
+        channel = connection.channel()
+        channel.queue_declare(queue=queue)
+        channel.basic_publish(exchange='', routing_key=queue, body=job)
+        logging.info('[QUEUE] New message published on queue')
+        connection.close()
+        return
+
+
+# --- JOBS LISTENER ---
+
+def new_listener(queue_name):
+    listener = QueueListener(queue_name)
+    try:
+        listener.listen()
+    except pika.exceptions.ChannelClosedByBroker:
+        logging.info('[QUEUE] No queue found')
+        return False
     return
 
 
-# retrieve raw_data from the db, build a message and publish it on the correct queue
-# # raw_data is the trip collected by android
-# # action is what the consumer has to do (in this case, run trip analysis)
-# # message_id is just a uuid, just in case
-# TODO retrieve raw data from mongo, need db controller
-# TODO use a dictionary for queue name, actions, etc
-# TODO define the message, this is dumb
-# TODO use a logger
-def new_trip_analysis_job(trip_id):
-    raw_data = {'trip_id': trip_id}
-    queue = 'jobs'
-    action = 'new-trip-analysis'
-    message_id = uuid.uuid4().__str__()
-    # build a message to be published on the queue. the consumer will read it and consume the action
-    send_message(json.dumps({
-        'message_id': message_id,
-        'action': action,
-        'raw_data': raw_data}), queue)
-    print('[QUEUE] Enqueued new trip analysis job')
+def test_queue(queue_name):
+    Job(job_type=const.TEST_JOB, job_data='  <°(((>>  ').enqueue_job(queue_name)
+    logging.info('Sent some fish to queue: %s' % queue_name)
     return
 
 
-def new_trip_analysis(raw_data):
-    road_analysis.build_trip(raw_data)
+def execute_trip_analysis_job(data):
+    road_analysis.run_trip_analysis(data)
+    return
 
 
-actions = {"new-trip-analysis": new_trip_analysis}
-
-
-def on_action(channel, method, properties, body):
-    _body = json.loads(body)
-    message_id = _body['message_id']
-    action = _body['action']
-    raw_data = _body['raw_data']
-    # index of possible actions, can be move to global dictionary
-    print('[QUEUE] Running road analyzer')
-    actions.get(action, lambda: 'Invalid')(raw_data)
-    print('[QUEUE] Exit road analyzer')
+def execute_test_job(data):
+    logging.info('Received something. If you see a fish: %s  this means that the queue is working!' % data)
+    return
 
 
 class QueueListener:
 
     def __init__(self, queue):
         self.queue = queue
-        try:
-            self.start_listening()
-        except pika.exceptions.ChannelClosedByBroker:
-            print('[QUEUE] No queue found')
 
-    # when there is a new messages,
-    # receive a message with an action name and some data
-    # lookup for the corresponding action into the dictionary at top of this script and execute it (with params)
-    def start_listening(self):
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    def listen(self):
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=const.RABBITMQ_HOST))
         channel = connection.channel()
         channel.queue_declare(queue=self.queue)
-        channel.basic_consume(queue=self.queue, on_message_callback=on_action, auto_ack=True)
-        print('[QUEUE] New QueueListener subscribed to queue: %s' % self.queue)
+        # THIS IS THE QUEUE CONSUMER ENGINE
+        # jobs is an index of callback functions to be passed below to basic_consume
+        callbacks = {
+            const.TRIP_ANALYSIS_JOB: execute_trip_analysis_job,
+            const.TEST_JOB: execute_test_job
+        }
+        # consume items in the queue by passing the function indicated into message.job
+        channel.basic_consume(queue=self.queue,
+                              on_message_callback=lambda c, m, p, body:
+                              callbacks.get(get_job_type(body))(get_job_data(body)), auto_ack=True)
+        logging.info('[QUEUE] New QueueListener subscribed to queue: %s' % self.queue)
         channel.start_consuming()
