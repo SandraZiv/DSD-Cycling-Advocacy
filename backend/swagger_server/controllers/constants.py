@@ -9,6 +9,7 @@ RABBITMQ_HOST = 'localhost'
 TRIP_ANALYSIS_QUEUE = 'trip-analysis-queue'
 MAP_UPDATE_QUEUE = 'map-update-queue'
 TRIP_ANALYSIS_JOB = 'trip-analysis-job'
+MAP_UPDATE_JOB = 'map-update-job'
 TEST_JOB = 'test-job'
 
 LOG_FILE = ROOT_PATH+'/log.log'
