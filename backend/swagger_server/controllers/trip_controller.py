@@ -5,6 +5,11 @@ from swagger_server.models.api_response import ApiResponse  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server import util
 
+# TODO new trip analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
+# when you're ready:
+# import queue
+# queue.new_trip_analysis_job(trip_id)
+
 
 def get_trip_by_trip_uuid(trip_uuid):  # noqa: E501
     """Gets a trip given a tripUUID
