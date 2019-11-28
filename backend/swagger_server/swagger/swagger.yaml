@@ -5,7 +5,7 @@ info:
     the Android app.
   version: 1.0.0
 servers:
-- url: https://api.bumpy.com/v1
+- url: http://localhost/v1
 tags:
 - name: trip
   description: Everything about trips

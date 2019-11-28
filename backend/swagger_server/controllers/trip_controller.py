@@ -4,6 +4,8 @@ import six
 from swagger_server.models.api_response import ApiResponse  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server import util
+from swagger_server import mongodb_interface
+
 
 # TODO new trip analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
 # when you're ready:
@@ -52,7 +54,7 @@ def insert_new_trip(body):  # noqa: E501
     return 'do some magic!'
 
 
-def upload_motion_file(file, trip_uuid):  # noqa: E501
+def upload_motion_file():  # noqa: E501
     """Uploads a csv motion file, only a few checks are performed.
 
      # noqa: E501
@@ -64,4 +66,13 @@ def upload_motion_file(file, trip_uuid):  # noqa: E501
 
     :rtype: ApiResponse
     """
-    return 'do some magic!'
+    # if user does not select file, browser also
+    # submit an empty part without filename
+    file = connexion.request.files['file']
+    trip_uuid = connexion.request.form['tripUUID']
+    if file.filename == '':
+        return ApiResponse(code=400, message='no file selected'), 400
+    if file and '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() == 'csv':
+        mongodb_interface.insert_new_file(trip_uuid, file)
+        return ApiResponse(code=200, message='ok'), 200
+    return ApiResponse(code=400, message='wrong file selected'), 400

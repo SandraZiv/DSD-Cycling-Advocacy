@@ -20,17 +20,13 @@ fs = gridfs.GridFS(file_db)
 
 def get_file_by_filename(filename):
     file = fs.find_one({'filename': filename})
-    if file:
-        return fs.get(file._id)
+    return fs.get(file._id)
 
 
 def insert_new_file(filename, data, **kwargs):
-    file = fs.find_one({'filename': filename})
-    if not file:
-        fs.put(data, filename=filename, **kwargs)
+    fs.put(data, filename=filename, **kwargs)
 
 
 def delete_file_by_filename(filename, **kwargs):
     file = fs.find_one({'filename': filename})
-    if file:
-        fs.delete(file._id, **kwargs)
+    fs.delete(file._id, **kwargs)
