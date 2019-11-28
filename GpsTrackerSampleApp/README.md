@@ -4,7 +4,7 @@
 
 - collect GPS data using (each 5 seconds)
 - colect Motion data using accelerometer, magnetometer and gyroscope (50Hz frequency)
-- save GPS data in txt file and Motion data in CSV file automatically ([more here](#Saved-data))
+- save GPS data in txt file and Motion data in CSV file automatically 
 - logs GPS data on screen, but not the motion data due to its high frequency
 
 #### Saved data
