@@ -5,6 +5,7 @@ from swagger_server.models.api_response import ApiResponse  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server import util
 from swagger_server import mongodb_interface
+from bson.json_util import dumps
 
 
 # TODO new trip analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
@@ -13,7 +14,7 @@ from swagger_server import mongodb_interface
 # queue.new_trip_analysis_job(trip_id)
 
 
-def get_trip_by_trip_uuid(trip_uuid):  # noqa: E501
+def get_trip_by_trip_uuid():  # noqa: E501
     """Gets a trip given a tripUUID
 
      # noqa: E501
@@ -23,7 +24,11 @@ def get_trip_by_trip_uuid(trip_uuid):  # noqa: E501
 
     :rtype: Trip
     """
-    return 'do some magic!'
+    trip_uuid = connexion.request.args.get('tripUUID', None)
+    trip = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
+    if not trip:
+        return ApiResponse(code=400, message='trip not found'), 400
+    return dumps(trip), 200
 
 
 def get_trips_by_device_uuid(device_uuid):  # noqa: E501
