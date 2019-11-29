@@ -44,7 +44,7 @@ def get_trips_by_device_uuid(device_uuid):  # noqa: E501
     return 'do some magic!'
 
 
-def insert_new_trip(body):  # noqa: E501
+def insert_new_trip():  # noqa: E501
     """Insert a new bike trip and start the background processing.
 
      # noqa: E501
@@ -54,9 +54,14 @@ def insert_new_trip(body):  # noqa: E501
 
     :rtype: ApiResponse
     """
-    if connexion.request.is_json:
+    if not connexion.request.is_json:
+        return ApiResponse(code=400, message="not a valid json"), 400
+    try:
         body = Trip.from_dict(connexion.request.get_json())  # noqa: E501
-    return 'do some magic!'
+        mongodb_interface.insert_new_trip(body.to_dict())
+    except mongodb_interface.pymongo.errors.DuplicateKeyError:
+        return ApiResponse(code=400, message="trip already exist"), 400
+    return ApiResponse(code=200, message="ok"), 200
 
 
 def upload_motion_file():  # noqa: E501

@@ -17,6 +17,11 @@ file_db = client.file_db
 def get_trip_by_trip_uuid(trip_uuid):
     return main_db.trips.find_one({'tripUUID': trip_uuid})
 
+
+def insert_new_trip(trip):
+    main_db.trips.insert_one(trip)
+
+
 #
 # GRIDFS
 #
