@@ -31,7 +31,7 @@ def get_trip_by_trip_uuid():  # noqa: E501
     return dumps(trip), 200
 
 
-def get_trips_by_device_uuid(device_uuid):  # noqa: E501
+def get_trips_by_device_uuid():  # noqa: E501
     """Gets all the trips given a deviceUUID
 
      # noqa: E501
@@ -41,7 +41,9 @@ def get_trips_by_device_uuid(device_uuid):  # noqa: E501
 
     :rtype: List[Trip]
     """
-    return 'do some magic!'
+    device_uuid = connexion.request.args.get('deviceUUID', None)
+    trips = mongodb_interface.get_trips_by_device_uuid(device_uuid)
+    return dumps(trips), 200
 
 
 def insert_new_trip(body):  # noqa: E501
