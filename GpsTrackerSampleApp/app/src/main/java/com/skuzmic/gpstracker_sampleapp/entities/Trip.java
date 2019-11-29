@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 
 import java.io.File;
@@ -16,11 +17,17 @@ import java.util.List;
 
 public class Trip {
 
+    @SerializedName("deviceUUID")
     private String uuid;
+    @SerializedName("tripUUID")
     private String tripId;
+    @SerializedName("startTS")
     private String startTs;  // in format 2017-07-21T17:32:28Z
+    @SerializedName("endTS")
     private String stopTs;
+    @SerializedName("distance")
     private double distance = 0;
+    @SerializedName("gnssData")
     private List<GnssData> gnssDataList;
 
     public Trip(String uuid) {
