@@ -33,7 +33,10 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
 import com.skuzmic.gpstracker_sampleapp.entities.Motion;
+import com.skuzmic.gpstracker_sampleapp.entities.Response;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
+import com.skuzmic.gpstracker_sampleapp.retrofit.RetrofitServiceGenerator;
+import com.skuzmic.gpstracker_sampleapp.retrofit.service.BumpyService;
 import com.skuzmic.gpstracker_sampleapp.utils.CsvUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.PermissionUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
@@ -41,6 +44,11 @@ import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
@@ -228,6 +236,52 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         btnStop.setEnabled(false);
         stopLocationUpdates();
         stopSensorUpdates();
+
+        sendLocationData();
+    }
+
+    private void sendLocationData() {
+        BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
+        bumpyService.insertNewTrip(trip)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()) // “listen” on UIThread
+                .subscribe(new SingleObserver<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onSuccess(String response) {
+                        displayMessage("Success, response: " + response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        displayMessage("Failure, exception: " + e.toString());
+                    }
+                });
+    }
+
+    // Helper method to display a dialogue based on the results of a Retrofit call
+    //TODO: This is temporary for the alpha-prototype and won't be needed
+    private void displayMessage(String s) {
+        new AlertDialog.Builder(this)
+                .setTitle("Alert")
+                .setMessage(s)
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void startLocationUpdates() {
