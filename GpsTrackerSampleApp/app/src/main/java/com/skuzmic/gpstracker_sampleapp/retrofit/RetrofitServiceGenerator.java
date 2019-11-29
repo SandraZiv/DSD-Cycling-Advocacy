@@ -6,7 +6,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitServiceGenerator {
-    private static final String BASE_URL = "";
+    private static final String BASE_URL = "http://161.53.67.132:8080/v1/";
 
     private static Retrofit retrofit = createRetrofit();
 
