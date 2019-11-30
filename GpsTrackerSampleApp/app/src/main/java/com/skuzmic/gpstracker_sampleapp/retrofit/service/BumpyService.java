@@ -3,11 +3,13 @@ package com.skuzmic.gpstracker_sampleapp.retrofit.service;
 import com.skuzmic.gpstracker_sampleapp.entities.Response;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 //TODO: This will be divided into TripService, MapService, etc. For now it is only a couple of API methods for testing and alpha-prototype purposes
@@ -21,4 +23,8 @@ public interface BumpyService {
     //TODO Should Single be used here?
     @POST("trip/insertNewTrip")
     Single<String> insertNewTrip(@Body Trip trip);
+
+    @Multipart
+    @POST("trip/uploadMotionFile")
+    Single<Response> uploadMotionData(@Part("tripUUID") String tripUUID, @Part MultipartBody.Part file);
 }

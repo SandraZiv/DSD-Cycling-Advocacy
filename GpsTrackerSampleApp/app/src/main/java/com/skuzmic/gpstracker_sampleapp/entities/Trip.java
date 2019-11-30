@@ -30,9 +30,10 @@ public class Trip {
     @SerializedName("gnssData")
     private List<GnssData> gnssDataList;
 
+    //TODO: I suppose the uuid refers to tripUUID, not that it matters too much for the demo app
     public Trip(String uuid) {
         this.uuid = "dsfasgdgagsdgsd";
-        this.tripId = "fdsf1dsf4sdf1sdf1sd2f3f";
+        this.tripId = uuid;
         this.gnssDataList = new LinkedList<>();
     }
 
@@ -67,7 +68,7 @@ public class Trip {
             return;
         }
 
-        File file = new File(baseDirectory, System.currentTimeMillis() + ".txt");
+        File file = new File(baseDirectory, tripId + ".txt");
         try {
             FileWriter w = new FileWriter(file, true);
             w.append(this.toString());

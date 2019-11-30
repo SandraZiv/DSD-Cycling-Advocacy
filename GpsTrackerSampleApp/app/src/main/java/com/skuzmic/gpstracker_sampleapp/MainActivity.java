@@ -41,6 +41,7 @@ import com.skuzmic.gpstracker_sampleapp.utils.CsvUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.PermissionUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +50,9 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
@@ -238,13 +242,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         stopSensorUpdates();
 
         sendLocationData();
+        sendMotionData();
+        //deleteMotionData();
     }
 
     private void sendLocationData() {
         BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
         bumpyService.insertNewTrip(trip)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()) // “listen” on UIThread
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<String>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -253,21 +259,56 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     @Override
                     public void onSuccess(String response) {
-                        displayMessage("Success, response: " + response);
+                        displayMessage("Location data upload","Success, response: " + response);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        displayMessage("Failure, exception: " + e.toString());
+                        displayMessage("Location data upload","Failure, exception: " + e.toString());
                     }
                 });
     }
 
-    // Helper method to display a dialogue based on the results of a Retrofit call
-    //TODO: This is temporary for the alpha-prototype and won't be needed
-    private void displayMessage(String s) {
+    private void sendMotionData() {
+        File motionDataFile = CsvUtils.getMotionDataFile(this, trip.getTripId());
+
+        //TODO: This should look like 'RequestBody.create(MediaType.parse(getContentResolver().getType(Uri.fromFile(motionDataFile))), motionDataFile);' but something with the URI doesn't work
+        RequestBody motionDataFileRB = RequestBody.create(MediaType.parse("text/csv"), motionDataFile);
+        MultipartBody.Part motionDataFilePart = MultipartBody.Part.createFormData("file", motionDataFile.getName(), motionDataFileRB);
+
+        BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
+        bumpyService.uploadMotionData(trip.getTripId(), motionDataFilePart)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onSuccess(Response response) {
+                        displayMessage("Motion data upload","Success, response: " + response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        displayMessage("Motion data upload","Failure, exception: " + e.toString());
+                    }
+                });
+    }
+
+    private void deleteMotionData() {
+        if (CsvUtils.deleteMotionDataFile(this, trip.getTripId()) == true) {
+            Toast.makeText(this, "Motion data deleted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Helper method to display a dialogue based on the results of a Retrofit call (c/p from tutorial)
+    //TODO: This is temporary for the alpha-prototype so that we can display the results/response of our API calls (or Exceptions)
+    private void displayMessage(String title, String s) {
         new AlertDialog.Builder(this)
-                .setTitle("Alert")
+                .setTitle(title)
                 .setMessage(s)
 
                 // Specifying a listener allows you to take an action before dismissing the dialog.
@@ -285,7 +326,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void startLocationUpdates() {
-        trip = new Trip("");
+        trip = new Trip(Utils.generateUUID().toString());
+        Toast.makeText(this, "Trip UUID: " + trip.getTripId(), Toast.LENGTH_SHORT).show();
         trip.start();
 
         final LocationRequest locationRequest = new LocationRequest();
