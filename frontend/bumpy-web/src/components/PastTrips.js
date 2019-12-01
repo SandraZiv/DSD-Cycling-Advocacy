@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button} from "react-bootstrap";
+import {Button, Table} from "react-bootstrap";
 import {UserModal} from "./UserModal";
 
 export class PastTrips extends Component {
@@ -23,28 +23,54 @@ export class PastTrips extends Component {
     }
 
     getTrips(deviceUUID) {
-        fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
-            .then(response => response.json())
-            .then(json => {
-                    const data = [
-                        {"id": 123, "name": "Sandra"},
-                        {"id": 223, "name": "Per"}
-                    ];
-                    console.log(json);
-                    this.setState({trips: data})
-                }
-            );
+        // fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
+        //     .then(response => response.json())
+        //     .then(json => {
+        const data = [
+            {"tripUUID": 123, "startTS": "Sandra", "endTS": "end"},
+            {"tripUUID": 223, "startTS": "Per", "endTS": "end"}
+        ];
+        // console.log(json);
+        this.setState({trips: data})
+        // }
+        // );
     }
 
     render() {
         const {trips} = this.state;
+        let tripTable = "";
+        if (trips.length !== 0) {
+            tripTable =
+                <Table striped bordered hover responsive>
+                    <thead>
+                    <tr>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Duration(h)</th>
+                        <th>Distance(km)</th>
+                        <th>Accumulated Vibration</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {trips.map(trip =>
+                        <tr key={trip.tripUUID}>
+                            <td>{trip.startTS}</td>
+                            <td>{trip.endTS}</td>
+                            <td>2</td>
+                            <td>25</td>
+                            <td>1225</td>
+                        </tr>
+                    )}
+                    </tbody>
+                </Table>
+        }
 
         return (
             <div>
                 <Button onClick={() => this.setState({shouldShowModal: true})}>Enter User Identifier</Button>
                 <UserModal show={this.state.shouldShowModal} onHide={this.onModalClose.bind(this)}/>
 
-                {trips.map(trip => <p key={trip.id}>{trip.id} - {trip.name}</p>)}
+                {tripTable}
             </div>
         )
     }
