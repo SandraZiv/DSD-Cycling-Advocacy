@@ -25,20 +25,18 @@ export class PastTrips extends Component {
     getTrips(deviceUUID) {
         console.log(deviceUUID)
 
-        // fetch(`http://161.53.67.132:5000/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //             console.log(data);
-                    this.setState({
-                        // trips: data
-                        trips: [
-                            {"id": 123, "name": "Sandra"},
-                            {"id": 223, "name": "Per"}
-                        ]
-                    });
-                // }
-            // )
-            // .catch(err => alert(err));
+        fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
+            .then(response => response.json())
+            .then(json => console.log(json))
+            .then(json =>
+                this.setState({
+                    // trips: json
+                    trips: [
+                        {"id": 123, "name": "Sandra"},
+                        {"id": 223, "name": "Per"}
+                    ]
+                })
+            )
     }
 
     render() {
