@@ -19,8 +19,13 @@ def get_trip_by_trip_uuid(trip_uuid):
     return main_db.trips.find_one({'trip_uuid': trip_uuid})
 
 
+def insert_new_trip(trip):
+    main_db.trips.insert_one(trip)
+
+
 def get_trips_by_device_uuid(device_uuid):
     return main_db.trips.find({'deviceUUID': device_uuid})
+
 
 #
 # GRIDFS
