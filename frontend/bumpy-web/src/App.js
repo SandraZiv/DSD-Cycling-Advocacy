@@ -1,26 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
+import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import {Home} from './components/Home';  // Home without {} does not work no default export
+import {PastTrips} from './components/PastTrips';  // PastTrips without {} does not work no default export
+import {ReportIssue} from './components/ReportIssue';  // ReportIssue without {} does not work no default export
+import {Navigation} from "./components/Navigation";
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <div className="App">
+                <Navigation/>
+                <Switch>
+                    <Route exact path='/' component={Home}/>
+                    <Route exact path='/trips' component={PastTrips}/>
+                    <Route exact path='/fms' component={ReportIssue}/>
+                    <Redirect to="/" />
+                </Switch>
+            </div>
+        </BrowserRouter>
+    );
 }
 
 export default App;
