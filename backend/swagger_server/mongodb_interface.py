@@ -16,7 +16,7 @@ file_db = client.file_db
 
 
 def get_trip_by_trip_uuid(trip_uuid):
-    return main_db.trips.find_one({'tripUUID': trip_uuid})
+    return main_db.trips.find_one({'trip_uuid': trip_uuid})
 
 
 def get_trips_by_device_uuid(device_uuid):

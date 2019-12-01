@@ -28,7 +28,9 @@ def get_trip_by_trip_uuid():  # noqa: E501
     trip = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
     if not trip:
         return ApiResponse(code=400, message='trip not found'), 400
-    return dumps(trip), 200
+    print(trip.pop('_id'))
+    print(Trip.from_dict(trip))
+    return Trip.from_dict(trip).to_str(), 200
 
 
 def get_trips_by_device_uuid():  # noqa: E501
