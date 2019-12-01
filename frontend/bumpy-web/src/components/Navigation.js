@@ -8,7 +8,7 @@ export class Navigation extends Component {
     render() {
         return (
             <Navbar expand="lg">
-                <Navbar.Brand href="/">
+                <Navbar.Brand href="http://sindikatbiciklista.hr/">
                     <img src={logo}
                          width="210"
                          height="65"
