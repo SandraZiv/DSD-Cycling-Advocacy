@@ -23,20 +23,17 @@ export class PastTrips extends Component {
     }
 
     getTrips(deviceUUID) {
-        console.log(deviceUUID)
-
         fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
             .then(response => response.json())
-            .then(json => console.log(json))
-            .then(json =>
-                this.setState({
-                    // trips: json
-                    trips: [
+            .then(json => {
+                    const data = [
                         {"id": 123, "name": "Sandra"},
                         {"id": 223, "name": "Per"}
-                    ]
-                })
-            )
+                    ];
+                    console.log(json);
+                    this.setState({trips: data})
+                }
+            );
     }
 
     render() {
