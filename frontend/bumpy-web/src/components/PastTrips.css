@@ -1,0 +1,9 @@
+.button-margin{
+    margin-bottom: 15px;
+}
+
+.page-item.active .page-link {
+    color: #ffd200;
+    background-color: #ffffff;
+    border-color: #ffd200;
+}
