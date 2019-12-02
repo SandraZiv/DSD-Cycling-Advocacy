@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Button, Table} from "react-bootstrap";
+import {Button} from "react-bootstrap";
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table'
 import {UserModal} from "./UserModal";
 
 export class PastTrips extends Component {
@@ -27,8 +28,8 @@ export class PastTrips extends Component {
         //     .then(response => response.json())
         //     .then(json => {
         const data = [
-            {"tripUUID": 123, "startTS": "Sandra", "endTS": "end"},
-            {"tripUUID": 223, "startTS": "Per", "endTS": "end"}
+            {"tripUUID": 123, "startTS": "Sandra", "endTS": "end", "distance": 12},
+            {"tripUUID": 223, "startTS": "Per", "endTS": "end", "distance": 25}
         ];
         // console.log(json);
         this.setState({trips: data})
@@ -41,28 +42,12 @@ export class PastTrips extends Component {
         let tripTable = "";
         if (trips.length !== 0) {
             tripTable =
-                <Table striped bordered hover responsive>
-                    <thead>
-                    <tr>
-                        <th>Start time</th>
-                        <th>End time</th>
-                        <th>Duration(h)</th>
-                        <th>Distance(km)</th>
-                        <th>Accumulated Vibration</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {trips.map(trip =>
-                        <tr key={trip.tripUUID}>
-                            <td>{trip.startTS}</td>
-                            <td>{trip.endTS}</td>
-                            <td>2</td>
-                            <td>25</td>
-                            <td>1225</td>
-                        </tr>
-                    )}
-                    </tbody>
-                </Table>
+                <BootstrapTable ref='table' data={trips} pagination>
+                    <TableHeaderColumn dataField='tripUUID' isKey={true} dataSort={true}>Trip ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='startTS' dataSort={true}>Start time</TableHeaderColumn>
+                    <TableHeaderColumn dataField='endTS' dataSort={true}>End time</TableHeaderColumn>
+                    <TableHeaderColumn dataField='distance' dataSort={true}>Distance</TableHeaderColumn>
+                </BootstrapTable>
         }
 
         return (
