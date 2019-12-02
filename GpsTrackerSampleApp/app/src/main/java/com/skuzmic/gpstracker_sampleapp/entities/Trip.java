@@ -1,6 +1,7 @@
 package com.skuzmic.gpstracker_sampleapp.entities;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
@@ -26,7 +27,7 @@ public class Trip {
     @SerializedName("endTS")
     private String stopTs;
     @SerializedName("distance")
-    private double distance = 0;
+    private double distance = 0.0;
     @SerializedName("gnssData")
     private List<GnssData> gnssDataList;
 
@@ -48,6 +49,20 @@ public class Trip {
 
     public void addGpsData(GnssData data) {
         this.gnssDataList.add(data);
+        calculateNewDistance();
+    }
+
+    // Calculates distance (adds distance for new GNSS points) based on the distance between the last two GNSS points
+    private void calculateNewDistance() {
+        int gnssListSize = gnssDataList.size();
+        if (gnssListSize > 1) {
+            GnssData point1 = gnssDataList.get(gnssListSize - 2);
+            GnssData point2 = gnssDataList.get(gnssListSize - 1);
+            float[] results = new float[1];
+
+            Location.distanceBetween(point1.getLat(), point1.getLon(), point2.getLat(), point2.getLon(), results);
+            distance += results[0];
+        }
     }
 
     public String getTripId() {

@@ -22,7 +22,7 @@ public interface BumpyService {
 
     //TODO Should Single be used here?
     @POST("trip/insertNewTrip")
-    Single<String> insertNewTrip(@Body Trip trip);
+    Single<Response> insertNewTrip(@Body Trip trip);
 
     @Multipart
     @POST("trip/uploadMotionFile")

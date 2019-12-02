@@ -31,6 +31,14 @@ public class GnssData {
         this.accuracy = location.getAccuracy();
     }
 
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLon() {
+        return lon;
+    }
+
     @NonNull
     @Override
     public String toString() {

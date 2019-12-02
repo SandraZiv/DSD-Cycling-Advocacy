@@ -251,14 +251,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bumpyService.insertNewTrip(trip)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<String>() {
+                .subscribe(new SingleObserver<Response>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         //Do nothing
                     }
 
                     @Override
-                    public void onSuccess(String response) {
+                    public void onSuccess(Response response) {
                         displayMessage("Location data upload","Success, response: " + response);
                     }
 
