@@ -9,9 +9,10 @@
     <dimen name="text_size_mini">12sp</dimen>
 
     <dimen name="paragraph_width">325dp</dimen>
+    <dimen name="paragraph_padding">30dp</dimen>
 
     <dimen name="heading_height">60dp</dimen>
-    <dimen name="heading_padding_left">20dp</dimen>
+    <dimen name="heading_padding_left">50dp</dimen>
     <dimen name="heading_padding_top">15dp</dimen>
 
     <dimen name="sub_heading_height">40dp</dimen>
@@ -20,6 +21,10 @@
     <dimen name="button_position">600dp</dimen>
 
     <dimen name="standard_dimension">10dp</dimen>
+
+    <dimen name="margin_form">40dp</dimen>
+    <dimen name="margin_view">30dp</dimen>
+
 
 
 

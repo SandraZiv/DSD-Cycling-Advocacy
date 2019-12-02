@@ -10,7 +10,7 @@ public class AchievementsViewModel extends ViewModel {
 
     public AchievementsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is achievements fragment");
+
     }
 
     public LiveData<String> getText() {

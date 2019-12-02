@@ -19,6 +19,68 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/input_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_form"
+        android:hint="Current Location"
+        android:textColorHint="@color/cyclingAdvocacyYellowHint"
+        android:backgroundTint="@color/cyclingAdvocacyYellow"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintTop_toBottomOf="@id/text_reportIssues"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Spinner
+        android:id="@+id/input_issue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_form"
+        android:backgroundTint="@color/cyclingAdvocacyYellow"
+        android:entries="@array/type_of_issue"
+        android:prompt="@string/choose_issue"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintTop_toBottomOf="@id/input_location"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+   <LinearLayout
+       android:id="@+id/add_photo"
+       android:orientation="horizontal"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="@dimen/margin_form"
+       app:layout_constraintTop_toBottomOf="@id/input_issue"
+       app:layout_constraintLeft_toLeftOf="parent"
+       app:layout_constraintRight_toRightOf="parent">
+
+    <Button
+        android:id="@+id/button_take_photo"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_form"
+        android:background="@drawable/button_shape"
+        android:text="@string/take_photo"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_mini"
+        app:layout_constraintLeft_toRightOf="@id/button_take_photo"/>
+
+    <Button
+        android:id="@+id/button_choose_photo"
+        android:layout_width="@dimen/button_size"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_form"
+        android:background="@drawable/button_shape"
+        android:text="@string/choose_photo"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_mini"
+        app:layout_constraintRight_toLeftOf="@id/button_take_photo"/>
+
+   </LinearLayout>
+
+
 
         <Button
             android:id="@+id/button_submit"
@@ -32,7 +94,6 @@
             app:layout_constraintTop_toBottomOf="@id/text_reportIssues"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
-
 
 
 

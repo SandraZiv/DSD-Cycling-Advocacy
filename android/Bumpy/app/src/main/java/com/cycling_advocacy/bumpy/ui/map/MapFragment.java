@@ -1,9 +1,11 @@
 package com.cycling_advocacy.bumpy.ui.map;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.cycling_advocacy.bumpy.DashboardActivity;
+import com.cycling_advocacy.bumpy.MainActivity;
 import com.cycling_advocacy.bumpy.R;
 
 public class MapFragment extends Fragment {
@@ -30,6 +34,18 @@ public class MapFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        final Button buttonStart = root.findViewById(R.id.button_start_trip);
+
+        buttonStart.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent activity2Intent = new Intent(getContext(), DashboardActivity.class);
+                startActivity(activity2Intent);
+            }
+        });
+
+
+
         return root;
     }
 }

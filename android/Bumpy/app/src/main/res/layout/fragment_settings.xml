@@ -19,6 +19,232 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_view"
+        app:layout_constraintTop_toBottomOf="@id/text_settings">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="8">
+
+            <TextView
+                android:id="@+id/title_setting1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/uid"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/uuid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="784512"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ImageView
+                android:id="@+id/image_setting1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_app_icon"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGrey"
+        app:layout_constraintTop_toBottomOf="@id/layout1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_view"
+        app:layout_constraintTop_toBottomOf="@id/layout1">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="8">
+
+            <TextView
+                android:id="@+id/title_setting2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mob_data"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_setting2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mob_data_detail"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <Switch
+                android:id="@+id/switch_setting2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/standard_dimension"
+                android:theme="@style/SwitchCompatStyle"
+                android:thumbTint="@color/cyclingAdvocacyYellow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGrey"
+        app:layout_constraintTop_toBottomOf="@id/layout2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_view"
+        app:layout_constraintTop_toBottomOf="@id/layout2">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="8">
+
+            <TextView
+                android:id="@+id/title_setting3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_data"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_setting3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/upload_data_detail"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <Switch
+                android:id="@+id/switch_setting3"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/standard_dimension"
+                android:theme="@style/SwitchCompatStyle"
+                android:thumbTint="@color/cyclingAdvocacyYellow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGrey"
+        app:layout_constraintTop_toBottomOf="@id/layout3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/layout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_view"
+        app:layout_constraintTop_toBottomOf="@id/layout3">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="8">
+
+            <TextView
+                android:id="@+id/title_setting4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/display_stat"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/detail_setting4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/display_stat_detail"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_mini" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <Switch
+                android:id="@+id/switch_setting4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/standard_dimension"
+                android:theme="@style/SwitchCompatStyle"
+                android:thumbTint="@color/cyclingAdvocacyYellow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGrey"
+        app:layout_constraintTop_toBottomOf="@id/layout4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

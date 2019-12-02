@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/cyclingAdvocacyBlack</item>
         <item name="colorPrimaryDark">@color/cyclingAdvocacyBlack</item>
@@ -12,7 +12,7 @@
         <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">@color/cyclingAdvocacyYellow</item>
 
-        <item name="android:colorForeground">@color/color_white</item>
+        <item name="android:colorForeground">@color/colorWhite</item>
     </style>
 
 </resources>
