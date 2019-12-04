@@ -35,7 +35,7 @@ public class Trip {
     public Trip(String deviceUUID) {
         this.deviceUUID = deviceUUID;
 
-        this.tripUUID = Utils.generateUUID().toString();
+        this.tripUUID = Utils.generateUUID();
         Log.d("Trip UUID", "Generated trip UUID: " + tripUUID);
 
         this.gnssDataList = new LinkedList<>();
@@ -47,7 +47,6 @@ public class Trip {
 
     public void stop() {
         this.stopTs = Utils.formatTimestamp(System.currentTimeMillis());
-        // todo distance calculation (avg speed * duration?)
     }
 
     public void addGpsData(GnssData data) {

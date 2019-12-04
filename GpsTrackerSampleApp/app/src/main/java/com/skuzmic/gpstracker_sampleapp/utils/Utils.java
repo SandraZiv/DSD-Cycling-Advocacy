@@ -38,7 +38,7 @@ public class Utils {
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
     }
 
-    public static UUID generateUUID() {
-        return UUID.randomUUID();
+    public static String generateUUID() {
+        return UUID.randomUUID().toString();
     }
 }
