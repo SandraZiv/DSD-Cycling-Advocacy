@@ -33,7 +33,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
 import com.skuzmic.gpstracker_sampleapp.entities.Motion;
-import com.skuzmic.gpstracker_sampleapp.entities.Response;
+import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
 import com.skuzmic.gpstracker_sampleapp.retrofit.RetrofitServiceGenerator;
 import com.skuzmic.gpstracker_sampleapp.retrofit.service.BumpyService;
@@ -53,6 +53,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
@@ -241,35 +242,44 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         stopLocationUpdates();
         stopSensorUpdates();
 
-        sendLocationData();
-        sendMotionData();
+        sendLocationData(this);
+        sendMotionData(this);
         //deleteMotionData();
     }
 
-    private void sendLocationData() {
+    private void sendLocationData(final Context context) {
+        Log.d("Location data", "Uploading location data for trip " + trip.getTripUUID() + " to the server");
+
         BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
         bumpyService.insertNewTrip(trip)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Response>() {
+                .subscribe(new SingleObserver<Response<ApiResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         //Do nothing
                     }
 
                     @Override
-                    public void onSuccess(Response response) {
-                        displayMessage("Location data upload","Success, response: " + response);
+                    public void onSuccess(Response<ApiResponse> response) {
+                        Log.d("Location data", "Location data upload response for trip " + trip.getTripUUID() + ": " + response.message());
+                        if (response.isSuccessful()) {
+                            Toast.makeText(context, "Location data successfully uploaded!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Location data upload not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        displayMessage("Location data upload","Failure, exception: " + e.toString());
+                        Log.d("Location data", "Failed to upload location data for trip " + trip.getTripUUID() + " to the server: " + e.getMessage());
                     }
                 });
     }
 
-    private void sendMotionData() {
+    private void sendMotionData(final Context context) {
+        Log.d("Motion data", "Uploading motion data for trip " + trip.getTripUUID() + " to the server");
+
         File motionDataFile = CsvUtils.getMotionDataFile(this, trip.getTripUUID());
 
         //TODO: This should look like 'RequestBody.create(MediaType.parse(getContentResolver().getType(Uri.fromFile(motionDataFile))), motionDataFile);' but something with the URI doesn't work
@@ -280,49 +290,33 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bumpyService.uploadMotionData(trip.getTripUUID(), motionDataFilePart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<Response>() {
+                .subscribe(new SingleObserver<Response<ApiResponse>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
                         //Do nothing
                     }
 
                     @Override
-                    public void onSuccess(Response response) {
-                        displayMessage("Motion data upload","Success, response: " + response);
+                    public void onSuccess(Response<ApiResponse> response) {
+                        Log.d("Motion data", "Motion data upload response for trip " + trip.getTripUUID() + ": " + response.message());
+                        if (response.isSuccessful()) {
+                            Toast.makeText(context, "Motion data successfully uploaded!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Motion data upload not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        displayMessage("Motion data upload","Failure, exception: " + e.toString());
+                        Log.d("Motion data", "Failed to upload motion data for trip " + trip.getTripUUID() + " to the server: " + e.getMessage());
                     }
                 });
     }
 
     private void deleteMotionData() {
         if (CsvUtils.deleteMotionDataFile(this, trip.getTripUUID()) == true) {
-            Toast.makeText(this, "Motion data deleted", Toast.LENGTH_SHORT).show();
+            Log.d("Motion data", "Motion data file for trip " + trip.getTripUUID() + " deleted");
         }
-    }
-
-    // Helper method to display a dialogue based on the results of a Retrofit call (c/p from tutorial)
-    //TODO: This is temporary for the alpha-prototype so that we can display the results/response of our API calls (or Exceptions)
-    private void displayMessage(String title, String s) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(s)
-
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Continue with delete operation
-                    }
-                })
-
-                // A null listener allows the button to dismiss the dialog and take no further action.
-                .setNegativeButton(android.R.string.no, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
     }
 
     private void startLocationUpdates() {
