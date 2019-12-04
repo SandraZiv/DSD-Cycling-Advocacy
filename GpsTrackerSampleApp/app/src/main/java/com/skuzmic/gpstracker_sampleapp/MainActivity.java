@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         trip.addGpsData(gnssData);
 
                         tvLocation.append("\n\n" + gnssData.toString());
+                        tvLocation.append("\nDistance(m): " + trip.getDistance());
                     }
                 }
             }

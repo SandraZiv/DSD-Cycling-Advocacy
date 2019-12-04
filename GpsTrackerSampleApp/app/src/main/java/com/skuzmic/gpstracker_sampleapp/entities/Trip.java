@@ -62,6 +62,7 @@ public class Trip {
             GnssData point2 = gnssDataList.get(gnssListSize - 1);
             float[] results = new float[1];
 
+            // return distance in meters
             Location.distanceBetween(point1.getLat(), point1.getLon(), point2.getLat(), point2.getLon(), results);
             distance += results[0];
         }
@@ -69,6 +70,10 @@ public class Trip {
 
     public String getTripUUID() {
         return tripUUID;
+    }
+
+    public double getDistance() {
+        return distance;
     }
 
     public void exportToTxt(Context context)  {
