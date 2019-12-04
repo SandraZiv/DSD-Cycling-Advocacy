@@ -1,11 +1,13 @@
 package com.skuzmic.gpstracker_sampleapp.entities;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.Environment;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 
 import java.io.File;
@@ -16,16 +18,26 @@ import java.util.List;
 
 public class Trip {
 
-    private String uuid;
-    private String tripId;
+    @SerializedName("deviceUUID")
+    private String deviceUUID;
+    @SerializedName("tripUUID")
+    private String tripUUID;
+    @SerializedName("startTS")
     private String startTs;  // in format 2017-07-21T17:32:28Z
+    @SerializedName("endTS")
     private String stopTs;
-    private double distance = 0;
+    @SerializedName("distance")
+    private double distance = 0.0;
+    @SerializedName("gnssData")
     private List<GnssData> gnssDataList;
 
-    public Trip(String uuid) {
-        this.uuid = "dsfasgdgagsdgsd";
-        this.tripId = "fdsf1dsf4sdf1sdf1sd2f3f";
+    //TODO: Device uuid will be stored/managed elsewhere, therefore the parameter received in this constructor is for the purposes of the alpha-prototype only!
+    public Trip(String deviceUUID) {
+        this.deviceUUID = deviceUUID;
+
+        this.tripUUID = Utils.generateUUID();
+        Log.d("Trip UUID", "Generated trip UUID: " + tripUUID);
+
         this.gnssDataList = new LinkedList<>();
     }
 
@@ -35,15 +47,33 @@ public class Trip {
 
     public void stop() {
         this.stopTs = Utils.formatTimestamp(System.currentTimeMillis());
-        // todo distance calculation (avg speed * duration?)
     }
 
     public void addGpsData(GnssData data) {
         this.gnssDataList.add(data);
+        calculateNewDistance();
     }
 
-    public String getTripId() {
-        return tripId;
+    // Calculates distance (adds distance for new GNSS points) based on the distance between the last two GNSS points
+    private void calculateNewDistance() {
+        int gnssListSize = gnssDataList.size();
+        if (gnssListSize > 1) {
+            GnssData point1 = gnssDataList.get(gnssListSize - 2);
+            GnssData point2 = gnssDataList.get(gnssListSize - 1);
+            float[] results = new float[1];
+
+            // return distance in meters
+            Location.distanceBetween(point1.getLat(), point1.getLon(), point2.getLat(), point2.getLon(), results);
+            distance += results[0];
+        }
+    }
+
+    public String getTripUUID() {
+        return tripUUID;
+    }
+
+    public double getDistance() {
+        return distance;
     }
 
     public void exportToTxt(Context context)  {
@@ -60,7 +90,7 @@ public class Trip {
             return;
         }
 
-        File file = new File(baseDirectory, System.currentTimeMillis() + ".txt");
+        File file = new File(baseDirectory, tripUUID + ".txt");
         try {
             FileWriter w = new FileWriter(file, true);
             w.append(this.toString());
@@ -80,8 +110,8 @@ public class Trip {
         }
 
         return "Trip{" +
-                "uuid=" + uuid + '\n' +
-                ", tripId=" + tripId + '\n' +
+                "deviceUUID=" + deviceUUID + '\n' +
+                ", tripUUID=" + tripUUID + '\n' +
                 ", startTs=" + startTs + '\n' +
                 ", stopTs=" + stopTs + '\n' +
                 ", distance=" + distance + '\n' +

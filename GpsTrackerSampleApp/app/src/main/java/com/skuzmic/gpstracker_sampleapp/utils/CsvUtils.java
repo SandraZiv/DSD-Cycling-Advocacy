@@ -25,7 +25,7 @@ public class CsvUtils {
             return null;
         }
 
-        File file = new File(baseDirectory, System.currentTimeMillis() + ".csv");
+        File file = new File(baseDirectory, filename + ".csv");
         Log.d("csvv", file.getPath());
 
         return new FileWriter(file, true);
@@ -42,4 +42,20 @@ public class CsvUtils {
         w.close();
     }
 
+    public static File getMotionDataFile(Context context, String tripUUID) {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            File motionDataFile = new File(context.getExternalFilesDir(null), "BumpyMotion");
+            motionDataFile = new File(motionDataFile, tripUUID + ".csv");
+            return motionDataFile;
+        } else {
+            // todo handle when can't read external storage
+            return null;
+        }
+    }
+
+    public static boolean deleteMotionDataFile(Context context, String tripUUID) {
+        File motionDataFile = getMotionDataFile(context, tripUUID);
+        return motionDataFile.delete();
+    }
 }

@@ -8,6 +8,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 public class Utils {
 
@@ -35,5 +36,9 @@ public class Utils {
         date.setTime(timestamp);
         // yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
+    }
+
+    public static String generateUUID() {
+        return UUID.randomUUID().toString();
     }
 }

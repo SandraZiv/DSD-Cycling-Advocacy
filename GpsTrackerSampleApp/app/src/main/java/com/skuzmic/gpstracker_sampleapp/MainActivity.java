@@ -33,14 +33,27 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
 import com.skuzmic.gpstracker_sampleapp.entities.Motion;
+import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
+import com.skuzmic.gpstracker_sampleapp.retrofit.RetrofitServiceGenerator;
+import com.skuzmic.gpstracker_sampleapp.retrofit.service.BumpyService;
 import com.skuzmic.gpstracker_sampleapp.utils.CsvUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.PermissionUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
@@ -123,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         trip.addGpsData(gnssData);
 
                         tvLocation.append("\n\n" + gnssData.toString());
+                        tvLocation.append("\nDistance(m): " + trip.getDistance());
                     }
                 }
             }
@@ -228,10 +242,87 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         btnStop.setEnabled(false);
         stopLocationUpdates();
         stopSensorUpdates();
+
+        sendLocationData(this);
+        sendMotionData(this);
+        //deleteMotionData();
+    }
+
+    private void sendLocationData(final Context context) {
+        Log.d("Location data", "Uploading location data for trip " + trip.getTripUUID() + " to the server");
+
+        BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
+        bumpyService.insertNewTrip(trip)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<ApiResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onSuccess(Response<ApiResponse> response) {
+                        Log.d("Location data", "Location data upload response for trip " + trip.getTripUUID() + ": " + response.message());
+                        if (response.isSuccessful()) {
+                            Toast.makeText(context, "Location data successfully uploaded!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Location data upload not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Location data", "Failed to upload location data for trip " + trip.getTripUUID() + " to the server: " + e.getMessage());
+                    }
+                });
+    }
+
+    private void sendMotionData(final Context context) {
+        Log.d("Motion data", "Uploading motion data for trip " + trip.getTripUUID() + " to the server");
+
+        File motionDataFile = CsvUtils.getMotionDataFile(this, trip.getTripUUID());
+
+        //TODO: This should look like 'RequestBody.create(MediaType.parse(getContentResolver().getType(Uri.fromFile(motionDataFile))), motionDataFile);' but something with the URI doesn't work
+        RequestBody motionDataFileRB = RequestBody.create(MediaType.parse("text/csv"), motionDataFile);
+        MultipartBody.Part motionDataFilePart = MultipartBody.Part.createFormData("file", motionDataFile.getName(), motionDataFileRB);
+
+        BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
+        bumpyService.uploadMotionData(trip.getTripUUID(), motionDataFilePart)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<ApiResponse>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onSuccess(Response<ApiResponse> response) {
+                        Log.d("Motion data", "Motion data upload response for trip " + trip.getTripUUID() + ": " + response.message());
+                        if (response.isSuccessful()) {
+                            Toast.makeText(context, "Motion data successfully uploaded!", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(context, "Motion data upload not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Motion data", "Failed to upload motion data for trip " + trip.getTripUUID() + " to the server: " + e.getMessage());
+                    }
+                });
+    }
+
+    private void deleteMotionData() {
+        if (CsvUtils.deleteMotionDataFile(this, trip.getTripUUID()) == true) {
+            Log.d("Motion data", "Motion data file for trip " + trip.getTripUUID() + " deleted");
+        }
     }
 
     private void startLocationUpdates() {
-        trip = new Trip("");
+        //TODO: The device UUID hard-coded and given here is for the purposes of the alpha-prototype only an will be stored/managed elsewhere in the 'real' app
+        trip = new Trip("5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f");
         trip.start();
 
         final LocationRequest locationRequest = new LocationRequest();
@@ -258,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void startSensorUpdates() {
         try {
-            fileWriter = CsvUtils.initFileWriter(this, trip.getTripId());
+            fileWriter = CsvUtils.initFileWriter(this, trip.getTripUUID());
         } catch (IOException e) {
             e.printStackTrace();
         }
