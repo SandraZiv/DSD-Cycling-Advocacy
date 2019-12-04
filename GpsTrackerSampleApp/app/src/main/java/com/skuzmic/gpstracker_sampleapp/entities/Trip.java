@@ -19,9 +19,9 @@ import java.util.List;
 public class Trip {
 
     @SerializedName("deviceUUID")
-    private String uuid;
+    private String deviceUUID;
     @SerializedName("tripUUID")
-    private String tripId;
+    private String tripUUID;
     @SerializedName("startTS")
     private String startTs;  // in format 2017-07-21T17:32:28Z
     @SerializedName("endTS")
@@ -31,10 +31,13 @@ public class Trip {
     @SerializedName("gnssData")
     private List<GnssData> gnssDataList;
 
-    //TODO: I suppose the uuid refers to tripUUID, not that it matters too much for the demo app
-    public Trip(String uuid) {
-        this.uuid = "dsfasgdgagsdgsd";
-        this.tripId = uuid;
+    //TODO: Device uuid will be stored/managed elsewhere, therefore the parameter received in this constructor is for the purposes of the alpha-prototype only!
+    public Trip(String deviceUUID) {
+        this.deviceUUID = deviceUUID;
+
+        this.tripUUID = Utils.generateUUID().toString();
+        Log.d("Trip UUID", "Generated trip UUID: " + tripUUID);
+
         this.gnssDataList = new LinkedList<>();
     }
 
@@ -65,8 +68,8 @@ public class Trip {
         }
     }
 
-    public String getTripId() {
-        return tripId;
+    public String getTripUUID() {
+        return tripUUID;
     }
 
     public void exportToTxt(Context context)  {
@@ -83,7 +86,7 @@ public class Trip {
             return;
         }
 
-        File file = new File(baseDirectory, tripId + ".txt");
+        File file = new File(baseDirectory, tripUUID + ".txt");
         try {
             FileWriter w = new FileWriter(file, true);
             w.append(this.toString());
@@ -103,8 +106,8 @@ public class Trip {
         }
 
         return "Trip{" +
-                "uuid=" + uuid + '\n' +
-                ", tripId=" + tripId + '\n' +
+                "deviceUUID=" + deviceUUID + '\n' +
+                ", tripUUID=" + tripUUID + '\n' +
                 ", startTs=" + startTs + '\n' +
                 ", stopTs=" + stopTs + '\n' +
                 ", distance=" + distance + '\n' +

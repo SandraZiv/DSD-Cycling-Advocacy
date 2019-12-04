@@ -270,14 +270,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void sendMotionData() {
-        File motionDataFile = CsvUtils.getMotionDataFile(this, trip.getTripId());
+        File motionDataFile = CsvUtils.getMotionDataFile(this, trip.getTripUUID());
 
         //TODO: This should look like 'RequestBody.create(MediaType.parse(getContentResolver().getType(Uri.fromFile(motionDataFile))), motionDataFile);' but something with the URI doesn't work
         RequestBody motionDataFileRB = RequestBody.create(MediaType.parse("text/csv"), motionDataFile);
         MultipartBody.Part motionDataFilePart = MultipartBody.Part.createFormData("file", motionDataFile.getName(), motionDataFileRB);
 
         BumpyService bumpyService = RetrofitServiceGenerator.createService(BumpyService.class);
-        bumpyService.uploadMotionData(trip.getTripId(), motionDataFilePart)
+        bumpyService.uploadMotionData(trip.getTripUUID(), motionDataFilePart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response>() {
@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void deleteMotionData() {
-        if (CsvUtils.deleteMotionDataFile(this, trip.getTripId()) == true) {
+        if (CsvUtils.deleteMotionDataFile(this, trip.getTripUUID()) == true) {
             Toast.makeText(this, "Motion data deleted", Toast.LENGTH_SHORT).show();
         }
     }
@@ -326,8 +326,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void startLocationUpdates() {
-        trip = new Trip(Utils.generateUUID().toString());
-        Toast.makeText(this, "Trip UUID: " + trip.getTripId(), Toast.LENGTH_SHORT).show();
+        //TODO: The device UUID hard-coded and given here is for the purposes of the alpha-prototype only an will be stored/managed elsewhere in the 'real' app
+        trip = new Trip("5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f");
         trip.start();
 
         final LocationRequest locationRequest = new LocationRequest();
@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private void startSensorUpdates() {
         try {
-            fileWriter = CsvUtils.initFileWriter(this, trip.getTripId());
+            fileWriter = CsvUtils.initFileWriter(this, trip.getTripUUID());
         } catch (IOException e) {
             e.printStackTrace();
         }
