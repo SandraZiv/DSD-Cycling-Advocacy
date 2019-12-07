@@ -1,29 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="8"
     android:background="@color/cyclingAdvocacyBlack"
+    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/text_pastTrips"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/heading_height"
-        android:gravity="center_vertical"
-        android:background="@color/cyclingAdvocacyYellow"
-        android:text="@string/title_pastTrips"
-        android:textColor="@color/cyclingAdvocacyBlack"
-        android:textSize="@dimen/text_size_medium"
-        android:paddingLeft="@dimen/heading_padding_left" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/rv_past_trips"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="7.5"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_past_trips" />
 
 </LinearLayout>

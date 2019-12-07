@@ -1,20 +1,15 @@
 package com.cycling_advocacy.bumpy.ui.achievements;
 
-import android.media.Image;
-import android.widget.ImageView;
-
 public class Achievement {
 
-    private String title, detail;
-    private ImageView trophy;
+    private String title;
+    private String detail;
+    private boolean isCompleted;
 
-    public Achievement() {
-    }
-
-    public Achievement(String title, String detail, ImageView trophy) {
+    public Achievement(String title, String detail, boolean isCompleted) {
         this.title = title;
         this.detail = detail;
-        this.trophy = trophy;
+        this.isCompleted = isCompleted;
     }
 
     public String getTitle() {
@@ -33,11 +28,11 @@ public class Achievement {
         this.detail = detail;
     }
 
-    public ImageView getTrophy() {
-        return trophy;
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
-    public void setTrophy(ImageView trophy) {
-        this.trophy = trophy;
+    public boolean isCompleted() {
+        return isCompleted;
     }
 }

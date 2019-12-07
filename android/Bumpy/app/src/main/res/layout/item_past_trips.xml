@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cyclingAdvocacyBlack"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_standard">
+
+    <LinearLayout
+        android:id="@+id/achievement1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HIIIIIIIIIII"
+            android:textColor="@color/cyclingAdvocacyYellow"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/details_achievement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Helloooooooooooooooooooooooooooooooooooooo"
+            android:textColor="@color/cyclingAdvocacyYellow"
+            android:textSize="@dimen/text_size_mini" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_trophy"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.1"
+        tools:srcCompat="@drawable/ic_app_icon" />
+
+</LinearLayout>
+
+

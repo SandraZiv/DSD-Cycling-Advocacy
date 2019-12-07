@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -27,14 +25,14 @@ public class ReportIssueFragment extends Fragment implements AdapterView.OnItemS
 
         View root = inflater.inflate(R.layout.fragment_report_issues, container, false);
         Spinner issue_spinner = root.findViewById(R.id.input_issue);
-        final TextView textView = root.findViewById(R.id.text_reportIssues);
+
 
         reportIssueViewModel = ViewModelProviders.of(this).get(ReportIssueViewModel.class);
 
         reportIssueViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
-                textView.setText(s);
+
             }
         });
 

@@ -1,45 +1,28 @@
 package com.cycling_advocacy.bumpy.ui.pastTrips;
 
-import android.widget.ImageButton;
-
 public class PastTrip {
 
-    private String startTime, endTime, vibration, date;
-    private ImageButton upload_image;
+    // todo fix this types
+    private String startTime, endTime, vibration;
+    private boolean isUploaded;
 
-    public PastTrip() {
-    }
-
-    public PastTrip(String startTime, String endTime, String vibration, String date, ImageButton upload_image) {
+    public PastTrip(String startTime, String endTime, String vibration, boolean isUploaded) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.vibration = vibration;
-        this.date = date;
-        this.upload_image = upload_image;
+        this.isUploaded = isUploaded;
     }
 
     public String getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public String getVibration() {
-        return vibration;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public ImageButton getUpload_image() {
-        return upload_image;
-    }
-
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
     }
 
     public void setEndTime(String endTime) {
@@ -50,11 +33,15 @@ public class PastTrip {
         this.vibration = vibration;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public String getVibration() {
+        return vibration;
     }
 
-    public void setUpload_image(ImageButton upload_image) {
-        this.upload_image = upload_image;
+    public boolean isUploaded() {
+        return isUploaded;
+    }
+
+    public void setIsUploaded(boolean isUploaded) {
+        this.isUploaded = isUploaded;
     }
 }

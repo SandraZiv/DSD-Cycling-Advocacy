@@ -3,7 +3,8 @@
 
     <!--Onboarding page -->
     <string name="welcome">Welcome to Bumpy App!</string>
-    <string name="details">Bumpy is used to collect data about cycling conditions and report road issues in a fun and easy way.</string>
+    <string name="details">Bumpy is used to collect data about cycling conditions and report road
+        issues in a fun and easy way.</string>
     <string name="ngo">Powered by the Croatian Cyclist Union</string>
     <string name="next">NEXT</string>
 
@@ -17,7 +18,7 @@
 
     <!--Map and buttons -->
     <string name="gps">GPS</string>
-    <string name="ride">Start Trip!</string>
+    <string name="ride">Start Trip</string>
     <string name="submit">SUBMIT</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -45,8 +46,7 @@
     <string name="upload_data_detail">Upload collected data data manually</string>
     <string name="display_stat">Display-off</string>
     <string name="display_stat_detail">Disable showing statistics during all rides</string>
-
-
+    <string name="current_location">Current Location</string>
 
 
 </resources>

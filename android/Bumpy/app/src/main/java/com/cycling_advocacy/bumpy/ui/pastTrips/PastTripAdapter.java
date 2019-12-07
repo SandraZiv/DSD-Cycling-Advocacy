@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import com.cycling_advocacy.bumpy.R;
-import java.util.List;
+
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cycling_advocacy.bumpy.R;
+
+import java.util.List;
 
 public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyViewHolder>  {
 
@@ -20,9 +23,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
 
             public MyViewHolder(View view) {
                 super(view);
-                date = (TextView) view.findViewById(R.id.date);
-                detail = (TextView) view.findViewById(R.id.details);
-                imageUpload = (ImageButton) view.findViewById(R.id.upload_image);
+//                date = view.findViewById(R.id.date);
+//                detail = view.findViewById(R.id.details);
+//                imageUpload = view.findViewById(R.id.upload_image);
             }
         }
         public PastTripAdapter(List<PastTrip> pasTripList) {
@@ -32,7 +35,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_past_trips, parent, false);
+                    .inflate(R.layout.item_past_trips, parent, false);
 
             return new MyViewHolder(itemView);
         }
@@ -40,9 +43,8 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             PastTrip ptrip = pasTripList.get(position);
-            holder.date.setText(ptrip.getDate());
             //holder.detail.setText(ptrip.getGenre());
-            //holder.imageUpload.set(ptrip.getUpload_image());
+            //holder.imageUpload.set(ptrip.getIsUploaded());
         }
 
         @Override

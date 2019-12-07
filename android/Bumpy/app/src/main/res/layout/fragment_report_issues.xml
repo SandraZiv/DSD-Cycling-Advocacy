@@ -1,91 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cyclingAdvocacyBlack"
-    android:fitsSystemWindows="true"
-    android:weightSum="8">
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_reportIssues"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/heading_height"
-        android:gravity="center_vertical"
-        android:background="@color/cyclingAdvocacyYellow"
-        android:text="@string/title_reportIssue"
-        android:textColor="@color/cyclingAdvocacyBlack"
-        android:textSize="@dimen/text_size_medium"
-        android:paddingLeft="@dimen/heading_padding_left"/>
-
-    <LinearLayout
-        android:orientation="vertical"
+    <EditText
+        android:id="@+id/input_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:gravity="center">
-        <EditText
-            android:id="@+id/input_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/cyclingAdvocacyYellow"
-            android:hint="Current Location"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            android:textColorHint="@color/cyclingAdvocacyYellowHint"
-            android:textSize="@dimen/text_size_small"
-            android:layout_margin="@dimen/margin_form"/>
-        <Spinner
-            android:id="@+id/input_issue"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/cyclingAdvocacyYellow"
-            android:entries="@array/type_of_issue"
-            android:prompt="@string/choose_issue"
-            android:textSize="@dimen/text_size_small"
-            android:layout_margin="@dimen/margin_form"/>
-    </LinearLayout>
+        android:layout_margin="@dimen/margin_standard"
+        android:backgroundTint="@color/cyclingAdvocacyYellow"
+        android:hint="@string/current_location"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textColorHint="@color/cyclingAdvocacyYellowHint"
+        android:textSize="@dimen/text_size_small" />
 
-   <LinearLayout
-       android:id="@+id/add_photo"
-       android:orientation="horizontal"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_weight="2">
+    <Spinner
+        android:id="@+id/input_issue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_standard"
+        android:backgroundTint="@color/cyclingAdvocacyYellow"
+        android:entries="@array/type_of_issue"
+        android:prompt="@string/choose_issue"
+        android:textSize="@dimen/text_size_small" />
+
+    <LinearLayout
+        android:id="@+id/add_photo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <!--todo button style-->
         <Button
             android:id="@+id/button_take_photo"
-            android:layout_width="@dimen/button_size"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_small"
             android:background="@drawable/button_shape"
             android:text="@string/take_photo"
             android:textColor="@color/cyclingAdvocacyYellow"
-            android:textSize="@dimen/text_size_mini"
-            android:layout_marginLeft="@dimen/margin_form"/>
+            android:textSize="@dimen/text_size_mini" />
 
-       <Button
+        <Button
             android:id="@+id/button_choose_photo"
-            android:layout_width="@dimen/button_size"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_small"
             android:background="@drawable/button_shape"
             android:text="@string/choose_photo"
             android:textColor="@color/cyclingAdvocacyYellow"
-            android:textSize="@dimen/text_size_mini"
-            android:layout_marginLeft="@dimen/margin_form"/>
-   </LinearLayout>
+            android:textSize="@dimen/text_size_mini" />
+    </LinearLayout>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/button_submit"
+        style="@style/StandardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2.5"
-        android:layout_gravity="center">
-        <Button
-            android:id="@+id/button_submit"
-            android:layout_width="@dimen/button_size"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="@color/cyclingAdvocacyYellow"
-            android:text="@string/submit"
-            android:textColor="@color/cyclingAdvocacyBlack"
-            android:textSize="@dimen/text_size_medium" />
-    </LinearLayout>
+        android:text="@string/submit" />
 
 </LinearLayout>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:weightSum="10">
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="8"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         app:defaultNavHost="true"
         app:navGraph="@navigation/mobile_navigation" />
 
@@ -21,10 +21,9 @@
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
         android:background="@color/cyclingAdvocacyYellow"
-        app:itemTextColor="@drawable/bottom_navigation_item_colors"
         app:itemIconTint="@drawable/bottom_navigation_item_colors"
+        app:itemTextColor="@drawable/bottom_navigation_item_colors"
         app:labelVisibilityMode="selected"
         app:menu="@menu/bottom_nav_menu" />
 
