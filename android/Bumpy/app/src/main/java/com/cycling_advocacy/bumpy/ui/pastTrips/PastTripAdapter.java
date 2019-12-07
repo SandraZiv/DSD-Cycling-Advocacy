@@ -6,11 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import com.cycling_advocacy.bumpy.R;
-
 import java.util.List;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyViewHolder>  {
@@ -19,17 +16,15 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView date, detail;
-            public ImageButton image_upload;
+            public ImageButton imageUpload;
 
             public MyViewHolder(View view) {
                 super(view);
                 date = (TextView) view.findViewById(R.id.date);
                 detail = (TextView) view.findViewById(R.id.details);
-                image_upload = (ImageButton) view.findViewById(R.id.upload_image);
+                imageUpload = (ImageButton) view.findViewById(R.id.upload_image);
             }
         }
-
-
         public PastTripAdapter(List<PastTrip> pasTripList) {
             this.pasTripList = pasTripList;
         }
@@ -47,7 +42,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
             PastTrip ptrip = pasTripList.get(position);
             holder.date.setText(ptrip.getDate());
             //holder.detail.setText(ptrip.getGenre());
-            //holder.image_upload.set(ptrip.getUpload_image());
+            //holder.imageUpload.set(ptrip.getUpload_image());
         }
 
         @Override

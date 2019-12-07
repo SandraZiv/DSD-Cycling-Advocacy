@@ -10,10 +10,10 @@ public class MapViewModel extends ViewModel {
 
     public MapViewModel() {
         mText = new MutableLiveData<>();
-
     }
 
     public LiveData<String> getText() {
+
         return mText;
     }
 }

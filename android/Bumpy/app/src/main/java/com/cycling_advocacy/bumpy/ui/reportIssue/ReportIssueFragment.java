@@ -29,8 +29,7 @@ public class ReportIssueFragment extends Fragment implements AdapterView.OnItemS
         Spinner issue_spinner = root.findViewById(R.id.input_issue);
         final TextView textView = root.findViewById(R.id.text_reportIssues);
 
-        reportIssueViewModel =
-                ViewModelProviders.of(this).get(ReportIssueViewModel.class);
+        reportIssueViewModel = ViewModelProviders.of(this).get(ReportIssueViewModel.class);
 
         reportIssueViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -43,7 +42,6 @@ public class ReportIssueFragment extends Fragment implements AdapterView.OnItemS
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         issue_spinner.setAdapter(arrayAdapter);
         issue_spinner.setOnItemSelectedListener(this);
-
         return root;
     }
 

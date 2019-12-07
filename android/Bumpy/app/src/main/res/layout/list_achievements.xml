@@ -47,8 +47,6 @@
             app:srcCompat="@drawable/ic_app_icon"/>
     </LinearLayout>
 
-
-
 </LinearLayout>
 
 

@@ -43,9 +43,6 @@ public class MapFragment extends Fragment {
                 startActivity(activity2Intent);
             }
         });
-
-
-
         return root;
     }
 }

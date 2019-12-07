@@ -25,6 +25,8 @@
     <dimen name="margin_form">40dp</dimen>
     <dimen name="margin_view">30dp</dimen>
 
+    <dimen name="image_size">50dp</dimen>
+
 
 
 

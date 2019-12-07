@@ -19,16 +19,15 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, detail;
-        public ImageView image_trophy;
+        public ImageView imageTrophy;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             detail = (TextView) view.findViewById(R.id.details_achievement);
-            image_trophy = (ImageView) view.findViewById(R.id.image_trophy);
+            imageTrophy = (ImageView) view.findViewById(R.id.image_trophy);
         }
     }
-
 
     public AchievementAdapter(List<Achievement> achievementList) {
         this.achievementList = achievementList;

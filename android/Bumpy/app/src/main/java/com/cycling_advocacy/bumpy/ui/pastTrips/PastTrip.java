@@ -4,26 +4,26 @@ import android.widget.ImageButton;
 
 public class PastTrip {
 
-    private String start_time, end_time, vibration, date;
+    private String startTime, endTime, vibration, date;
     private ImageButton upload_image;
 
     public PastTrip() {
     }
 
-    public PastTrip(String start_time, String end_time, String vibration, String date, ImageButton upload_image) {
-        this.start_time = start_time;
-        this.end_time = end_time;
+    public PastTrip(String startTime, String endTime, String vibration, String date, ImageButton upload_image) {
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.vibration = vibration;
         this.date = date;
         this.upload_image = upload_image;
     }
 
-    public String getStart_time() {
-        return start_time;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public String getEnd_time() {
-        return end_time;
+    public String getEndTime() {
+        return endTime;
     }
 
     public String getVibration() {
@@ -38,12 +38,12 @@ public class PastTrip {
         return upload_image;
     }
 
-    public void setStart_time(String start_time) {
-        this.start_time = start_time;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public void setVibration(String vibration) {
