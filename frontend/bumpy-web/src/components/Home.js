@@ -1,10 +1,29 @@
-import React, {Component} from 'react';
+import React from 'react'
+import { Map as LeafletMap, TileLayer, Marker, Popup, Polyline} from 'react-leaflet';
+import Leaflet from 'leaflet/dist/leaflet.css'
+import './Home.css';
 
-export class Home extends Component {
-
-    render() {
-        return(
-            <p>Home page</p>
-        )
-    }
+export class Home extends React.Component {
+  render() {
+    return (
+      <LeafletMap
+        center={[45.807323, 15.967772]}
+        zoom={14}
+        maxZoom={20}
+        attributionControl={true}
+        zoomControl={true}
+        doubleClickZoom={true}
+        scrollWheelZoom={true}
+        dragging={true}
+        animate={true}
+        easeLinearity={0.35}
+      >
+        <TileLayer
+          url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+        />
+      </LeafletMap>
+    );
+  }
 }
+
+export default Home;
