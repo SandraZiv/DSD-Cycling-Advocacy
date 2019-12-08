@@ -14,17 +14,15 @@ public class Achievement {
     @StringRes
     @ColumnInfo(name = "title_id")
     private int titleId;
-//    private String title;
 
     @StringRes
     @ColumnInfo(name = "detail_id")
     private int detailId;
-//    private String detail;
 
     @ColumnInfo(name = "is_completed")
     private boolean isCompleted;
 
-    //    public Achievement(String title, String detail, boolean isCompleted) {
+    // using id so it can support internationalization
     public Achievement(@StringRes int titleId, @StringRes int detailId, boolean isCompleted) {
         this.titleId = titleId;
         this.detailId = detailId;
