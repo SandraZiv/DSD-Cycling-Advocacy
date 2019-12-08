@@ -1,9 +1,9 @@
-import React from 'react'
+import React, {Component} from 'react';
 import { Map as LeafletMap, TileLayer, Marker, Popup, Polyline} from 'react-leaflet';
 import Leaflet from 'leaflet/dist/leaflet.css'
 import './Home.css';
 
-export class Home extends React.Component {
+export class Home extends Component {
   render() {
     return (
       <LeafletMap
