@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy.ui.pastTrips;
+package com.cycling_advocacy.bumpy.entities;
 
 public class PastTrip {
 

@@ -10,18 +10,19 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.entities.PastTrip;
 
 import java.util.List;
 
-public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyViewHolder>  {
+public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHolder>  {
 
         private List<PastTrip> pasTripList;
 
-        public class MyViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView date, detail;
             public ImageButton imageUpload;
 
-            public MyViewHolder(View view) {
+            public ViewHolder(View view) {
                 super(view);
 //                date = view.findViewById(R.id.date);
 //                detail = view.findViewById(R.id.details);
@@ -33,15 +34,15 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         }
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_past_trips, parent, false);
 
-            return new MyViewHolder(itemView);
+            return new ViewHolder(itemView);
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(ViewHolder holder, int position) {
             PastTrip ptrip = pasTripList.get(position);
             //holder.detail.setText(ptrip.getGenre());
             //holder.imageUpload.set(ptrip.getIsUploaded());
