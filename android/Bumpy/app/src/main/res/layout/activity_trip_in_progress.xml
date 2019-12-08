@@ -7,13 +7,15 @@
     android:orientation="vertical"
     tools:context=".TripInProgressActivity">
 
+    <include layout="@layout/toolbar" />
+
     <Button
         android:id="@+id/button_trip_end"
+        style="@style/StandardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/cyclingAdvocacyYellow"
-        android:text="@string/end_trip"
-        android:textColor="@color/cyclingAdvocacyBlack" />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_standard"
+        android:text="@string/end_trip" />
 
 </LinearLayout>

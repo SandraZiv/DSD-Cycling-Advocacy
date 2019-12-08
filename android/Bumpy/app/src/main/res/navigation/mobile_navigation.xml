@@ -8,31 +8,25 @@
     <fragment
         android:id="@+id/navigation_reportIssue"
         android:name="com.cycling_advocacy.bumpy.ui.reportIssue.ReportIssueFragment"
-        android:label="@string/title_reportIssue"
+        android:label="@string/bottom_nav_title_report_issue"
         tools:layout="@layout/fragment_report_issues" />
 
     <fragment
         android:id="@+id/navigation_pastTrips"
         android:name="com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsFragment"
-        android:label="@string/title_pastTrips"
+        android:label="@string/bottom_nav_title_past_trips"
         tools:layout="@layout/fragment_past_trips" />
 
     <fragment
         android:id="@+id/navigation_map"
         android:name="com.cycling_advocacy.bumpy.ui.map.MapFragment"
-        android:label="@string/title_map"
+        android:label="@string/bottom_nav_title_map"
         tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_achievements"
         android:name="com.cycling_advocacy.bumpy.ui.achievements.AchievementsFragment"
-        android:label="@string/title_achievements"
+        android:label="@string/bottom_nav_title_achievements"
         tools:layout="@layout/fragment_achievements" />
-
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.cycling_advocacy.bumpy.ui.settings.SettingsFragment"
-        android:label="@string/title_settings"
-        tools:layout="@layout/fragment_settings" />
 
 </navigation>

@@ -39,6 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_standard"
-        android:text="@string/ride" />
+        android:text="@string/start_trip" />
 
 </LinearLayout>

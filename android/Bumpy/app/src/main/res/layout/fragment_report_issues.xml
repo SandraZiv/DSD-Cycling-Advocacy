@@ -17,7 +17,8 @@
         android:textColorHint="@color/cyclingAdvocacyYellowHint"
         android:textSize="@dimen/text_size_small" />
 
-    <Spinner
+    <!--todo spinner style-->
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/input_issue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,6 +63,7 @@
         style="@style/StandardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_standard"
         android:text="@string/submit" />
 
 </LinearLayout>

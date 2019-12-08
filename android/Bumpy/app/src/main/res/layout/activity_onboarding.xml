@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_double"
 
-        android:text="@string/welcome"
+        android:text="@string/onboarding_welcome"
         android:textColor="@color/cyclingAdvocacyYellow"
         android:textSize="@dimen/text_size_big" />
 
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/margin_double"
-        android:text="@string/details"
+        android:text="@string/onboarding_details"
         android:textColor="@color/cyclingAdvocacyYellow"
         android:textSize="@dimen/text_size_medium" />
 
@@ -47,7 +47,7 @@
             android:id="@+id/ngo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ngo"
+            android:text="@string/onboarding_ngo"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_mini" />
     </LinearLayout>
