@@ -1,0 +1,14 @@
+<resources>
+
+    <dimen name="margin_mini">8dp</dimen>
+    <dimen name="margin_small">12dp</dimen>
+    <dimen name="margin_standard">16dp</dimen>
+    <dimen name="margin_large">20dp</dimen>
+    <dimen name="margin_double">28dp</dimen>
+
+    <dimen name="text_size_big">30sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="text_size_small">15sp</dimen>
+    <dimen name="text_size_mini">12sp</dimen>
+
+</resources>

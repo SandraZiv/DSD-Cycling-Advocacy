@@ -1,14 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    <TextView android:id="@+id/text"
+    android:background="@color/cyclingAdvocacyBlack"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_standard"
+    tools:context=".OnboardingActivity">
+
+    <TextView
+        android:id="@+id/welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello, I am a TextView" />
-    <Button android:id="@+id/button"
+        android:layout_marginTop="@dimen/margin_double"
+
+        android:text="@string/onboarding_welcome"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_big" />
+
+    <TextView
+        android:id="@+id/detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BUMPY APP" />
+        android:paddingTop="@dimen/margin_double"
+        android:text="@string/onboarding_details"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_medium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:background="@color/cyclingAdvocacyYellow"
+            android:text="@string/next"
+            android:textColor="@color/cyclingAdvocacyBlack" />
+
+        <TextView
+            android:id="@+id/ngo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/onboarding_ngo"
+            android:textColor="@color/cyclingAdvocacyYellow"
+            android:textSize="@dimen/text_size_mini" />
+    </LinearLayout>
+
 </LinearLayout>

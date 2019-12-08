@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="cyclingAdvocacyYellow">#ffdd00</color>
+    <color name="cyclingAdvocacyYellowHint">#81FFDD00</color>
     <color name="cyclingAdvocacyYellowLogo">#ffff01</color>
     <color name="cyclingAdvocacyBlack">#000000</color>
+
+    <color name="grey">#DA8D8989</color>
+    <color name="white">#ffffff</color>
 </resources>

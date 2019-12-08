@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/gps_button_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/cyclingAdvocacyBlack"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_standard">
+
+        <TextView
+            android:id="@+id/text_gps"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_standard"
+            android:text="@string/gps"
+            android:textColor="@color/cyclingAdvocacyYellow" />
+
+        <Switch
+            android:id="@+id/gps_button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:theme="@style/SwitchCompatStyle" />
+
+    </LinearLayout>
+
+    <!-- Open Street Maps HERE   -->
+
+    <Button
+        android:id="@+id/button_start_trip"
+        style="@style/StandardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_standard"
+        android:text="@string/start_trip" />
+
+</LinearLayout>
