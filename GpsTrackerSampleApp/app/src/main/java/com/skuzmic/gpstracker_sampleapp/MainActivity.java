@@ -31,9 +31,9 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
 import com.skuzmic.gpstracker_sampleapp.entities.Motion;
-import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
 import com.skuzmic.gpstracker_sampleapp.retrofit.RetrofitServiceGenerator;
 import com.skuzmic.gpstracker_sampleapp.retrofit.service.BumpyService;
@@ -44,7 +44,6 @@ import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -253,15 +252,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         // If there is a parsing exception I assume we shouldn't send potentially 'broken' data, so duration = 0 should prevent that
         // TODO: Note that this calculation is a bit rough, in the future we should rely on a separate, more precise stopwatch that measures the duration of a trip
-        long duration = 0;
-        try {
-            Date startTS = Utils.formatTimestamp(trip.getStartTs());
-            Date stopTS = Utils.formatTimestamp(trip.getStopTs());
-            duration = Utils.getDurationInSeconds(startTS, stopTS);
-        } catch (ParseException ex) {
-            Log.d("Timestamp parsing", "Exception: " + ex.getMessage());
-            Toast.makeText(this, "Timestamp parse exception, duration considered 0", Toast.LENGTH_SHORT).show();
-        }
+
+        Date startTS = trip.getStartTs();
+        Date stopTS = trip.getStopTs();
+        long duration = Utils.getDurationInSeconds(startTS, stopTS);
 
         double distance = trip.getDistance();
 
