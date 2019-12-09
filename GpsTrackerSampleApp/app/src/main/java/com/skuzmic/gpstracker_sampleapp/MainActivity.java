@@ -44,7 +44,9 @@ import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -59,6 +61,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
 
     private static final long UPDATE_INTERVAL = 3000, FASTEST_INTERVAL = 3000; // = 3 seconds
+
+    // Minimum trip duration in seconds; trips shorter than this won't be stored/sent
+    private static final int MIN_TRIP_DURATION = 300;
+
+    // Minimum trip duration in kilometers; trips shorter than this won't be stored/sent
+    private static final double MIN_TRIP_DISTANCE = 0.5;
 
     private TextView tvLocation;
     private Button btnStart;
@@ -243,9 +251,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         stopLocationUpdates();
         stopSensorUpdates();
 
-        sendLocationData(this);
-        sendMotionData(this);
-        //deleteMotionData();
+        // If there is a parsing exception I assume we shouldn't send potentially 'broken' data, so duration = 0 should prevent that
+        // TODO: Note that this calculation is a bit rough, in the future we should rely on a separate, more precise stopwatch that measures the duration of a trip
+        long duration = 0;
+        try {
+            Date startTS = Utils.formatTimestamp(trip.getStartTs());
+            Date stopTS = Utils.formatTimestamp(trip.getStopTs());
+            duration = Utils.getDurationInSeconds(startTS, stopTS);
+        } catch (ParseException ex) {
+            Log.d("Timestamp parsing", "Exception: " + ex.getMessage());
+            Toast.makeText(this, "Timestamp parse exception, duration considered 0", Toast.LENGTH_SHORT).show();
+        }
+
+        double distance = trip.getDistance();
+
+        if (duration >= MIN_TRIP_DURATION && distance >= MIN_TRIP_DISTANCE) {
+            // Saves the trip general + location data as a txt file on the device
+            trip.exportToTxt(this);
+
+            sendLocationData(this);
+            sendMotionData(this);
+        } else {
+            // The motion file is constructed during the trip so we need to delete it
+            deleteMotionData(trip.getTripUUID());
+            Log.d("Trip end", "Trip duration or distance too short for the trip to be considered.");
+            Log.d("Trip end", "Trip duration is " + duration + " while minimum is " + MIN_TRIP_DURATION);
+            Log.d("Trip end", "Trip distance is " + distance + " while minimum is " + MIN_TRIP_DISTANCE);
+            Toast.makeText(this, "Trip duration or distance too short for the trip to be considered", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void sendLocationData(final Context context) {
@@ -302,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         Log.d("Motion data", "Motion data upload response for trip " + trip.getTripUUID() + ": " + response.message());
                         if (response.isSuccessful()) {
                             Toast.makeText(context, "Motion data successfully uploaded!", Toast.LENGTH_SHORT).show();
+                            deleteMotionData(trip.getTripUUID());
                         } else {
                             Toast.makeText(context, "Motion data upload not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
                         }
@@ -314,9 +348,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
     }
 
-    private void deleteMotionData() {
-        if (CsvUtils.deleteMotionDataFile(this, trip.getTripUUID()) == true) {
-            Log.d("Motion data", "Motion data file for trip " + trip.getTripUUID() + " deleted");
+    private void deleteMotionData(String tripUUID) {
+        if (CsvUtils.deleteMotionDataFile(this, trip.getTripUUID())) {
+            Log.d("Motion data", "Motion data file for trip " + tripUUID + " deleted");
         }
     }
 
@@ -343,8 +377,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private void stopLocationUpdates() {
         trip.stop();
         locationProviderClient.removeLocationUpdates(locationCallback);
-
-        trip.exportToTxt(this);
     }
 
     private void startSensorUpdates() {

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -36,6 +37,16 @@ public class Utils {
         date.setTime(timestamp);
         // yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
         return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
+    }
+
+    public static Date formatTimestamp(String timestamp) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        return format.parse(timestamp);
+    }
+
+    public static long getDurationInSeconds(Date startTS, Date endTS) {
+        long diff = endTS.getTime() - startTS.getTime();
+        return diff / 1000 % 60;
     }
 
     public static String generateUUID() {

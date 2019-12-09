@@ -76,6 +76,10 @@ public class Trip {
         return distance;
     }
 
+    public String getStartTs() { return startTs; }
+
+    public String getStopTs() { return stopTs; }
+
     public void exportToTxt(Context context)  {
         Log.d("loc", this.toString());
 
