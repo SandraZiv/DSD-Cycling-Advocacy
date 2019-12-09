@@ -19,7 +19,7 @@
 
     <!--todo spinner style-->
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/input_issue"
+        android:id="@+id/spinner_issue_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_standard"
@@ -29,7 +29,6 @@
         android:textSize="@dimen/text_size_small" />
 
     <LinearLayout
-        android:id="@+id/add_photo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -38,7 +37,7 @@
 
         <!--todo button style-->
         <Button
-            android:id="@+id/button_take_photo"
+            android:id="@+id/btn_take_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_small"
@@ -48,7 +47,7 @@
             android:textSize="@dimen/text_size_mini" />
 
         <Button
-            android:id="@+id/button_choose_photo"
+            android:id="@+id/btn_choose_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_small"
@@ -59,7 +58,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_submit"
+        android:id="@+id/btn_submit"
         style="@style/StandardButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

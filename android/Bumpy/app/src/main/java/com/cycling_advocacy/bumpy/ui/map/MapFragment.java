@@ -36,8 +36,7 @@ public class MapFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map, container, false);
-        final Button buttonStart = root.findViewById(R.id.btn_start_trip);
-
+     
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Context ctx = getActivity().getApplicationContext();
@@ -67,6 +66,7 @@ public class MapFragment extends Fragment {
 
         map.invalidate();
 
+        final Button buttonStart = root.findViewById(R.id.btn_start_trip);
         buttonStart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent activity2Intent = new Intent(getContext(), TripInProgressActivity.class);

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- string resource for all achievements -->
+
+    <string name="a1_title">First trip</string>
+    <string name="a1_detail">Start your first trip</string>
+
+    <string name="a2_title">Trip over 5km</string>
+    <string name="a2_detail">Complete one trip over 5km</string>
+
+
+</resources>

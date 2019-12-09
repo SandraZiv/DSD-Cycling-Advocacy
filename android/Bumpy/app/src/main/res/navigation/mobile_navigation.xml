@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_achievements"
-        android:name="com.cycling_advocacy.bumpy.ui.achievements.AchievementsFragment"
+        android:name="com.cycling_advocacy.bumpy.achievements.ui.AchievementsFragment"
         android:label="@string/bottom_nav_title_achievements"
         tools:layout="@layout/fragment_achievements" />
 

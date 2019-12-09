@@ -9,28 +9,27 @@
     android:padding="@dimen/margin_standard">
 
     <LinearLayout
-        android:id="@+id/achievement1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/tv_achievement_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="HIIIIIIIIIII"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="HIIIIIIIIIII" />
 
         <TextView
-            android:id="@+id/details_achievement"
+            android:id="@+id/tv_achievement_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Helloooooooooooooooooooooooooooooooooooooo"
             android:textColor="@color/cyclingAdvocacyYellow"
-            android:textSize="@dimen/text_size_mini" />
+            android:textSize="@dimen/text_size_mini"
+            tools:text="Helloooooooooooooooooooooooooooooooooooooo" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -38,7 +37,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.1"
-        tools:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/ic_achievement_completed" />
 
 </LinearLayout>
 
