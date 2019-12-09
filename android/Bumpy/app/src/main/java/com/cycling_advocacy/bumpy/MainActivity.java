@@ -1,9 +1,6 @@
 package com.cycling_advocacy.bumpy;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
