@@ -29,16 +29,37 @@
             android:theme="@style/SwitchCompatStyle" />
 
     </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <!-- Open Street Maps HERE   -->
+        <org.osmdroid.views.MapView
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
-    <Button
-        android:id="@+id/button_start_trip"
-        style="@style/StandardButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_standard"
-        android:text="@string/start_trip" />
+        <Button
+            android:id="@+id/button_start_trip"
+            style="@style/StandardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_standard"
+            android:text="@string/start_trip"
+            android:layout_centerHorizontal="true"/>
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ic_center_map"
+            android:src="@drawable/location"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#00ffffff"
+            android:cropToPadding="true" />
+
+    </RelativeLayout>
 </LinearLayout>
