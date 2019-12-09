@@ -64,7 +64,7 @@ public class Trip {
 
             // return distance in meters
             Location.distanceBetween(point1.getLat(), point1.getLon(), point2.getLat(), point2.getLon(), results);
-            distance += results[0];
+            distance += Utils.convertMetersToKilometers(results[0]);
         }
     }
 
