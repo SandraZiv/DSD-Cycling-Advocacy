@@ -24,7 +24,7 @@ public class ReportIssueFragment extends Fragment implements AdapterView.OnItemS
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_report_issues, container, false);
-        Spinner issue_spinner = root.findViewById(R.id.input_issue);
+        Spinner issue_spinner = root.findViewById(R.id.spinner_issue_type);
 
 
         reportIssueViewModel = ViewModelProviders.of(this).get(ReportIssueViewModel.class);
