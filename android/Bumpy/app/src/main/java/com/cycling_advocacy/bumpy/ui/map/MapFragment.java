@@ -36,7 +36,7 @@ public class MapFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map, container, false);
-        final Button buttonStart = root.findViewById(R.id.button_start_trip);
+        final Button buttonStart = root.findViewById(R.id.btn_start_trip);
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);

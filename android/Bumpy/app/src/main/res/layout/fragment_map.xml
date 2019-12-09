@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/gps_button_view"
+        android:id="@+id/layout_gps_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cyclingAdvocacyBlack"
@@ -14,7 +14,6 @@
         android:padding="@dimen/margin_standard">
 
         <TextView
-            android:id="@+id/text_gps"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -23,12 +22,13 @@
             android:textColor="@color/cyclingAdvocacyYellow" />
 
         <Switch
-            android:id="@+id/gps_button"
+            android:id="@+id/switch_gps"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:theme="@style/SwitchCompatStyle" />
 
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -39,7 +39,7 @@
             android:layout_height="fill_parent" />
 
         <Button
-            android:id="@+id/button_start_trip"
+            android:id="@+id/btn_start_trip"
             style="@style/StandardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,4 +62,5 @@
             android:cropToPadding="true" />
 
     </RelativeLayout>
+
 </LinearLayout>
