@@ -23,4 +23,9 @@
         <item name="android:background">@color/cyclingAdvocacyYellow</item>
         <item name="android:textColor">@color/cyclingAdvocacyBlack</item>
     </style>
+
+    <style name="PreferenceCompatStyle" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:background">@color/cyclingAdvocacyBlack</item>
+        <item name="android:textColor">@color/cyclingAdvocacyYellow</item>
+    </style>
 </resources>

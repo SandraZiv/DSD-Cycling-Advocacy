@@ -1,0 +1,30 @@
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+     <androidx.preference.Preference
+        app:key="settings_uid"
+        app:title="@string/uid"
+        app:summary="74854"
+        app:allowDividerBelow="true"/>
+
+    <androidx.preference.SwitchPreferenceCompat
+        app:key="settings_mob_data"
+        app:title="@string/mob_data"
+        app:summaryOff="@string/mob_data_detail_off"
+        app:summaryOn="@string/mob_data_detail_on"
+        app:allowDividerBelow="true"/>
+
+    <androidx.preference.SwitchPreferenceCompat
+        app:key="settings_upload_data"
+        app:title="@string/upload_data"
+        app:summaryOff="@string/upload_data_detail_off"
+        app:summaryOn="@string/upload_data_detail_on"
+        app:allowDividerBelow="true"/>
+
+    <androidx.preference.SwitchPreferenceCompat
+        app:key="settings_display_stat"
+        app:title="@string/display_stat"
+        app:summaryOff="@string/display_stat_detail_off"
+        app:summaryOn="@string/display_stat_detail_on"
+        app:allowDividerBelow="true"/>
+
+</androidx.preference.PreferenceScreen>

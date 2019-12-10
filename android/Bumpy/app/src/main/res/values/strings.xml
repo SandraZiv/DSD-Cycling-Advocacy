@@ -21,6 +21,9 @@
     <string name="end_trip">End Trip</string>
     <string name="submit">SUBMIT</string>
 
+    <!--Trip in Progress-->
+    <string name="title_tip">Trip in Progress</string>
+
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
     <string name="choose_issue">Choose an issue</string>
@@ -36,11 +39,15 @@
     <!--Settings-->
     <string name="uid">User identifier</string>
     <string name="mob_data">Use Mobile data</string>
-    <string name="mob_data_detail">Send collected data automatically using mobile data</string>
+    <string name="mob_data_detail_off">Send collected data automatically using mobile data</string>
+    <string name="mob_data_detail_on">Send collected data automatically using Wifi</string>
     <string name="upload_data">Upload data manually</string>
-    <string name="upload_data_detail">Upload collected data manually</string>
+    <string name="upload_data_detail_off">Upload collected data manually</string>
+    <string name="upload_data_detail_on">Upload collected data automatically</string>
     <string name="display_stat">Display-off</string>
-    <string name="display_stat_detail">Disable showing statistics during all rides</string>
+    <string name="display_stat_detail_off">Disable showing statistics during all rides</string>
+    <string name="display_stat_detail_on">Enable showing statistics during all rides</string>
     <string name="current_location">Current Location</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>
