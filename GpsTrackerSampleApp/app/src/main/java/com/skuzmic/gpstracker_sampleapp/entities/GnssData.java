@@ -29,7 +29,7 @@ public class GnssData {
         this.lat = location.getLatitude();
         this.lon = location.getLongitude();
         this.ele = location.getAltitude();
-        this.speed = location.getSpeed();
+        this.speed = Utils.convertMpsToKph(location.getSpeed());
         this.accuracy = location.getAccuracy();
     }
 
@@ -48,7 +48,7 @@ public class GnssData {
                 "Lat: " + lat + "\n" +
                 "Lon: " + lon + "\n" +
                 "Ele: " + ele + "\n" +
-                "Speed: " + speed + "\n" +
+                "Speed(km/h): " + speed + "\n" +
                 "Acc: " + accuracy;
     }
 }

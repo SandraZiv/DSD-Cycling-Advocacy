@@ -32,6 +32,14 @@ public class Utils {
         return true;
     }
 
+    public static double convertMetersToKilometers(double meters) {
+        return meters / 1000;
+    }
+
+    public static float convertMpsToKph(float metersPerSecond) {
+        return metersPerSecond * 3.6f;
+    }
+
     public static Date toDate(long timestamp) {
         Date date = new Date();
         date.setTime(timestamp);
