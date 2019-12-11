@@ -29,4 +29,10 @@
         android:label="@string/bottom_nav_title_achievements"
         tools:layout="@layout/fragment_achievements" />
 
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.cycling_advocacy.bumpy.SettingsActivity$SettingsFragment"
+        android:label="@string/bottom_nav_title_settings"
+        tools:layout="@xml/preferences"/>
+
 </navigation>
