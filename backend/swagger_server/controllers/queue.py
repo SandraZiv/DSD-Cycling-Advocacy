@@ -9,8 +9,6 @@ from swagger_server.controllers import road_analysis
 logging.basicConfig(filename='log.log', level=logging.DEBUG)
 
 """
-This module contains two main features: job publishing and job consumption.
-
 --- JOB PUBLISHING ---
 To publish a new job on the queue: 
     import queue
@@ -19,15 +17,14 @@ This will send a message to a queue, containing data and the job type to be perf
 
 --- JOB CONSUMPTION ---
 A listener has to be listening to a queue to consume jobs inside the queue.
-To instantiate a Listener: 
     import queue
     queue.new_listener(const.QUEUE_NAME).
+new_listener starts the listener on a new thread.
 """
 
 
-# a job is just:
-# # a job type (i.e. the callback function to be called by the listener)
-# # data to be passed to the function (i.e. trip data) (or, better, tip_id, then retrieve trip from mongo)
+# job type identify the callback function to be called by the listener
+# data to be passed to the function (i.e. trip data) (or, better, tip_id, then retrieve trip from mongo)
 class Job:
 
     def __init__(self, job_type, job_data):
