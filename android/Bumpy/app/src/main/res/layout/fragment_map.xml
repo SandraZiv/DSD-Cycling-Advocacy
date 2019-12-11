@@ -1,44 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/gps_button_view"
+        android:id="@+id/layout_gps_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cyclingAdvocacyBlack"
-        android:gravity="right"
         android:orientation="horizontal"
-        android:padding="@dimen/margin_standard">
+        android:padding="@dimen/margin_small">
 
-        <TextView
-            android:id="@+id/text_gps"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <Switch
+                android:id="@+id/switch_gps"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:switchPadding="@dimen/margin_double"
+                android:text="@string/gps"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:theme="@style/SwitchCompatStyle" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ic_center_map"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="@dimen/margin_standard"
-            android:text="@string/gps"
-            android:textColor="@color/cyclingAdvocacyYellow" />
-
-        <Switch
-            android:id="@+id/gps_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:theme="@style/SwitchCompatStyle" />
+            android:background="@color/cyclingAdvocacyBlack"
+            android:tint="@color/cyclingAdvocacyYellow"
+            app:srcCompat="@drawable/location" />
 
     </LinearLayout>
 
-    <!-- Open Street Maps HERE   -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button_start_trip"
-        style="@style/StandardButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_standard"
-        android:text="@string/start_trip" />
 
+        <org.osmdroid.views.MapView
+            android:id="@+id/map"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <Button
+            android:id="@+id/btn_start_trip"
+            style="@style/StandardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_standard"
+            android:text="@string/start_trip" />
+
+    </RelativeLayout>
 </LinearLayout>

@@ -13,6 +13,7 @@ import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,9 +24,9 @@ public class Trip {
     @SerializedName("tripUUID")
     private String tripUUID;
     @SerializedName("startTS")
-    private String startTs;  // in format 2017-07-21T17:32:28Z
+    private Date startTs;
     @SerializedName("endTS")
-    private String stopTs;
+    private Date stopTs;
     @SerializedName("distance")
     private double distance = 0.0;
     @SerializedName("gnssData")
@@ -42,11 +43,11 @@ public class Trip {
     }
 
     public void start() {
-        this.startTs = Utils.formatTimestamp(System.currentTimeMillis());
+        this.startTs = Utils.toDate(System.currentTimeMillis());
     }
 
     public void stop() {
-        this.stopTs = Utils.formatTimestamp(System.currentTimeMillis());
+        this.stopTs = Utils.toDate(System.currentTimeMillis());
     }
 
     public void addGpsData(GnssData data) {
@@ -64,7 +65,7 @@ public class Trip {
 
             // return distance in meters
             Location.distanceBetween(point1.getLat(), point1.getLon(), point2.getLat(), point2.getLon(), results);
-            distance += results[0];
+            distance += Utils.convertMetersToKilometers(results[0]);
         }
     }
 
@@ -75,6 +76,10 @@ public class Trip {
     public double getDistance() {
         return distance;
     }
+
+    public Date getStartTs() { return startTs; }
+
+    public Date getStopTs() { return stopTs; }
 
     public void exportToTxt(Context context)  {
         Log.d("loc", this.toString());
@@ -112,8 +117,8 @@ public class Trip {
         return "Trip{" +
                 "deviceUUID=" + deviceUUID + '\n' +
                 ", tripUUID=" + tripUUID + '\n' +
-                ", startTs=" + startTs + '\n' +
-                ", stopTs=" + stopTs + '\n' +
+                ", startTs=" + Utils.formatTimestamp(startTs) + '\n' +
+                ", stopTs=" + Utils.formatTimestamp(stopTs) + '\n' +
                 ", distance=" + distance + '\n' +
                 "{ " + gnssDataString + "}" +
                 '}';

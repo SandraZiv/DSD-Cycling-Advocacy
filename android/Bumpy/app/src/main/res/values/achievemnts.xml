@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- string resource for all achievements -->
+
+    <string name="a1_title">Getting started</string>
+    <string name="a1_detail">Complete your first trip.</string>
+
+    <string name="a2_title">Night rider</string>
+    <string name="a2_detail">Complete trip between 22.00 and 06.00.</string>
+
+    <string name="a3_title">Being consistent</string>
+    <string name="a3_detail">Complete 5 trips during one day.</string>
+
+    <string name="a4_title">Bike lover</string>
+    <string name="a4_detail">Complete 20 trips.</string>
+
+    <string name="a5_title">Bumpy detector</string>
+    <string name="a5_detail">Find more than 10 bumps during one trip.</string>
+
+    <string name="a6_title">Warming up</string>
+    <string name="a6_detail">Complete one trip over 5km.</string>
+
+    <string name="a7_title">Long-distance rider</string>
+    <string name="a7_detail">Complete one trip over 20km.</string>
+
+    <string name="a8_title">Heavy duty</string>
+    <string name="a8_detail">Complete trip that lasts more than an hour.</string>
+
+
+</resources>

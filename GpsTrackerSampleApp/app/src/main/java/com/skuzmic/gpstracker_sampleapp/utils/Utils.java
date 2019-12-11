@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class Utils {
 
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     public static boolean checkPlayServices(Context context) {
@@ -31,11 +32,28 @@ public class Utils {
         return true;
     }
 
-    public static String formatTimestamp(long timestamp) {
+    public static double convertMetersToKilometers(double meters) {
+        return meters / 1000;
+    }
+
+    public static float convertMpsToKph(float metersPerSecond) {
+        return metersPerSecond * 3.6f;
+    }
+
+    public static Date toDate(long timestamp) {
         Date date = new Date();
         date.setTime(timestamp);
+        return date;
+    }
+
+    public static String formatTimestamp(Date timestamp) {
         // yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(date);
+        return new SimpleDateFormat(DATE_FORMAT).format(timestamp);
+    }
+
+    public static long getDurationInSeconds(Date startTS, Date endTS) {
+        long diff = endTS.getTime() - startTS.getTime();
+        return diff / 1000 % 60;
     }
 
     public static String generateUUID() {
