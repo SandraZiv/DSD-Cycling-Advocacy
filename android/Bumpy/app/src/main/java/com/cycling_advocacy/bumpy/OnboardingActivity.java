@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
+
 public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,8 +17,14 @@ public class OnboardingActivity extends AppCompatActivity {
         Button buttonOne = findViewById(R.id.button_next);
         buttonOne.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent activity2Intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(activity2Intent);
+                Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
+                startActivity(intent);
+
+                // since onboarding is shown only once, it is used to generate User Identifier
+                PreferenceUtil.setDeviceUUID(OnboardingActivity.this);
+                PreferenceUtil.setOnboardingScreenIsShown(OnboardingActivity.this);
+
+                finish();
             }
         });
     }

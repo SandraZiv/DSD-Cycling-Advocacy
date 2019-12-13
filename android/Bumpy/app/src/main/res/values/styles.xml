@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/cyclingAdvocacyYellow</item>
     </style>
 
+    <!--todo launcher style-->
+    <style name="AppTheme.Launcher">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/cyclingAdvocacyBlack</item>
+    </style>
+
     <style name="SwitchCompatStyle" >
         <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">@color/cyclingAdvocacyYellow</item>
