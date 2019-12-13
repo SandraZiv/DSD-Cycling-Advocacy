@@ -22,7 +22,7 @@
     <string name="submit">SUBMIT</string>
 
     <!--Trip in Progress-->
-    <string name="title_tip">Trip in Progress</string>
+    <string name="trip_in_progress">Trip in Progress</string>
 
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
