@@ -37,7 +37,7 @@
     </string-array>
 
     <!--Settings-->
-    <string name="uid">User identifier</string>
+    <string name="uid">User Identifier</string>
     <string name="mob_data">Use Mobile data</string>
     <string name="mob_data_detail_on">Now sending collected data automatically using mobile data or WiFi</string>
     <string name="mob_data_detail_off">Now sending collected data automatically using only Wifi</string>

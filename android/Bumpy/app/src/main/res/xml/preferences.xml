@@ -1,9 +1,11 @@
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
      <androidx.preference.Preference
          app:key="@string/settings_uid"
          app:title="@string/uid"
-         app:summary="74854"
+         app:summary=""
+         tools:summary="534f35s453s45fds"
          app:allowDividerBelow="true"
          app:iconSpaceReserved="false" />
 
