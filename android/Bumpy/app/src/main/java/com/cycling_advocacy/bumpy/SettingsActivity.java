@@ -27,7 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         private void setUserIdentifier() {
-            Preference preference = findPreference(getString(R.string.settings_uid));
+            Preference preference = findPreference(getString(R.string.pref_uid_key));
             if (preference != null) {
                 String userIdentifier = PreferenceUtil.getDeviceUUID(getContext());
                 preference.setSummary(userIdentifier);

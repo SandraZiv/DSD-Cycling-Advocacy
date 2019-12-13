@@ -36,18 +36,21 @@
         <item>Signalization</item>
     </string-array>
 
-    <!--Settings-->
-    <string name="uid">User Identifier</string>
-    <string name="mob_data">Use Mobile data</string>
-    <string name="mob_data_detail_on">Now sending collected data automatically using mobile data or WiFi</string>
-    <string name="mob_data_detail_off">Now sending collected data automatically using only Wifi</string>
-    <string name="display_stat">Show statistics</string>
-    <string name="display_stat_detail_off">Statistics is hidden during all trips</string>
-    <string name="display_stat_detail_on">Statistics is shown during all trips</string>
     <string name="current_location">Current Location</string>
-    <string name="settings_uid">settings_uid</string>
-    <string name="settings_mob_data">settings_mob_data</string>
-    <string name="settings_display_stat">settings_display_stat</string>
+
+    <!--Settings-->
     <string name="title_activity_settings">Settings</string>
+    <string name="settings_uid_title">User Identifier</string>
+    <string name="settings_mob_data_title">Use Mobile data</string>
+    <string name="settings_mob_data_summary_on">Now sending collected data automatically using mobile data or WiFi</string>
+    <string name="settings_mob_data_summary_off">Now sending collected data automatically using only Wifi</string>
+    <string name="settings_display_stat_title">Show statistics</string>
+    <string name="settings_display_stat_summary_off">Statistics is hidden during all trips</string>
+    <string name="settings_display_stat_summary_on">Statistics is shown during all trips</string>
+
+    <!-- preferences keys -->
+    <string name="pref_uid_key">pref_uid_key</string>
+    <string name="pref_mob_data_key">pref_mob_data_key</string>
+    <string name="pref_display_stat_key">pref_display_stat_key</string>
 
 </resources>

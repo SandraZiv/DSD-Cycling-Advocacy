@@ -2,29 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools">
 
      <androidx.preference.Preference
-         app:key="@string/settings_uid"
-         app:title="@string/uid"
+         app:key="@string/pref_uid_key"
+         app:title="@string/settings_uid_title"
          app:summary=""
          tools:summary="534f35s453s45fds"
          app:allowDividerBelow="true"
          app:iconSpaceReserved="false" />
 
     <androidx.preference.SwitchPreferenceCompat
-        app:key="@string/settings_mob_data"
-        app:title="@string/mob_data"
-        app:summaryOff="@string/mob_data_detail_off"
-        app:summaryOn="@string/mob_data_detail_on"
+        app:key="@string/pref_mob_data_key"
+        app:title="@string/settings_mob_data_title"
+        app:summaryOff="@string/settings_mob_data_summary_off"
+        app:summaryOn="@string/settings_mob_data_summary_on"
         app:allowDividerBelow="true"
         app:iconSpaceReserved="false"
-        app:defaultValue="@bool/pref_mob_data"/>
+        app:defaultValue="@bool/pref_mob_data_default"/>
 
     <androidx.preference.SwitchPreferenceCompat
-        app:key="@string/settings_display_stat"
-        app:title="@string/display_stat"
-        app:summaryOff="@string/display_stat_detail_off"
-        app:summaryOn="@string/display_stat_detail_on"
+        app:key="@string/pref_display_stat_key"
+        app:title="@string/settings_display_stat_title"
+        app:summaryOff="@string/settings_display_stat_summary_off"
+        app:summaryOn="@string/settings_display_stat_summary_on"
         app:allowDividerBelow="true"
         app:iconSpaceReserved="false"
-        app:defaultValue="@bool/pref_display_stat"/>
+        app:defaultValue="@bool/pref_display_stat_default"/>
 
 </androidx.preference.PreferenceScreen>
