@@ -2,6 +2,7 @@ package com.skuzmic.gpstracker_sampleapp.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -58,5 +59,11 @@ public class Utils {
 
     public static String generateUUID() {
         return UUID.randomUUID().toString();
+    }
+
+    public static void deleteMotionData(Context context, String tripUUID) {
+        if (CsvUtils.deleteMotionDataFile(context, tripUUID)) {
+            Log.d("Motion data", "Motion data file for trip " + tripUUID + " deleted");
+        }
     }
 }
