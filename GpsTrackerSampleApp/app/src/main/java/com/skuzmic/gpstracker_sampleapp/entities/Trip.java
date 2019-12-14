@@ -19,12 +19,6 @@ import java.util.List;
 
 public class Trip {
 
-    // Minimum trip duration in seconds; trips shorter than this won't be stored/sent
-    public static final int MIN_TRIP_DURATION = 300;
-
-    // Minimum trip duration in kilometers; trips shorter than this won't be stored/sent
-    public static final double MIN_TRIP_DISTANCE = 0.5;
-
     @SerializedName("deviceUUID")
     private String deviceUUID;
     @SerializedName("tripUUID")
