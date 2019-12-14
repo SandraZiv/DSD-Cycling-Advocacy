@@ -53,4 +53,7 @@
     <string name="pref_mob_data_key">pref_mob_data_key</string>
     <string name="pref_display_stat_key">pref_display_stat_key</string>
 
+    <!-- notification -->
+    <string name="channel_name">Background location channel</string>
+
 </resources>
