@@ -1,8 +1,11 @@
 package com.skuzmic.gpstracker_sampleapp;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,7 +14,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,10 +29,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
@@ -58,15 +58,9 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, SensorEventListener {
+        GoogleApiClient.OnConnectionFailedListener, SensorEventListener, BackgroundLocationService.BackgroundLocationChangesListener {
 
     private static final long UPDATE_INTERVAL = 3000, FASTEST_INTERVAL = 3000; // = 3 seconds
-
-    // Minimum trip duration in seconds; trips shorter than this won't be stored/sent
-    private static final int MIN_TRIP_DURATION = 300;
-
-    // Minimum trip duration in kilometers; trips shorter than this won't be stored/sent
-    private static final double MIN_TRIP_DISTANCE = 0.5;
 
     private TextView tvLocation;
     private Button btnStart;
@@ -74,8 +68,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private TextView tvVibrations;
 
     private GoogleApiClient googleApiClient;
-    private FusedLocationProviderClient locationProviderClient;
-    private LocationCallback locationCallback;
+//    private FusedLocationProviderClient locationProviderClient;
+//    private LocationCallback locationCallback;
+
+    private BackgroundLocationService locationService;
 
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer, gyroscope;
@@ -85,14 +81,15 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private ArrayList<String> permissionsRejected = new ArrayList<>();
     private ArrayList<String> permissions = new ArrayList<>();
 
+    // integer for permissions results request
+    private static final int ALL_PERMISSIONS_RESULT_REQ_CODE = 1997;
+
+    private AccumulatedVibrationsManager accumulatedVibrationsManager;
+
     private Trip trip;
 
     private FileWriter fileWriter;
 
-    private AccumulatedVibrationsManager accumulatedVibrationsManager;
-
-    // integer for permissions results request
-    private static final int ALL_PERMISSIONS_RESULT_REQ_CODE = 1997;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 addOnConnectionFailedListener(this)
                 .build();
 
+        /*
         locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationCallback = new LocationCallback() {
@@ -154,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
             }
         };
+         */
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
@@ -187,6 +186,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
+    protected void onDestroy() {
+        locationService.stopTracking();
+        super.onDestroy();
+    }
+
+    @Override
     public void onConnected(@Nullable Bundle bundle) {
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -195,8 +200,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             return;
         }
 
+        // start service
+        Intent intent = new Intent(this, BackgroundLocationService.class);
+        startService(intent);
+//        startForegroundService(intent);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+
         tvLocation.setText("GPS Connected successfully");
-        btnStart.setEnabled(true);
+//        btnStart.setEnabled(true);
     }
 
     @Override
@@ -249,7 +260,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         accumulatedVibrationsManager = new AccumulatedVibrationsManager();
 
-        startLocationUpdates();
+        locationService.startTracking();
+
+        //TODO: The device UUID hard-coded and given here is for the purposes of the alpha-prototype only an will be stored/managed elsewhere in the 'real' app
+        trip = new Trip("5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f");
+        trip.start();
+
+//        startLocationUpdates();
         startSensorUpdates();
     }
 
@@ -260,19 +277,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         accumulatedVibrationsManager = null;
         tvVibrations.setText("Vibrations: -%");
 
-        stopLocationUpdates();
+        locationService.stopTracking();
+
+        trip.stop();
+
+        // todo remove some of this
+//        stopLocationUpdates();
         stopSensorUpdates();
 
+        sendData();
+    }
+
+    private void sendData() {
         // If there is a parsing exception I assume we shouldn't send potentially 'broken' data, so duration = 0 should prevent that
         // TODO: Note that this calculation is a bit rough, in the future we should rely on a separate, more precise stopwatch that measures the duration of a trip
-
         Date startTS = trip.getStartTs();
         Date stopTS = trip.getStopTs();
         long duration = Utils.getDurationInSeconds(startTS, stopTS);
 
         double distance = trip.getDistance();
 
-        if (duration >= MIN_TRIP_DURATION && distance >= MIN_TRIP_DISTANCE) {
+        if (duration >= Trip.MIN_TRIP_DURATION && distance >= Trip.MIN_TRIP_DISTANCE) {
             // Saves the trip general + location data as a txt file on the device
             trip.exportToTxt(this);
 
@@ -280,10 +305,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             sendMotionData(this);
         } else {
             // The motion file is constructed during the trip so we need to delete it
-            deleteMotionData(trip.getTripUUID());
+            Utils.deleteMotionData(MainActivity.this, trip.getTripUUID());
             Log.d("Trip end", "Trip duration or distance too short for the trip to be considered.");
-            Log.d("Trip end", "Trip duration is " + duration + " while minimum is " + MIN_TRIP_DURATION);
-            Log.d("Trip end", "Trip distance is " + distance + " while minimum is " + MIN_TRIP_DISTANCE);
+            Log.d("Trip end", "Trip duration is " + duration + " while minimum is " + Trip.MIN_TRIP_DURATION);
+            Log.d("Trip end", "Trip distance is " + distance + " while minimum is " + Trip.MIN_TRIP_DISTANCE);
             Toast.makeText(this, "Trip duration or distance too short for the trip to be considered", Toast.LENGTH_SHORT).show();
         }
     }
@@ -342,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         Log.d("Motion data", "Motion data upload response for trip " + trip.getTripUUID() + ": " + response.message());
                         if (response.isSuccessful()) {
                             Toast.makeText(context, "Motion data successfully uploaded!", Toast.LENGTH_SHORT).show();
-                            deleteMotionData(trip.getTripUUID());
+                            Utils.deleteMotionData(MainActivity.this, trip.getTripUUID());
                         } else {
                             Toast.makeText(context, "Motion data upload not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
                         }
@@ -355,17 +380,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
     }
 
-    private void deleteMotionData(String tripUUID) {
-        if (CsvUtils.deleteMotionDataFile(this, trip.getTripUUID())) {
-            Log.d("Motion data", "Motion data file for trip " + tripUUID + " deleted");
-        }
-    }
-
     private void startLocationUpdates() {
-        //TODO: The device UUID hard-coded and given here is for the purposes of the alpha-prototype only an will be stored/managed elsewhere in the 'real' app
-        trip = new Trip("5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f");
-        trip.start();
-
         final LocationRequest locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(UPDATE_INTERVAL);
@@ -378,13 +393,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             Toast.makeText(this, "You need to enable permissions to display location !", Toast.LENGTH_SHORT).show();
         }
 
-        locationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+//        locationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
     }
 
     private void stopLocationUpdates() {
-        trip.stop();
-        locationProviderClient.removeLocationUpdates(locationCallback);
+//        locationProviderClient.removeLocationUpdates(locationCallback);
     }
+
+    private float[] accelerometerData = null;
+    private float[] magnetometerData = null;
+    private float[] gyroscopeData = null;
 
     private void startSensorUpdates() {
         try {
@@ -409,10 +427,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         sensorManager.unregisterListener(this, magnetometer);
         sensorManager.unregisterListener(this, gyroscope);
     }
-
-    private float[] accelerometerData = null;
-    private float[] magnetometerData = null;
-    private float[] gyroscopeData = null;
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -451,5 +465,36 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            String name = componentName.getClassName();
+            // it is full name with package id
+            if (name.endsWith("BackgroundLocationService")) {
+                locationService = ((BackgroundLocationService.BackgroundLocationServiceBinder) iBinder).getService();
+                locationService.setListener(MainActivity.this);
+                tvLocation.append("SERVICE Connected successfully");
+                btnStart.setEnabled(true);
+            }
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            if (componentName.getClassName().endsWith("BackgroundLocationService")) {
+                locationService = null;
+            }
+        }
+    };
+
+    @Override
+    public void onLocationChanged(Location location) {
+        GnssData gnssData = new GnssData(location);
+        trip.addGpsData(gnssData);
+
+        tvLocation.append("\n\n" + gnssData.toString());
+        tvLocation.append("\nDistance(km): " + trip.getDistance());
     }
 }
