@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripInProgressActivity;
+import com.cycling_advocacy.bumpy.utils.PermissionUtil;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -28,6 +30,8 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 
 public class MapFragment extends Fragment {
+
+    private Button buttonStart;
 
     private MapView map = null;
     private MyLocationNewOverlay mLocationOverlay = null;
@@ -66,7 +70,7 @@ public class MapFragment extends Fragment {
 
         map.invalidate();
 
-        final Button buttonStart = root.findViewById(R.id.btn_start_trip);
+        buttonStart = root.findViewById(R.id.btn_start_trip);
         buttonStart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent activity2Intent = new Intent(getContext(), TripInProgressActivity.class);
@@ -75,5 +79,16 @@ public class MapFragment extends Fragment {
         });
         return root;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (PermissionUtil.isLocationPermissionGranted(getContext())) {
+            buttonStart.setEnabled(true);
+        } else {
+            buttonStart.setEnabled(false);
+            Toast.makeText(getContext(), R.string.grant_location , Toast.LENGTH_LONG).show();
+        }
     }
 }

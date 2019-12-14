@@ -20,9 +20,11 @@
     <string name="start_trip">Start Trip</string>
     <string name="end_trip">End Trip</string>
     <string name="submit">SUBMIT</string>
+    <string name="grant_location">Grant location permission to start trip</string>
 
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>
+    <string name="google_api_install">You need to install Google Play Services to use the App properly</string>
 
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
