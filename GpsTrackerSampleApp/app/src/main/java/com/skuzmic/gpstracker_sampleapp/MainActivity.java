@@ -7,10 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,18 +28,14 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
-import com.skuzmic.gpstracker_sampleapp.entities.Motion;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
 import com.skuzmic.gpstracker_sampleapp.retrofit.RetrofitServiceGenerator;
 import com.skuzmic.gpstracker_sampleapp.retrofit.service.BumpyService;
-import com.skuzmic.gpstracker_sampleapp.utils.AccumulatedVibrationsManager;
 import com.skuzmic.gpstracker_sampleapp.utils.CsvUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.PermissionUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -57,7 +49,7 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, SensorEventListener, BackgroundLocationService.BackgroundLocationChangesListener {
+        GoogleApiClient.OnConnectionFailedListener, BackgroundLocationService.BackgroundLocationChangesListener, MotionManager.VibrationChangeListener {
 
     private TextView tvLocation;
     private Button btnStart;
@@ -67,9 +59,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleApiClient googleApiClient;
 
     private BackgroundLocationService locationService;
-
-    private SensorManager sensorManager;
-    private Sensor accelerometer, magnetometer, gyroscope;
+    private MotionManager motionManager;
 
     // lists for permissions
     private ArrayList<String> permissionsToRequest;
@@ -79,11 +69,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     // integer for permissions results request
     private static final int ALL_PERMISSIONS_RESULT_REQ_CODE = 1997;
 
-    private AccumulatedVibrationsManager accumulatedVibrationsManager;
-
     private Trip trip;
-
-    private FileWriter fileWriter;
 
 
     @Override
@@ -123,13 +109,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 addOnConnectionFailedListener(this)
                 .build();
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        // todo check for nulls if the device does not have that sensor
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-    }
+        motionManager = new MotionManager(this, this);
+      }
 
     private boolean isLocationPermissionGranted() {
         // ovo je bilo u start location permissions
@@ -234,28 +215,23 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         btnStart.setEnabled(false);
         btnStop.setEnabled(true);
 
-        accumulatedVibrationsManager = new AccumulatedVibrationsManager();
-
-
-        //TODO: The device UUID hard-coded and given here is for the purposes of the alpha-prototype only an will be stored/managed elsewhere in the 'real' app
         trip = new Trip("5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f");
         trip.start();
 
         locationService.startTracking();
-        startSensorUpdates();
+        motionManager.startSensorUpdates(this, trip.getTripUUID());
     }
 
     public void stopTracking(View view) {
         btnStart.setEnabled(true);
         btnStop.setEnabled(false);
 
-        accumulatedVibrationsManager = null;
         tvVibrations.setText("Vibrations: -%");
 
         trip.stop();
 
         locationService.stopTracking();
-        stopSensorUpdates();
+        motionManager.stopSensorUpdates();
 
         sendData();
     }
@@ -352,69 +328,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
     }
 
-    private float[] accelerometerData = null;
-    private float[] magnetometerData = null;
-    private float[] gyroscopeData = null;
-
-    private void startSensorUpdates() {
-        try {
-            fileWriter = CsvUtils.initFileWriter(this, trip.getTripUUID());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);  // 50hz
-        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
-    }
-
-    private void stopSensorUpdates() {
-        try {
-            CsvUtils.finish(fileWriter);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        sensorManager.unregisterListener(this, accelerometer);
-        sensorManager.unregisterListener(this, magnetometer);
-        sensorManager.unregisterListener(this, gyroscope);
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        // sensors are working in background as well
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            accelerometerData = sensorEvent.values.clone();
-        }
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            magnetometerData = sensorEvent.values.clone();
-        }
-        if (sensorEvent.sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-            gyroscopeData = sensorEvent.values.clone();
-        }
-
-        if (accelerometerData != null && magnetometerData != null && gyroscopeData != null) {
-            Motion motion = new Motion(accelerometerData, magnetometerData, gyroscopeData);
-            try {
-                CsvUtils.writeLine(fileWriter, motion.toString());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
-            tvVibrations.setText("Vibrations: " + (int) accumulatedVibrationsManager.getBumpPercentage() + "%");
-
-            // clean
-            accelerometerData = null;
-            magnetometerData = null;
-            gyroscopeData = null;
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int i) {
-    }
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
@@ -452,5 +365,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         tvLocation.append("\n\n" + gnssData.toString());
         tvLocation.append("\nDistance(km): " + trip.getDistance());
+    }
+
+    @Override
+    public void onVibrationChange(int vibrationPercentage) {
+        tvVibrations.setText("Vibrations: " + vibrationPercentage + "%");
     }
 }
