@@ -36,19 +36,20 @@ public class AccumulatedVibrationsManager {
         }
 
         if (lastAccelerometerMeasurement != null) {
-            float absPrevX = Math.abs(lastAccelerometerMeasurement[0]);
-            float absPrevY = Math.abs(lastAccelerometerMeasurement[1]);
+            //float absPrevX = Math.abs(lastAccelerometerMeasurement[0]);
+            //float absPrevY = Math.abs(lastAccelerometerMeasurement[1]);
             float absPrevZ = Math.abs(lastAccelerometerMeasurement[2]);
 
-            float absX = Math.abs(accelerometerMeasurement[0]);
-            float absY = Math.abs(accelerometerMeasurement[1]);
+            //float absX = Math.abs(accelerometerMeasurement[0]);
+            //float absY = Math.abs(accelerometerMeasurement[1]);
             float absZ = Math.abs(accelerometerMeasurement[2]);
 
-            float diffX = Math.abs(absPrevX - absX);
-            float diffY = Math.abs(absPrevY - absY);
+            //float diffX = Math.abs(absPrevX - absX);
+            //float diffY = Math.abs(absPrevY - absY);
             float diffZ = Math.abs(absPrevZ - absZ);
 
-            // If any axis has a spike, we count it as a bump
+            // TODO: For now we evaluate only along Z-axis, therefore the angle/tilt of the device plays a part (completely horizontal would be ideal)
+            // TODO: In the future it would be good if we can evaluate the value of the vector vertical to the ground, so that device angle/tilt does not play a part
             if (diffZ >= BUMP_THRESHOLD * absPrevZ) {
                 bumpWindow.add(1);
                 nBumps++;
