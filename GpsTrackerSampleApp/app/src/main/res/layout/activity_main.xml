@@ -30,6 +30,13 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvVibrations"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vibrations: - %"
+        android:textSize="24sp" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

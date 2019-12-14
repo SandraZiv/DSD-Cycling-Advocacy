@@ -37,6 +37,7 @@ import com.skuzmic.gpstracker_sampleapp.entities.Motion;
 import com.skuzmic.gpstracker_sampleapp.entities.Trip;
 import com.skuzmic.gpstracker_sampleapp.retrofit.RetrofitServiceGenerator;
 import com.skuzmic.gpstracker_sampleapp.retrofit.service.BumpyService;
+import com.skuzmic.gpstracker_sampleapp.utils.AccumulatedVibrationsManager;
 import com.skuzmic.gpstracker_sampleapp.utils.CsvUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.PermissionUtils;
 import com.skuzmic.gpstracker_sampleapp.utils.Utils;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private TextView tvLocation;
     private Button btnStart;
     private Button btnStop;
+    private TextView tvVibrations;
 
     private GoogleApiClient googleApiClient;
     private FusedLocationProviderClient locationProviderClient;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     private FileWriter fileWriter;
 
+    private AccumulatedVibrationsManager accumulatedVibrationsManager;
+
     // integer for permissions results request
     private static final int ALL_PERMISSIONS_RESULT_REQ_CODE = 1997;
 
@@ -97,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         tvLocation = findViewById(R.id.textView);
         btnStart = findViewById(R.id.btnStart);
+        tvVibrations = findViewById(R.id.tvVibrations);
+
         btnStart.setEnabled(false);
 
         btnStop = findViewById(R.id.btnStop);
@@ -240,6 +246,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         tvLocation.setText("");
         btnStart.setEnabled(false);
         btnStop.setEnabled(true);
+
+        accumulatedVibrationsManager = new AccumulatedVibrationsManager();
+
         startLocationUpdates();
         startSensorUpdates();
     }
@@ -247,6 +256,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void stopTracking(View view) {
         btnStart.setEnabled(true);
         btnStop.setEnabled(false);
+
+        accumulatedVibrationsManager = null;
+        tvVibrations.setText("Vibrations: -%");
+
         stopLocationUpdates();
         stopSensorUpdates();
 
@@ -421,6 +434,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+            accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
+            tvVibrations.setText("Vibrations: " + (int) accumulatedVibrationsManager.getBumpPercentage() + "%");
 
             // clean
             accelerometerData = null;
