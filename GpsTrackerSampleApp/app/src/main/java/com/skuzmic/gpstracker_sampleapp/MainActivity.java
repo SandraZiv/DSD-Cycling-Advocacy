@@ -49,7 +49,9 @@ import okhttp3.RequestBody;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, BackgroundLocationService.BackgroundLocationChangesListener, MotionManager.VibrationChangeListener {
+        GoogleApiClient.OnConnectionFailedListener,
+        BackgroundLocationService.BackgroundLocationChangedListener,
+        MotionManager.VibrationChangeListener {
 
     private TextView tvLocation;
     private Button btnStart;
@@ -111,14 +113,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         motionManager = new MotionManager(this, this);
       }
-
-    private boolean isLocationPermissionGranted() {
-        // ovo je bilo u start location permissions
-        return ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-    }
 
     @Override
     protected void onStart() {
@@ -327,11 +321,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     }
                 });
     }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-    }
-
+    
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
@@ -342,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 locationService = ((BackgroundLocationService.BackgroundLocationServiceBinder) iBinder).getService();
                 locationService.setListener(MainActivity.this);
                 tvLocation.append("SERVICE Connected successfully");
-                if (isLocationPermissionGranted()) {
+                if (PermissionUtils.isLocationPermissionGranted(MainActivity.this)) {
                     btnStart.setEnabled(true);
                 } else {
                     tvLocation.setText("Grant location permission to start trip");
@@ -368,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onVibrationChange(int vibrationPercentage) {
+    public void onVibrationChanged(int vibrationPercentage) {
         tvVibrations.setText("Vibrations: " + vibrationPercentage + "%");
     }
 }

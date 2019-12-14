@@ -89,7 +89,7 @@ public class MotionManager implements SensorEventListener {
             }
 
             accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
-            listener.onVibrationChange((int) accumulatedVibrationsManager.getBumpPercentage());
+            listener.onVibrationChanged((int) accumulatedVibrationsManager.getBumpPercentage());
 
             // clean
             accelerometerData = null;
@@ -103,6 +103,6 @@ public class MotionManager implements SensorEventListener {
     }
 
     public interface VibrationChangeListener {
-        void onVibrationChange(int vibrationPercentage);
+        void onVibrationChanged(int vibrationPercentage);
     }
 }

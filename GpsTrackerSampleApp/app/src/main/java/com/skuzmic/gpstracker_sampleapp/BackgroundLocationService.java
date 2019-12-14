@@ -48,7 +48,7 @@ public class BackgroundLocationService extends Service {
         }
     };
 
-    private BackgroundLocationChangesListener listener;
+    private BackgroundLocationChangedListener listener;
 
     @Nullable
     @Override
@@ -112,7 +112,7 @@ public class BackgroundLocationService extends Service {
         return builder.build();
     }
 
-    public void setListener(BackgroundLocationChangesListener listener) {
+    public void setListener(BackgroundLocationChangedListener listener) {
         this.listener = listener;
     }
 
@@ -124,7 +124,7 @@ public class BackgroundLocationService extends Service {
 
 
 
-    public interface BackgroundLocationChangesListener {
+    public interface BackgroundLocationChangedListener {
         void onLocationChanged(Location location);
     }
 }
