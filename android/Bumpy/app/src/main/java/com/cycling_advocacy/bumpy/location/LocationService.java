@@ -51,6 +51,8 @@ public class LocationService extends Service {
 
     private LocationChangedListener listener;
 
+    private NotificationManager notificationManager;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -72,13 +74,14 @@ public class LocationService extends Service {
 
     @Override
     public void onDestroy() {
-        NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
-
         super.onDestroy();
         if (locationProviderClient != null) {
             locationProviderClient.removeLocationUpdates(locationCallback);
         }
+
+        //todo
+//        stopForeground(false);
+//        notificationManager.cancelAll();
     }
 
     public void startTracking() {
@@ -108,8 +111,7 @@ public class LocationService extends Service {
                 channelName,
                 NotificationManager.IMPORTANCE_DEFAULT
         );
-        // or Context.NOTIFICATION_SERVICE
-        NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
         Notification.Builder builder = new Notification.Builder(context, channelId);
         return builder.build();
