@@ -64,9 +64,6 @@ public class BackgroundLocationService extends Service {
 
     @Override
     public void onCreate() {
-        // todo ili u startTracking?
-        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        // todo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(12345, getNotification(getApplicationContext()));
         }
@@ -84,6 +81,10 @@ public class BackgroundLocationService extends Service {
     }
 
     public void startTracking() {
+        if (locationProviderClient == null) {
+            locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        }
+
         final LocationRequest locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(UPDATE_INTERVAL);
@@ -124,6 +125,6 @@ public class BackgroundLocationService extends Service {
 
 
     public interface BackgroundLocationChangesListener {
-        public void onLocationChanged(Location location);
+        void onLocationChanged(Location location);
     }
 }

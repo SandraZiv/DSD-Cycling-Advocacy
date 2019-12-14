@@ -29,7 +29,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.skuzmic.gpstracker_sampleapp.entities.ApiResponse;
 import com.skuzmic.gpstracker_sampleapp.entities.GnssData;
@@ -60,16 +59,12 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, SensorEventListener, BackgroundLocationService.BackgroundLocationChangesListener {
 
-    private static final long UPDATE_INTERVAL = 3000, FASTEST_INTERVAL = 3000; // = 3 seconds
-
     private TextView tvLocation;
     private Button btnStart;
     private Button btnStop;
     private TextView tvVibrations;
 
     private GoogleApiClient googleApiClient;
-//    private FusedLocationProviderClient locationProviderClient;
-//    private LocationCallback locationCallback;
 
     private BackgroundLocationService locationService;
 
@@ -128,38 +123,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 addOnConnectionFailedListener(this)
                 .build();
 
-        /*
-        locationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-
-                // todo background problems in Oreo and Pie
-                for (Location location : locationResult.getLocations()) {
-                    if (location != null) {
-                        Log.d("loc", "Update");
-
-                        GnssData gnssData = new GnssData(location);
-                        trip.addGpsData(gnssData);
-
-                        tvLocation.append("\n\n" + gnssData.toString());
-                        tvLocation.append("\nDistance(km): " + trip.getDistance());
-                    }
-                }
-            }
-        };
-         */
-
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         // todo check for nulls if the device does not have that sensor
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+    }
+
+    private boolean isLocationPermissionGranted() {
+        // ovo je bilo u start location permissions
+        return ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -207,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 
         tvLocation.setText("GPS Connected successfully");
-//        btnStart.setEnabled(true);
     }
 
     @Override
@@ -260,13 +236,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         accumulatedVibrationsManager = new AccumulatedVibrationsManager();
 
-        locationService.startTracking();
 
         //TODO: The device UUID hard-coded and given here is for the purposes of the alpha-prototype only an will be stored/managed elsewhere in the 'real' app
         trip = new Trip("5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f");
         trip.start();
 
-//        startLocationUpdates();
+        locationService.startTracking();
         startSensorUpdates();
     }
 
@@ -277,12 +252,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         accumulatedVibrationsManager = null;
         tvVibrations.setText("Vibrations: -%");
 
-        locationService.stopTracking();
-
         trip.stop();
 
-        // todo remove some of this
-//        stopLocationUpdates();
+        locationService.stopTracking();
         stopSensorUpdates();
 
         sendData();
@@ -380,26 +352,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 });
     }
 
-    private void startLocationUpdates() {
-        final LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(UPDATE_INTERVAL);
-        locationRequest.setFastestInterval(FASTEST_INTERVAL);
-
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, "You need to enable permissions to display location !", Toast.LENGTH_SHORT).show();
-        }
-
-//        locationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-    }
-
-    private void stopLocationUpdates() {
-//        locationProviderClient.removeLocationUpdates(locationCallback);
-    }
-
     private float[] accelerometerData = null;
     private float[] magnetometerData = null;
     private float[] gyroscopeData = null;
@@ -477,7 +429,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 locationService = ((BackgroundLocationService.BackgroundLocationServiceBinder) iBinder).getService();
                 locationService.setListener(MainActivity.this);
                 tvLocation.append("SERVICE Connected successfully");
-                btnStart.setEnabled(true);
+                if (isLocationPermissionGranted()) {
+                    btnStart.setEnabled(true);
+                } else {
+                    tvLocation.setText("Grant location permission to start trip");
+                }
             }
         }
 
