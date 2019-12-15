@@ -1,3 +1,16 @@
+from swagger_server import mongodb_interface as db
+import pandas as pd
+
+
+
+# retrieve trip into iterable
+# retrieve motion data into pandas dataframe
+
+# for each point except first one, split motion_df into chunks based on points' timestamps
+# for each chunk, calculate road quality
+# store road quality into trips (associate road quality to each point - each points store
+# the road quality btw itself and its subsequent, except for the last one)
+
 
 
 
