@@ -4,6 +4,9 @@ import Leaflet from 'leaflet/dist/leaflet.css'
 import './Home.css';
 
 export class Home extends Component {
+    componentDidMount() {
+        document.title = "Bumpy - Home"
+      }
   render() {
     return (
       <LeafletMap

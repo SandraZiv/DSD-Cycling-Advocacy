@@ -7,6 +7,9 @@ import './PastTrips.css'
 
 export class PastTrips extends Component {
 
+    componentDidMount() {
+            document.title = "Bumpy - Trips"
+          }
     constructor(props) {
         super(props);
         this.state = {
@@ -99,7 +102,7 @@ export class PastTrips extends Component {
 
         return (
             <div>
-                <Button className="button-margin" variant="outline-warning"
+                <Button bsClass="btn"
                         onClick={() => this.setState({shouldShowModal: true})}>
                     Enter User Identifier
                 </Button>
