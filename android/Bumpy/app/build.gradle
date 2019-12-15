@@ -40,4 +40,7 @@ dependencies {
     // OpenStreetMaps
     implementation 'org.osmdroid:osmdroid-android:6.1.4'
     implementation 'com.github.MKergall:osmbonuspack:6.6.0'
+
+    //Live Statistics Display
+    implementation 'com.github.thuat26:CustomGaugeView:1.0'
 }

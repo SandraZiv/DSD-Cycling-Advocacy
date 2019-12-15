@@ -23,18 +23,19 @@
 
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>
+    <string name="speed_unit">Km/h</string>
+    <string name="vibration_unit">%</string>
+    <string name="speed">SPEED</string>
+    <string name="vibration">VIBRATION</string>
+    <string name="distance">DISTANCE</string>
+    <string name="duration">DURATION</string>
 
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
     <string name="choose_issue">Choose an issue</string>
     <string name="take_photo">Take a Picture</string>
     <string name="choose_photo">Gallery</string>
-    <string-array name="type_of_issue">
-        <item>Surface</item>
-        <item>Lighting</item>
-        <item>Obstacle</item>
-        <item>Signalization</item>
-    </string-array>
+
 
     <!--Settings-->
     <string name="uid">User identifier</string>

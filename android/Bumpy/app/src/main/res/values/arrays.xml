@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Issue Reporting-->
+    <string-array name="type_of_issue">
+        <item>Surface</item>
+        <item>Lighting</item>
+        <item>Obstacle</item>
+        <item>Signalization</item>
+    </string-array>
+    <!-- Trip in progress-->
+    <string-array name="speed_range_values">
+        <item>0</item>
+        <item>20</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+        <item>120</item>
+        <item>140</item>
+        <item>160</item>
+        <item>180</item>
+        <item>200</item>
+    </string-array>
+    <string-array name="vibration_range_values">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+    </string-array>
+</resources>
