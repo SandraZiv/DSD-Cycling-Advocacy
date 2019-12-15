@@ -6,8 +6,8 @@ from descartes import PolygonPatch
 from pyproj import Proj, Transformer
 import gpxpy
 
-from experiments.label_centerlines import get_centerline
-from experiments.label_centerlines.exceptions import CenterlineError
+from label_centerlines import get_centerline
+from label_centerlines.exceptions import CenterlineError
 
 
 # take a track and iterate over all other tracks (find a way to exclude unreasonable ones)
@@ -26,11 +26,12 @@ def merge(old_track, new_track):
     skipped = 0
     for poly in overlap:
         try:
+            # here we should search all lines in the area for moved points
             centerlines.append(get_centerline(poly,
                                               segmentize_maxlen=10,
                                               max_points=8000,
                                               simplification=5,
-                                              smooth_sigma=0.5).simplify(tolerance=4))
+                                              smooth_sigma=0.5))
         except CenterlineError:
             skipped += 1
             pass

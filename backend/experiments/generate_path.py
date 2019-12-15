@@ -51,6 +51,8 @@ tracks=[
     ]
 ]
 
+s = time.time()
+
 
 def semi_random_path_generator(start_point, seed):
     random.uniform(-180, 180), random.uniform(-90, 90)
@@ -167,6 +169,8 @@ ax.plot(x,y,'b')
 x,y=track2.xy
 ax.plot(x,y,'g')
 
+
+print(time.time() - s)
 
 
 fig.show()

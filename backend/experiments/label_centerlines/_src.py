@@ -9,6 +9,8 @@ from scipy.ndimage import filters
 from shapely.geometry import LineString, MultiLineString, Point, MultiPoint
 
 from label_centerlines.exceptions import CenterlineError
+import time
+
 
 logger = logging.getLogger(__name__)
 
