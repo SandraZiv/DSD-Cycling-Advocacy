@@ -37,7 +37,7 @@ def retrieve_data(trip_uuid):
 
 
 # Store the path back into database
-def store_path(tripPoints):
+def store_path(trip_points):
     # todo
     pass
 
@@ -65,22 +65,22 @@ def calculate_score(tmpMdata):
 
 
 # Assuming we have path points and motionData nicely stored in two arrays/lists
-tripPoints = []
-motionData = []
+trip_points = []
+motion_data = []
 
 # iteration index of motion data
 mi = 0
 
 # do not want the last point of the trip
-for ti, i in range(len(tripPoints) - 1):
-    p1 = tripPoints[i]
-    p2 = tripPoints[i + 1]
-    tmpMdata = []
+for ti, i in range(len(trip_points) - 1):
+    p1 = trip_points[i]
+    p2 = trip_points[i + 1]
+    tmp_motion_data = []
     # get all motion data points that are before timestamp of the second gnss point
-    while motionData[mi].timeStamp < p2.timeStamp:
-        tmpMdata.append(motionData[mi])
+    while motion_data[mi].timeStamp < p2.timeStamp:
+        tmp_motion_data.append(motion_data[mi])
         mi += 1
-    p1.score = calculate_score(tmpMdata)
+    p1.score = calculate_score(tmp_motion_data)
 
 # store path back into the db
-store_path(tripPoints)
+store_path(trip_points)
