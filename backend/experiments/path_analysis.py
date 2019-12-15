@@ -3,13 +3,16 @@
 
 #Store the path back into database
 def storePath(tripPoints):
+    #todo
     pass
 
 #Get the path from the database and return a populated list
 getPath():
+    #todo
     pass
 #Get the motion data from the database and return a populated list
 getMotionData():
+    #todo
     pass
 
 def calculateScore(tmpMdata):
