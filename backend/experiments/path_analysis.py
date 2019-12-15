@@ -1,5 +1,6 @@
 from swagger_server import mongodb_interface as db
 import pandas as pd
+import os
 
 
 
@@ -11,7 +12,19 @@ import pandas as pd
 # store road quality into trips (associate road quality to each point - each points store
 # the road quality btw itself and its subsequent, except for the last one)
 
-
+def retrieve_data(trip_uuid):
+    trip_data = db.get_trip_by_trip_uuid("f2eaf50f-a765-4974-9aba-be6bc4e79ffc")
+    motion_data = db.get_file_by_filename("\"d053ac5e-4c4a-4105-91e9-139183d15ecb\"")
+    trip_ts = []
+    motion_df = pd.DataFrame()
+    with open("tmp.csv", "w") as fp:
+        fp.write(list(motion_data)[0].decode('utf-8'))
+    with open("tmp.csv", "r") as fp:
+        motion_df = pd.read_csv(fp)
+    os.remove("tmp.csv")
+    for p in trip_data['gnss_data']:
+        trip_ts.append(p['time_ts'])
+    return trip_ts, motion_df
 
 
 #Store the path back into database
