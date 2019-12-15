@@ -3,27 +3,18 @@ import pandas as pd
 import os
 
 
-# retrieve trip into iterable
-# retrieve motion data into pandas dataframe
-
-# for each point except first one, split motion_df into chunks based on points' timestamps
-# for each chunk, calculate road quality
-# store road quality into trips (associate road quality to each point - each points store
-# the road quality btw itself and its subsequent, except for the last one)
-
-
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
 
     # data retrieval
     trip_data = db.get_trip_by_trip_uuid("db68af06-d350-4207-ac7b-52f6e6a37e0c")
-    motion_data = db.get_file_by_filename("\"db68af06-d350-4207-ac7b-52f6e6a37e0c\"")
+    motion_file = db.get_file_by_filename("\"db68af06-d350-4207-ac7b-52f6e6a37e0c\"")
 
     # motion dataframe creation
     # need to find a way read grid file into dataframe without a temporary file
     # this is horrible!
     with open("tmp.csv", "w") as fp:
-        fp.write(list(motion_data)[0].decode('utf-8'))
+        fp.write(list(motion_file)[0].decode('utf-8'))
     with open("tmp.csv", "r") as fp:
         motion_df = pd.read_csv(fp)
     os.remove("tmp.csv")
@@ -34,6 +25,13 @@ def retrieve_data(trip_uuid):
         trip_ts.append(p['time_ts'])
 
     return trip_ts, motion_df
+
+
+# TODO
+# for each point except first one, split motion_df into chunks based on points' timestamps
+# for each chunk, calculate road quality
+# store road quality into trips (associate road quality to each point - each points store
+# the road quality btw itself and its subsequent, except for the last one)
 
 
 # Store the path back into database
@@ -54,10 +52,10 @@ def get_motion_data():
     pass
 
 
-def calculate_score(tmpMdata):
+def calculate_score(tmp_motion_data):
     # add up all the numbers?
     s = 0
-    for dp in tmpMdata:
+    for dp in tmp_motion_data:
         s += dp.acx
         s += dp.acy
         s += dp.acz
