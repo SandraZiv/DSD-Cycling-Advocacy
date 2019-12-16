@@ -70,6 +70,10 @@ public class Trip {
         return distance;
     }
 
+    public String getFormattedDistance(){
+        return String.format("%.2f", distance);
+    }
+
     public Date getStartTs() {
         return startTs;
     }

@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="@string/speed"
         android:textColor="@color/cyclingAdvocacyYellow"
-        android:textSize="@dimen/text_size_medium" />
+        android:textSize="@dimen/text_size_small" />
 
     <com.ntt.customgaugeview.library.GaugeView
         android:id="@+id/gauge_view_speed"
@@ -39,7 +39,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_standard"
+            android:layout_marginLeft="@dimen/margin_double"
             android:layout_marginRight="@dimen/margin_double"
             android:orientation="vertical">
 
@@ -48,15 +48,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/distance"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
-                android:id="@+id/distance"
+                android:id="@+id/tv_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_large"
                 tools:text="25.12" />
         </LinearLayout>
 
@@ -64,23 +64,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_double"
-            android:layout_marginRight="@dimen/margin_standard"
+            android:layout_marginRight="@dimen/margin_double"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/duration"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_medium" />
+                android:textSize="@dimen/text_size_small" />
 
             <TextView
                 android:id="@+id/duration"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_large"
                 tools:text="00:25:21" />
         </LinearLayout>
     </LinearLayout>
@@ -92,7 +93,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/vibration"
         android:textColor="@color/cyclingAdvocacyYellow"
-        android:textSize="@dimen/text_size_medium" />
+        android:textSize="@dimen/text_size_small" />
 
     <com.ntt.customgaugeview.library.GaugeView
         android:id="@+id/gauge_view_vibration"

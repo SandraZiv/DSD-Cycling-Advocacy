@@ -41,6 +41,10 @@ public class GnssData {
         return lon;
     }
 
+    public float getSpeed() {
+        return speed;
+    }
+
     @NonNull
     @Override
     public String toString() {

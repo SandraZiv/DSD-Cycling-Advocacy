@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,13 +31,18 @@ import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.ntt.customgaugeview.library.GaugeView;
 
 public class TripInProgressActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationChangedListener,
         VibrationChangedListener {
 
+    private TextView tvDistance;
+    private GaugeView speedometer;
+    private GaugeView vibrationmeter;
     private Button btnEndTrip;
+
     private GoogleApiClient googleApiClient;
 
     private LocationService locationService;
@@ -51,6 +57,11 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        tvDistance = findViewById(R.id.tv_distance);
+
+        speedometer = findViewById(R.id.gauge_view_speed);
+        vibrationmeter = findViewById(R.id.gauge_view_vibration);
 
         btnEndTrip = findViewById(R.id.button_trip_end);
         btnEndTrip.setOnClickListener(new View.OnClickListener() {
@@ -164,11 +175,14 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     public void onLocationChanged(Location location) {
         GnssData gnssData = new GnssData(location);
         trip.addGpsData(gnssData);
-        // todo update UI
+
+        speedometer.setTargetValue(gnssData.getSpeed());
+        tvDistance.setText(trip.getFormattedDistance());
+
     }
 
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
-        // todo update UI
+        vibrationmeter.setTargetValue(vibrationPercentage);
     }
 }
