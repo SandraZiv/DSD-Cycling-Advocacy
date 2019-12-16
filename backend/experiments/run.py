@@ -9,7 +9,4 @@
 
 from experiments import path_analysis as pa
 
-trip_ts, motion_df = pa.retrieve_data('fuehif')
-
-print(trip_ts)
-print(motion_df.head())
+pa.run_motion_data_analysis('db68af06-d350-4207-ac7b-52f6e6a37e0c')
