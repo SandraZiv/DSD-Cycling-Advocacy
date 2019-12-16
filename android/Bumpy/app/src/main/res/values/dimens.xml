@@ -5,7 +5,6 @@
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">20dp</dimen>
     <dimen name="margin_double">28dp</dimen>
-    <dimen name="margin_extra_large">80dp</dimen>
 
     <dimen name="text_size_big">30sp</dimen>
     <dimen name="text_size_medium">20sp</dimen>
@@ -15,7 +14,6 @@
     <!--Gauge View-->
     <dimen name="speed_gauge_width">200dp</dimen>
     <dimen name="speed_gauge_height">200dp</dimen>
-    <dimen name="vibration_end_value">100</dimen>
     <dimen name="vibration_gauge_width">180dp</dimen>
     <dimen name="vibration_gauge_height">180dp</dimen>
 
