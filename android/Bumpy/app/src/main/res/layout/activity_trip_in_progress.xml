@@ -75,14 +75,14 @@
                 android:textColor="@color/cyclingAdvocacyYellow"
                 android:textSize="@dimen/text_size_small" />
 
-            <TextView
-                android:id="@+id/duration"
+            <Chronometer
+                android:id="@+id/chronometer_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_large"
-                tools:text="00:25:21" />
+                android:textSize="@dimen/text_size_large"/>
+
         </LinearLayout>
     </LinearLayout>
 

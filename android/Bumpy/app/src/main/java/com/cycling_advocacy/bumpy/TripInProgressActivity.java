@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         VibrationChangedListener {
 
     private TextView tvDistance;
+    private Chronometer chronometerDuration;
     private GaugeView speedometer;
     private GaugeView vibrationmeter;
     private Button btnEndTrip;
@@ -59,6 +61,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         setSupportActionBar(toolbar);
 
         tvDistance = findViewById(R.id.tv_distance);
+        chronometerDuration = findViewById(R.id.chronometer_duration);
 
         speedometer = findViewById(R.id.gauge_view_speed);
         vibrationmeter = findViewById(R.id.gauge_view_vibration);
@@ -134,12 +137,16 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         trip = new Trip(this);
         trip.start();
 
+        chronometerDuration.start();
+        
         locationService.startTracking();
         motionManager.startSensorUpdates(this, trip.getTripUUID());
     }
 
     public void stopTracking() {
         trip.stop();
+
+        chronometerDuration.stop();
 
         locationService.stopTracking();
         motionManager.stopSensorUpdates();
