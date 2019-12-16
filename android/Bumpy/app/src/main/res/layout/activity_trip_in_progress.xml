@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,15 +8,121 @@
     android:orientation="vertical"
     tools:context=".TripInProgressActivity">
 
-    <include layout="@layout/toolbar" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:gravity="center"
+        android:text="@string/speed"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_small" />
 
-    <Button
-        android:id="@+id/button_trip_end"
-        style="@style/StandardButton"
+    <com.ntt.customgaugeview.library.GaugeView
+        android:id="@+id/gauge_view_speed"
+        style="@style/GaugeViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/gauge_height"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_small"
+        app:divisions="10"
+        app:rangeValues="@array/speed_range_values"
+        app:scaleEndValue="50"
+        app:subdivisions="1"
+        app:textUnit="@string/speed_unit" />
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_double"
+            android:layout_marginRight="@dimen/margin_double"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distance"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_large"
+                tools:text="25.12" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_double"
+            android:layout_marginRight="@dimen/margin_double"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/duration"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_small" />
+
+            <Chronometer
+                android:id="@+id/chronometer_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/cyclingAdvocacyYellow"
+                android:textSize="@dimen/text_size_large"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/vibration"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_small" />
+
+    <com.ntt.customgaugeview.library.GaugeView
+        android:id="@+id/gauge_view_vibration"
+        style="@style/GaugeViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/gauge_height"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/margin_standard"
-        android:text="@string/end_trip" />
+        app:divisions="10"
+        app:rangeValues="@array/vibration_range_values"
+        app:scaleEndValue="100"
+        app:subdivisions="1"
+        app:textUnit="@string/vibration_unit" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="@dimen/margin_standard">
+
+        <Button
+            android:id="@+id/button_trip_end"
+            style="@style/StandardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="@string/end_trip" />
+
+    </LinearLayout>
 
 </LinearLayout>
