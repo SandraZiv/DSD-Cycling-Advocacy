@@ -34,4 +34,17 @@
         <item name="android:background">@color/cyclingAdvocacyBlack</item>
         <item name="android:textColor">@color/cyclingAdvocacyYellow</item>
     </style>
+
+    <style name="GaugeViewStyle">
+        <item name="showInnerRim">false</item>
+        <item name="showNeedle">true</item>
+        <item name="showOuterBorder">false</item>
+        <item name="showOuterRim">true</item>
+        <item name="showOuterShadow">false</item>
+        <item name="showRangeText">true</item>
+        <item name="showRanges">true</item>
+        <item name="showScale">true</item>
+        <item name="textUnitSize">0.06</item>
+        <item name="textValueSize">0.2</item>
+    </style>
 </resources>
