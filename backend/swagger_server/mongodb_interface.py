@@ -24,7 +24,7 @@ def insert_new_trip(trip):
 
 
 def get_trips_by_device_uuid(device_uuid):
-    return main_db.trips.find({'deviceUUID': device_uuid})
+    return main_db.trips.find({'device_uuid': device_uuid})
 
 
 #
