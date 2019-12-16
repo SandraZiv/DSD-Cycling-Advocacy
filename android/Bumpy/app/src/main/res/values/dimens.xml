@@ -13,7 +13,6 @@
     <dimen name="text_size_mini">12sp</dimen>
 
     <!--Gauge View-->
-    <dimen name="speed_end_value">200</dimen>
     <dimen name="speed_gauge_width">200dp</dimen>
     <dimen name="speed_gauge_height">200dp</dimen>
     <dimen name="vibration_end_value">100</dimen>

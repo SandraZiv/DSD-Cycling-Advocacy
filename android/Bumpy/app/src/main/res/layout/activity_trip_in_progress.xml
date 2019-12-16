@@ -6,11 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/cyclingAdvocacyBlack"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
-    android:weightSum="8"
     tools:context=".TripInProgressActivity">
-
-    <include layout="@layout/toolbar" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +20,7 @@
 
     <com.ntt.customgaugeview.library.GaugeView
         android:id="@+id/gauge_view_speed"
-        android:layout_width="@dimen/speed_gauge_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/speed_gauge_height"
         android:layout_weight="2"
         android:layout_margin="@dimen/margin_small"
@@ -32,7 +28,7 @@
         gauge:divisions="10"
         gauge:subdivisions="1"
         gauge:rangeValues="@array/speed_range_values"
-        gauge:scaleEndValue="@dimen/speed_end_value"
+        gauge:scaleEndValue="50"
         gauge:showInnerRim="false"
         gauge:showNeedle="true"
         gauge:showOuterBorder="false"
@@ -42,8 +38,8 @@
         gauge:showRanges="true"
         gauge:showScale="true"
         gauge:textUnit="@string/speed_unit"
-        gauge:textUnitSize="@dimen/text_size_small"
-        gauge:textValueSize="@dimen/text_size_medium" />
+        gauge:textUnitSize="0.06"
+        gauge:textValueSize="0.2" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -55,7 +51,9 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/margin_standard"
+            android:layout_marginRight="@dimen/margin_double">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,9 +62,10 @@
                 android:textSize="@dimen/text_size_medium"/>
             <TextView
                 android:id="@+id/distance"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="100km"
+                android:gravity="center"
+                tools:text="25.12"
                 android:textColor="@color/cyclingAdvocacyYellow"
                 android:textSize="@dimen/text_size_small"/>
         </LinearLayout>
@@ -75,7 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/margin_extra_large">
+            android:layout_marginLeft="@dimen/margin_double"
+            android:layout_marginRight="@dimen/margin_standard">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -84,9 +84,10 @@
                 android:textSize="@dimen/text_size_medium"/>
             <TextView
                 android:id="@+id/duration"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="100 minutes"
+                android:gravity="center"
+                tools:text="00:25:21"
                 android:textColor="@color/cyclingAdvocacyYellow"
                 android:textSize="@dimen/text_size_small"/>
         </LinearLayout>
@@ -109,7 +110,7 @@
         android:layout_weight="2"
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_standard"
-        gauge:divisions="8"
+        gauge:divisions="10"
         gauge:subdivisions="1"
         gauge:rangeValues="@array/vibration_range_values"
         gauge:scaleEndValue="@dimen/vibration_end_value"
@@ -122,8 +123,8 @@
         gauge:showRanges="true"
         gauge:showScale="true"
         gauge:textUnit="@string/vibration_unit"
-        gauge:textUnitSize="@dimen/text_size_small"
-        gauge:textValueSize="@dimen/text_size_medium" />
+        gauge:textUnitSize="0.06"
+        gauge:textValueSize="0.2"/>
 
     <Button
         android:id="@+id/button_trip_end"
