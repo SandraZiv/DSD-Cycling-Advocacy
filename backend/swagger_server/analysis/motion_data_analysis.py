@@ -1,4 +1,4 @@
-from swagger_server import mongodb_interface as db
+from swagger_server import constants as const, mongodb_interface as db
 import pandas as pd
 import os
 import datetime
@@ -6,13 +6,13 @@ import datetime
 
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
-
-    print('\nStarting trip analysis of %s\n' % trip_uuid)
-
     # data retrieval
     trip_data = db.get_trip_by_trip_uuid(trip_uuid)
     motion_file = db.get_file_by_filename("\"" + trip_uuid + "\"")
-
+    # timestamp list creation (timestamps are used as a key for points, no other data is used
+    trip_ts = []
+    for p in trip_data['gnss_data']:
+        trip_ts.append(p['time_ts'])
     # motion dataframe creation
     # TODO find a way to read grid file into dataframe without a temporary file
     # this is horrible!
@@ -22,20 +22,16 @@ def retrieve_data(trip_uuid):
     with open("tmp.csv", "r") as fp:
         motion_df = pd.read_csv(fp)
     os.remove("tmp.csv")
-
     # TODO DEBUG ONLY there's an error in last row of the motion file I'm using, so I remove it
     motion_df = motion_df.head(-1)
-
-    print('First timestamp of motion data is: %s' % motion_df.iloc[0]['ts'])
-    print('Last timestamp of motion data is: %s' % motion_df.iloc[-1]['ts'])
     motion_df['ts'] = motion_df['ts'].apply(datetime.datetime.strptime, args=['%Y-%m-%dT%H:%M:%SZ'])
 
-    # trip list creation (timestamps are used as a key for points, no other data is used
-    trip_ts = []
-    for p in trip_data['gnss_data']:
-        trip_ts.append(p['time_ts'])
-    print('First timestamp of trip is: %s' % trip_ts[0])
-    print('Last timestamp of trip is: %s' % trip_ts[-1])
+    if const.VERBOSITY:
+        print('\nMOTION DATA ANALYSIS OF TRIP [ %s ]\n' % trip_uuid)
+        print('First timestamp of motion data is: %s' % motion_df.iloc[0]['ts'])
+        print('Last timestamp of motion data is: %s' % motion_df.iloc[-1]['ts'])
+        print('First timestamp of trip is: %s' % trip_ts[0])
+        print('Last timestamp of trip is: %s' % trip_ts[-1])
 
     return trip_ts, motion_df
 
@@ -43,19 +39,21 @@ def retrieve_data(trip_uuid):
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def motion_analysis(trip_ts, motion_df):
-
-    print('\nMOTION DATA ANALYSIS\n')
-
+    if const.VERBOSITY:
+        print('\nMOTION DATA ANALYSIS\n')
     for index, ts in enumerate(trip_ts):
         chunk = motion_df.loc[motion_df['ts'] == ts]
-        if index < 5:   # print only first 5 chunks for shortness
-            print('CHUNK FOR TS %s' % ts)
-            print(chunk.describe())
+        if index < 5:  # print only first 5 chunks for shortness
+            if const.VERBOSITY:
+                print('CHUNK FOR TS %s' % ts)
+                print(chunk.describe())
+    return
 
 
 def run_motion_data_analysis(trip_uuid):
     trip_ts, motion_df = retrieve_data(trip_uuid)
     motion_analysis(trip_ts, motion_df)
+
 
 # TODO
 # for each chunk, calculate road quality

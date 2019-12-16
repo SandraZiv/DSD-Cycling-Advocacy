@@ -13,3 +13,4 @@ MAP_UPDATE_JOB = 'map-update-job'
 TEST_JOB = 'test-job'
 
 LOG_FILE = ROOT_PATH+'/log.log'
+VERBOSITY = True

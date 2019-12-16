@@ -3,8 +3,8 @@ import json
 import uuid
 import logging
 from threading import Thread
-from swagger_server.controllers import constants as const
-from swagger_server.controllers import road_analysis
+from swagger_server.analysis import motion_data_analysis
+from swagger_server import constants as const
 
 logging.basicConfig(filename='log.log', level=logging.DEBUG)
 
@@ -60,7 +60,7 @@ def get_job_id(serialized_job):
 
 
 # create a new listener inside a thread, listening to provided queue
-def new_listener(queue_name):
+def start_consuming(queue_name):
     # instantiate a listener for trip analysis queue on a new thread and test it
     new_thread = Thread(target=listen, args=(queue_name,))
     new_thread.start()
@@ -69,17 +69,14 @@ def new_listener(queue_name):
 
 
 # callback function for TRIP_ANALYSIS_JOB
-def execute_trip_analysis_job(trip_id):
-    logging.info('Starting trip analysis of trip:: %s' % trip_id)
-    road_analysis.run_trip_analysis(trip_id)
-    logging.info('Finished trip analysis of trip: %s' % trip_id)
+def execute_trip_analysis_job(trip_uuid):
+    motion_data_analysis.run_motion_data_analysis(trip_uuid)
+    # map_update.run_map_update(trip_uuid)
     return
 
 
-def execute_map_update_job(trip_id):
-    logging.info('Starting map update with trip: %s' % trip_id)
-    road_analysis.update_map(trip_id)
-    logging.info(('Finished map update with trip: %s' % trip_id))
+def execute_test_job(rubbish):
+    logging.info(rubbish.__str__())
     return
 
 
@@ -93,7 +90,7 @@ def listen(queue_name):
     # into the queue and calls the corresponding callback function
     callbacks = {
         const.TRIP_ANALYSIS_JOB: execute_trip_analysis_job,
-        const.MAP_UPDATE_JOB: execute_map_update_job
+        const.TEST_JOB: execute_test_job
     }
     # event manager for job execution
     channel.basic_consume(queue=queue_name,
