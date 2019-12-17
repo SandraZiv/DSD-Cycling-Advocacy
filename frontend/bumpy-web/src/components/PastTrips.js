@@ -35,7 +35,7 @@ export class PastTrips extends Component {
             .then(response => response.json())
             .then(data => {
                 let parsedTrips = JSON.parse(data).map(t => {
-                        console.log(t);
+                        // console.log(t)
                         return {
                             "trip_uuid": t.trip_uuid,
                             "distance": t.distance.toFixed(2),
@@ -54,7 +54,7 @@ export class PastTrips extends Component {
         const {trips} = this.state;
         let tripTable = "";
         if (trips !== undefined) {
-            console.log(trips)
+            // console.log(trips)
 
             const columns = [{
                 dataField: 'start_ts',
