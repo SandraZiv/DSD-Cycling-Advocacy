@@ -8,8 +8,9 @@ import './PastTrips.css'
 export class PastTrips extends Component {
 
     componentDidMount() {
-            document.title = "Bumpy - Trips"
-          }
+        document.title = "Bumpy - Trips"
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -29,69 +30,59 @@ export class PastTrips extends Component {
     }
 
     getTrips(deviceUUID) {
+        // testing id: 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f
         fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
             .then(response => response.json())
-            .then(json => {
-                    const data = [
-                        {
-                            "tripUUID": "fdsf1dsf#4s-df1sdf1sd2f3f",
-                            "startTS": "2019-11-25T11:36:04Z",
-                            "endTS": "2019-11-25T12:00:51Z",
-                            "distance": 20.0,
-                            "vibration": 125
-                        },
-                        {
-                            "tripUUID": "affsf52-df1sdf1sd2f3f-asf",
-                            "startTS": "2019-11-25T11:21:17Z",
-                            "endTS": "2019-11-25T11:36:00Z",
-                            "distance": 16.7,
-                            "vibration": 191
-                        },
-                        {
-                            "tripUUID": "df1sdf1sd2f3fs56sf-sssfee",
-                            "startTS": "2019-10-25T11:36:04Z",
-                            "endTS": "2019-10-25T12:00:51Z",
-                            "distance": 42.3,
-                            "vibration": 203
-                        },
-                    ];
-                    console.log(json);
-                    this.setState({trips: data})
-                }
-            );
+            .then(data => {
+                let parsedTrips = JSON.parse(data).map(t => {
+                        console.log(t);
+                        return {
+                            "trip_uuid": t.trip_uuid,
+                            "distance": t.distance.toFixed(2),
+                            "start_ts": new Date(t.start_ts.$date).toLocaleString(),
+                            "end_ts": new Date(t.end_ts.$date).toLocaleString(),
+                            "vibration": Math.floor(Math.random() * Math.floor(80))
+                        };
+                    }
+                );
+
+                this.setState({trips: parsedTrips})
+            });
     };
 
     render() {
         const {trips} = this.state;
         let tripTable = "";
         if (trips !== undefined) {
+            console.log(trips)
+
             const columns = [{
-                dataField: 'startTS',
+                dataField: 'start_ts',
                 text: 'Start time',
                 sort: true
             }, {
-                dataField: 'endTS',
+                dataField: 'end_ts',
                 text: 'End time',
                 sort: true
             }, {
                 dataField: 'distance',
-                text: 'Distance',
+                text: 'Distance(km)',
                 sort: true
             }, {
                 dataField: 'vibration',
-                text: 'Accumulated vibration',
+                text: 'Average vibration(%)',
                 sort: true
             }];
 
             const defaultSorted = [{
-                dataField: 'startTS',
+                dataField: 'start_ts',
                 order: 'desc'
             }];
 
             tripTable =
                 <BootstrapTable
                     bootstrap4
-                    keyField="tripUUID"
+                    keyField="trip_uuid"
                     data={trips}
                     columns={columns}
                     defaultSorted={defaultSorted}
@@ -102,7 +93,7 @@ export class PastTrips extends Component {
 
         return (
             <div>
-                <Button bsClass="btn"
+                <Button className="btn"
                         onClick={() => this.setState({shouldShowModal: true})}>
                     Enter User Identifier
                 </Button>

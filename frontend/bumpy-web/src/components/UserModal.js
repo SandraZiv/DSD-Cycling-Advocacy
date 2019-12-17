@@ -37,7 +37,7 @@ export class UserModal extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Form.Group>
-                            <Button bsClass="btn" type="submit">Enter</Button>
+                            <Button className="btn" type="submit">Enter</Button>
                         </Form.Group>
                     </Modal.Footer>
                 </Form>
