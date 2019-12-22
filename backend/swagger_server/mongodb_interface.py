@@ -27,6 +27,10 @@ def get_trips_by_device_uuid(device_uuid):
     return main_db.trips.find({'device_uuid': device_uuid})
 
 
+def update_trip(trip_uuid, new_values):
+    main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_values}, upsert=False)
+    return
+
 #
 # GRIDFS
 #

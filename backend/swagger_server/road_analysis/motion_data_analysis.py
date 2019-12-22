@@ -63,10 +63,14 @@ def motion_analysis(trip_df, motion_df):
     log += 'MOTION DATA ANALYSIS\nPRINTING OUT ONLY FIRST THREE CHUNKS OF DATA\n'
     for index, ts in enumerate(trip_df['time_ts']):
         chunk = motion_df.loc[motion_df['ts'] == ts]
+
         if index < 3:  # print only first 5 chunks for shortness
             log += 'CHUNK %s FOR TS %s\n' % (index, ts)
             log += '%s\n' % chunk.describe()
-    return log
+    max_road_quality = 0
+    min_road_quality = 0
+    avg_road_quality = 0
+    return max_road_quality, min_road_quality, avg_road_quality, log
 
 
 def calculate_trip_statistics(trip_df):
@@ -83,13 +87,22 @@ def calculate_trip_statistics(trip_df):
 def run_motion_data_analysis(trip_uuid):
     trip_df, motion_df, log = retrieve_data(trip_uuid)
     distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation = calculate_trip_statistics(trip_df)
+    db.update_trip(trip_uuid, {'distance': distance, 'max_speed': max_speed, 'avg_speed': avg_speed,
+                               'max_elevation': max_elevation, 'min_elevation': min_elevation,
+                               'avg_elevation': avg_elevation})
     log += 'TRIP STATISTICS\nDistance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
            % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
-    log += motion_analysis(trip_df, motion_df)
+    max_road_quality, min_road_quality, avg_road_quality, motion_log = motion_analysis(trip_df, motion_df)
+    log += motion_log
     if const.VERBOSITY:
         logging.info(log)
     else:
-        logging.info('Motion data analysis of trip %s completed' % trip_uuid)
+        logging.info('Motion data analysis of trip %s completed\n'
+                     'Statistics: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n'
+                     'Max road quality: %s, min road quality: %s, avg road quality: %s'
+                     % (trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation,
+                        max_road_quality, min_road_quality, avg_road_quality))
+
 
 
 # TODO
