@@ -6,9 +6,9 @@ ROOT_PATH = os.path.dirname(os.path.abspath(__file__))  # refers to application_
 
 # --- QUEUE ---
 RABBITMQ_HOST = 'localhost'
-TRIP_ANALYSIS_QUEUE = 'trip-analysis-queue'
+TRIP_ANALYSIS_QUEUE = 'trip-road_analysis-queue'
 MAP_UPDATE_QUEUE = 'map-update-queue'
-TRIP_ANALYSIS_JOB = 'trip-analysis-job'
+TRIP_ANALYSIS_JOB = 'trip-road_analysis-job'
 MAP_UPDATE_JOB = 'map-update-job'
 TEST_JOB = 'test-job'
 

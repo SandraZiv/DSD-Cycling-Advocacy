@@ -2,17 +2,41 @@ from swagger_server import constants as const, mongodb_interface as db
 import pandas as pd
 import os
 import datetime
+import logging
+from math import radians, cos, sin, asin, sqrt
+
+
+def haversine(lon1, lat1, lon2, lat2):
+    """
+    Calculate the great circle distance between two points
+    on the earth (specified in decimal degrees)
+    """
+    # convert decimal degrees to radians
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a))
+    r = 6371 # Radius of earth in kilometers. Use 3956 for miles
+    return c * r
 
 
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
-    # data retrieval
     trip_data = db.get_trip_by_trip_uuid(trip_uuid)
     motion_file = db.get_file_by_filename("\"" + trip_uuid + "\"")
+
+    log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
+    log += 'TRIP %s\n' % trip_data
+
     # timestamp list creation (timestamps are used as a key for points, no other data is used
-    trip_ts = []
-    for p in trip_data['gnss_data']:
-        trip_ts.append(p['time_ts'])
+    trip_df = pd.DataFrame(trip_data['gnss_data'])
+
+    log += 'First timestamp of trip is: %s\n' % trip_df.head(1)['time_ts']
+    log += 'Last timestamp of trip is: %s\n' % trip_df.tail(1)['time_ts']
+
     # motion dataframe creation
     # TODO find a way to read grid file into dataframe without a temporary file
     # this is horrible!
@@ -25,34 +49,47 @@ def retrieve_data(trip_uuid):
     # TODO DEBUG ONLY there's an error in last row of the motion file I'm using, so I remove it
     motion_df = motion_df.head(-1)
     motion_df['ts'] = motion_df['ts'].apply(datetime.datetime.strptime, args=['%Y-%m-%dT%H:%M:%SZ'])
+    log += 'MOTION DATA PREVIEW FOR TRIP %s %s\n' % (trip_uuid, motion_df.head(5))
+    log += 'First timestamp of motion data is: %s\n' % motion_df.iloc[0]['ts']
+    log += 'Last timestamp of motion data is: %s\n' % motion_df.iloc[-1]['ts']
 
-    if const.VERBOSITY:
-        print('\nMOTION DATA ANALYSIS OF TRIP [ %s ]\n' % trip_uuid)
-        print('First timestamp of motion data is: %s' % motion_df.iloc[0]['ts'])
-        print('Last timestamp of motion data is: %s' % motion_df.iloc[-1]['ts'])
-        print('First timestamp of trip is: %s' % trip_ts[0])
-        print('Last timestamp of trip is: %s' % trip_ts[-1])
-
-    return trip_ts, motion_df
+    return trip_df, motion_df, log
 
 
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
-def motion_analysis(trip_ts, motion_df):
-    if const.VERBOSITY:
-        print('\nMOTION DATA ANALYSIS\n')
-    for index, ts in enumerate(trip_ts):
+def motion_analysis(trip_df, motion_df):
+    log = ''
+    log += 'MOTION DATA ANALYSIS\nPRINTING OUT ONLY FIRST THREE CHUNKS OF DATA\n'
+    for index, ts in enumerate(trip_df['time_ts']):
         chunk = motion_df.loc[motion_df['ts'] == ts]
-        if index < 5:  # print only first 5 chunks for shortness
-            if const.VERBOSITY:
-                print('CHUNK FOR TS %s' % ts)
-                print(chunk.describe())
-    return
+        if index < 3:  # print only first 5 chunks for shortness
+            log += 'CHUNK %s FOR TS %s\n' % (index, ts)
+            log += '%s\n' % chunk.describe()
+    return log
+
+
+def calculate_trip_statistics(trip_df):
+    distance = haversine(trip_df.head(1)['lon'], trip_df.head(1)['lat'],
+                         trip_df.tail(1)['lon'], trip_df.tail(1)['lat'])
+    max_speed = trip_df['speed'].max()
+    avg_speed = trip_df['speed'].mean()
+    max_elevation = trip_df['ele'].max()
+    min_elevation = trip_df['ele'].min()
+    avg_elevation = trip_df['ele'].mean()
+    return distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation
 
 
 def run_motion_data_analysis(trip_uuid):
-    trip_ts, motion_df = retrieve_data(trip_uuid)
-    motion_analysis(trip_ts, motion_df)
+    trip_df, motion_df, log = retrieve_data(trip_uuid)
+    distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation = calculate_trip_statistics(trip_df)
+    log += 'TRIP STATISTICS\nDistance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
+           % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
+    log += motion_analysis(trip_df, motion_df)
+    if const.VERBOSITY:
+        logging.info(log)
+    else:
+        logging.info('Motion data analysis of trip %s completed' % trip_uuid)
 
 
 # TODO

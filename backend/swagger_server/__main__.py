@@ -3,18 +3,15 @@
 import connexion
 
 from swagger_server import encoder, constants as const
-from swagger_server.analysis import road_analysis
+from swagger_server.road_analysis import queue
+import logging
 
 
 def main():
 
-    # TODO START THE QUEUE
-    # try:
-    #     road_analysis.start_consuming(const.TRIP_ANALYSIS_QUEUE)
-    #     print('\nRoad analysis engine is up and running!')
-    #     print('Road analysis verbosity is set to: %s\n' % const.VERBOSITY)
-    # except Exception:
-    #     print('Could not run road analysis engine')
+    logging.basicConfig(filename='swagger_server/logs/default_log.log', level=logging.INFO)
+    logging.info('Try to start a queue for road analysis')
+    queue.start_consuming(const.TRIP_ANALYSIS_QUEUE)
 
     app = connexion.App(__name__, specification_dir='./swagger/')
     app.app.json_encoder = encoder.JSONEncoder

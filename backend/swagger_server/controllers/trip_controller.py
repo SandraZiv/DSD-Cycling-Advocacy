@@ -3,14 +3,14 @@ import six
 
 from swagger_server.models.api_response import ApiResponse  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
-from swagger_server.analysis import road_analysis
+from swagger_server.road_analysis import queue
 from swagger_server import constants as const
 from swagger_server import util
 from swagger_server import mongodb_interface
 from bson.json_util import dumps
 
 
-# TODO new trip analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
+# TODO new trip road_analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
 # when you're ready:
 # import queue
 # queue.new_trip_analysis_job(trip_id)
@@ -65,6 +65,8 @@ def insert_new_trip():  # noqa: E501
     try:
         body = Trip.from_dict(connexion.request.get_json())  # noqa: E501
         mongodb_interface.insert_new_trip(body.to_dict())
+        # enqueueing a trip road_analysis job
+        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=trip_uuid).enqueue_job(const.TRIP_ANALYSIS_QUEUE)
     except mongodb_interface.pymongo.errors.DuplicateKeyError:
         return ApiResponse(code=400, message="trip already exist"), 400
     return ApiResponse(code=200, message="ok"), 200
@@ -90,10 +92,5 @@ def upload_motion_file():  # noqa: E501
         return ApiResponse(code=400, message='no file selected'), 400
     if file and '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() == 'csv':
         mongodb_interface.insert_new_file(trip_uuid, file)
-
-        # enqueueing a trip analysis job
-        # TODO this should be done only if certain that all files are uploaded
-        # road_analysis.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=trip_uuid).enqueue_job(const.TRIP_ANALYSIS_QUEUE)
-
         return ApiResponse(code=200, message='ok'), 200
     return ApiResponse(code=400, message='wrong file selected'), 400
