@@ -14,12 +14,12 @@ import java.util.List;
 public interface AchievementDao {
     // define methods that access the db
 
-    @Query("Select * from achievements")
-    LiveData<List<Achievement>> getAchievemnts();
+    @Query("Select * from achievements order by id")
+    LiveData<List<AchievementEntity>> getAchievements();
 
     @Insert
-    void insertAll(Achievement... achievements);
+    void insertAll(AchievementEntity... achievements);
 
     @Update
-    void update(Achievement achievement);
+    void update(AchievementEntity achievement);
 }

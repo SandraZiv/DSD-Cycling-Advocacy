@@ -24,7 +24,6 @@
     <string name="a7_detail">Complete one trip over 20km.</string>
 
     <string name="a8_title">Heavy duty</string>
-    <string name="a8_detail">Complete trip that lasts more than an hour.</string>
-
+    <string name="a8_detail">Complete trip that lasts more than two hours.</string>
 
 </resources>
