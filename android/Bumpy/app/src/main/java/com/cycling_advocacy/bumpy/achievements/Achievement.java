@@ -1,53 +1,45 @@
 package com.cycling_advocacy.bumpy.achievements;
 
 import androidx.annotation.StringRes;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "achievements")
+import com.cycling_advocacy.bumpy.entities.Trip;
+
 public class Achievement {
 
-    @PrimaryKey(autoGenerate = true)
     private int id;
 
     @StringRes
-    @ColumnInfo(name = "title_id")
     private int titleId;
 
     @StringRes
-    @ColumnInfo(name = "detail_id")
     private int detailId;
 
-    @ColumnInfo(name = "is_completed")
     private boolean isCompleted;
 
+    private AchievementCondition condition;
+
     // using id so it can support internationalization
-    public Achievement(@StringRes int titleId, @StringRes int detailId, boolean isCompleted) {
+    public Achievement(
+            int id,
+            @StringRes int titleId,
+            @StringRes int detailId,
+            boolean isCompleted,
+            AchievementCondition condition
+    ) {
+        this.id = id;
         this.titleId = titleId;
         this.detailId = detailId;
         this.isCompleted = isCompleted;
+        this.condition = condition;
     }
 
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getId() {
         return id;
     }
 
-    public void setTitleId(int titleId) {
-        this.titleId = titleId;
-    }
-
     public int getTitleId() {
         return titleId;
-    }
-
-    public void setDetailId(int detailId) {
-        this.detailId = detailId;
     }
 
     public int getDetailId() {
@@ -60,5 +52,14 @@ public class Achievement {
 
     public boolean isCompleted() {
         return isCompleted;
+    }
+
+    public AchievementCondition getCondition() {
+        return condition;
+    }
+
+
+    public interface AchievementCondition {
+        boolean isCompleted(Trip trip);
     }
 }

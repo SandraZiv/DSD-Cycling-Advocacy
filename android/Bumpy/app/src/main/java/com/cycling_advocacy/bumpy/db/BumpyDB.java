@@ -8,14 +8,14 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
 import com.cycling_advocacy.bumpy.achievements.db.AchievementsInitial;
 import com.cycling_advocacy.bumpy.achievements.db.AchievementDao;
-import com.cycling_advocacy.bumpy.achievements.Achievement;
 
 import java.util.concurrent.Executors;
 
 // todo add waiting trip entity
-@Database(entities = {Achievement.class}, exportSchema = false, version = 1)
+@Database(entities = {AchievementEntity.class}, exportSchema = false, version = 1)
 public abstract class BumpyDB extends RoomDatabase {
 
     private static final String dbName = "bumpy_db";
@@ -33,7 +33,7 @@ public abstract class BumpyDB extends RoomDatabase {
                                 public void run() {
                                     getInstance(context)
                                             .achievementDao()
-                                            .insertAll(AchievementsInitial.getAchievements());
+                                            .insertAll(AchievementsInitial.getDbEntities());
                                 }
                             });
                         }

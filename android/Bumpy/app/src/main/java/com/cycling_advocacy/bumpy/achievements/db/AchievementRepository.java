@@ -13,14 +13,14 @@ import java.util.concurrent.Executors;
 public class AchievementRepository {
 
     private final AchievementDao achievementDao;
-    private LiveData<List<Achievement>> achievements;
+    private LiveData<List<AchievementEntity>> achievements;
 
     public AchievementRepository(Context context) {
         this.achievementDao = BumpyDB.getInstance(context).achievementDao();
-        achievements = achievementDao.getAchievemnts();
+        achievements = achievementDao.getAchievements();
     }
 
-    public void updateAsync(final Achievement achievement) {
+    public void updateAsync(final AchievementEntity achievement) {
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
@@ -29,7 +29,7 @@ public class AchievementRepository {
         });
     }
 
-    public LiveData<List<Achievement>> getAchievements() {
+    public LiveData<List<AchievementEntity>> getAchievements() {
         return achievements;
     }
 

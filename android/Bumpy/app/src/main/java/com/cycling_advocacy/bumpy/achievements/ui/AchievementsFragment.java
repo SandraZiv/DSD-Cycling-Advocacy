@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.achievements.Achievement;
 import com.cycling_advocacy.bumpy.achievements.AchievementsViewModel;
+import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
+import com.cycling_advocacy.bumpy.achievements.db.AchievementsInitial;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AchievementsFragment extends Fragment {
@@ -31,10 +34,20 @@ public class AchievementsFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
-        achievementsViewModel.achievementsLiveData.observe(this, new Observer<List<Achievement>>() {
+        achievementsViewModel.achievementsLiveData.observe(this, new Observer<List<AchievementEntity>>() {
             @Override
-            public void onChanged(final List<Achievement> achievements) {
-                adapter.setAchievementList(achievements);
+            public void onChanged(List<AchievementEntity> achievementEntities) {
+                List<Achievement> achievementsJoined = new ArrayList<>();
+                Achievement[] achievementsInitial = AchievementsInitial.getAchievements();
+                for(int i = 0; i < achievementsInitial.length; i++) {
+                    AchievementEntity entity = achievementEntities.get(i);
+                    Achievement a = achievementsInitial[i];
+
+                    a.setCompleted(entity.isCompleted());
+                    achievementsJoined.add(a);
+                }
+
+                adapter.setAchievementList(achievementsJoined);
             }
         });
 
