@@ -11,25 +11,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHolder>  {
 
-        private List<PastTrip> pasTripList;
+        private List<PastTrip> pastTripList = new ArrayList<>();
 
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView date, detail;
+            public TextView title, detail;
             public ImageButton imageUpload;
 
             public ViewHolder(View view) {
                 super(view);
-//                date = view.findViewById(R.id.date);
-//                detail = view.findViewById(R.id.details);
-//                imageUpload = view.findViewById(R.id.upload_image);
+                title = view.findViewById(R.id.tv_past_trips_title);
+                detail = view.findViewById(R.id.tv_past_trips_details);
+                imageUpload = view.findViewById(R.id.image_uploaded);
             }
-        }
-        public PastTripAdapter(List<PastTrip> pasTripList) {
-            this.pasTripList = pasTripList;
         }
 
         @Override
@@ -42,14 +40,27 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            PastTrip ptrip = pasTripList.get(position);
-            //holder.detail.setText(ptrip.getGenre());
-            //holder.imageUpload.set(ptrip.getIsUploaded());
+            PastTrip pastTrip = pastTripList.get(position);
+
+            String startTime = pastTrip.getStartTime();
+            String endTime = pastTrip.getEndTime();
+            holder.title.setText(startTime + "-" + endTime);
+            //holder.detail.setText("description");
+
+            if (!pastTrip.isUploaded()) {
+                holder.imageUpload.setVisibility(View.VISIBLE);
+            } else {
+                holder.imageUpload.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return pasTripList.size();
+            return pastTripList.size();
         }
 
+        public void setPastTripList(List<PastTrip> pastTripList) {
+            this.pastTripList = pastTripList;
+            notifyDataSetChanged();
+        }
 }

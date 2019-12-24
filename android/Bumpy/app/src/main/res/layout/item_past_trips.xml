@@ -30,14 +30,15 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_mini"
             tools:text="Helloooooooooooooooooooooooooooooooooooooo" />
+
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageButton
         android:id="@+id/image_uploaded"
-        android:layout_width="0dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.1"
-        tools:srcCompat="@mipmap/ic_launcher" />
+        android:contentDescription="@string/upload_data_description"
+        app:srcCompat="@mipmap/ic_launcher" />
 
 </LinearLayout>
 

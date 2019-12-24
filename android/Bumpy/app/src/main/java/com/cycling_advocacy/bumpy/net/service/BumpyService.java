@@ -11,6 +11,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
+// TODO: Rename this to Trip service
 public interface BumpyService {
 
     @POST("trip/insertNewTrip")
@@ -19,4 +20,6 @@ public interface BumpyService {
     @Multipart
     @POST("trip/uploadMotionFile")
     Single<Response<ApiResponse>> uploadMotionData(@Part("tripUUID") String tripUUID, @Part MultipartBody.Part file);
+
+
 }
