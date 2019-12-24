@@ -31,4 +31,9 @@ public class PastTripsViewModel extends AndroidViewModel {
     public LiveData<List<PastTrip>> getPastTrips() {
         return pastTripsLiveData;
     }
+
+    public void updatePastTrips() {
+        // TODO: Make call to API and set pastTripsLiveData with new values?
+        // This should cause an update in the PastTripsFragment observer which should cause an update in the adapter (?)
+    }
 }
