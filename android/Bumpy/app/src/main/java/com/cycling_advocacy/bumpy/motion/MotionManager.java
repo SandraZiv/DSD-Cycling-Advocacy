@@ -43,6 +43,7 @@ public class MotionManager implements SensorEventListener {
 
         try {
             fileWriter = CsvMotionUtil.initFileWriter(context, tripUUID);
+            // TODO: Is there a good way to link this to motion data writing, to ensure that the order of sensors in the header is the same as the values
             CsvMotionUtil.writeHeader(fileWriter);
         } catch (IOException e) {
             e.printStackTrace();
