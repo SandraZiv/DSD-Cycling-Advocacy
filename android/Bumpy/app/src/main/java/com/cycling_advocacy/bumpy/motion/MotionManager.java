@@ -43,6 +43,7 @@ public class MotionManager implements SensorEventListener {
 
         try {
             fileWriter = CsvMotionUtil.initFileWriter(context, tripUUID);
+            CsvMotionUtil.writeHeader(fileWriter);
         } catch (IOException e) {
             e.printStackTrace();
         }
