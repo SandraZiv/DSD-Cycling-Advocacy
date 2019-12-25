@@ -1,5 +1,6 @@
 package com.cycling_advocacy.bumpy.entities;
 
+// TODO: Is this for the database (locally stored data)? It will probably need to be reworked.
 public class PastTrip {
 
     // todo fix this types

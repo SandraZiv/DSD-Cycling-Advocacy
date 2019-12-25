@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cycling_advocacy.bumpy.entities.Trip;
+import com.cycling_advocacy.bumpy.net.model.ApiResponse;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
 import com.cycling_advocacy.bumpy.utils.CsvMotionUtil;

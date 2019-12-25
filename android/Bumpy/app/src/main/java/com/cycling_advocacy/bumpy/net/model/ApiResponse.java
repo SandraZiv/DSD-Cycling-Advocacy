@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy.net;
+package com.cycling_advocacy.bumpy.net.model;
 
 import androidx.annotation.NonNull;
 
