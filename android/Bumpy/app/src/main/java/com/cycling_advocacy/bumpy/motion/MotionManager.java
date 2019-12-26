@@ -5,9 +5,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.cycling_advocacy.bumpy.entities.Motion;
 import com.cycling_advocacy.bumpy.utils.CsvMotionUtil;
+import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,6 +21,11 @@ public class MotionManager implements SensorEventListener {
 
     private SensorManager sensorManager;
     private Sensor accelerometer, magnetometer, gyroscope;
+
+    // Although we could check whether a sensor is present with <sensor> == null, this is a bit more readable
+    private boolean hasAccelerometer = false;
+    private boolean hasMagnetometer = false;
+    private boolean hasGyroscope = false;
 
     private float[] accelerometerData = null;
     private float[] magnetometerData = null;
@@ -30,10 +38,26 @@ public class MotionManager implements SensorEventListener {
     public MotionManager(Context context, VibrationChangedListener listener) {
         this.sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
 
-        // todo check for nulls if the device does not have that sensor
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (accelerometer != null) {
+            hasAccelerometer = true;
+        } else {
+            Log.d("Motion data", "Device has no accelerometer.");
+        }
+
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        if (magnetometer != null) {
+            hasMagnetometer = true;
+        } else {
+            Log.d("Motion data", "Device has no magnetometer.");
+        }
+
         gyroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        if (gyroscope != null) {
+            hasGyroscope = true;
+        } else {
+            Log.d("Motion data", "Device has no gyroscope.");
+        }
 
         this.listener = listener;
     }
@@ -49,9 +73,15 @@ public class MotionManager implements SensorEventListener {
             e.printStackTrace();
         }
 
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);  // 50hz
-        sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
+        if (hasAccelerometer) {
+            sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME);  // 50hz
+        }
+        if (hasMagnetometer) {
+            sensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_GAME);
+        }
+        if (hasGyroscope) {
+            sensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_GAME);
+        }
     }
 
     public void stopSensorUpdates() {
@@ -63,9 +93,15 @@ public class MotionManager implements SensorEventListener {
             e.printStackTrace();
         }
 
-        sensorManager.unregisterListener(this, accelerometer);
-        sensorManager.unregisterListener(this, magnetometer);
-        sensorManager.unregisterListener(this, gyroscope);
+        if (hasAccelerometer) {
+            sensorManager.unregisterListener(this, accelerometer);
+        }
+        if (hasMagnetometer) {
+            sensorManager.unregisterListener(this, magnetometer);
+        }
+        if (hasGyroscope) {
+            sensorManager.unregisterListener(this, gyroscope);
+        }
     }
 
     @Override
@@ -81,16 +117,38 @@ public class MotionManager implements SensorEventListener {
             gyroscopeData = sensorEvent.values.clone();
         }
 
-        if (accelerometerData != null && magnetometerData != null && gyroscopeData != null) {
-            Motion motion = new Motion(accelerometerData, magnetometerData, gyroscopeData);
+        if ((accelerometerData != null || !hasAccelerometer) && (magnetometerData != null || !hasMagnetometer) && (gyroscopeData != null || !hasGyroscope)) {
+            // Motion motion = new Motion(accelerometerData, magnetometerData, gyroscopeData);
+
+            StringBuilder motionDataString = new StringBuilder();
+            motionDataString.append(GeneralUtil.formatTimestamp(GeneralUtil.toDate(System.currentTimeMillis())) + ",");
+            if (hasAccelerometer) {
+                motionDataString.append(accelerometerData[0] + "," + accelerometerData[1] + "," + accelerometerData[2] + ",");
+            } else {
+                motionDataString.append(",,,");
+            }
+            if (hasMagnetometer) {
+                motionDataString.append(magnetometerData[0] + "," + magnetometerData[1] + "," + magnetometerData[2] + ",");
+            } else {
+                motionDataString.append(",,,");
+            }
+            if (hasGyroscope) {
+                motionDataString.append(gyroscopeData[0] + "," + gyroscopeData[1] + "," + gyroscopeData[2]);
+            } else {
+                motionDataString.append(",,");
+            }
+
             try {
-                CsvMotionUtil.writeLine(fileWriter, motion.toString());
+                CsvMotionUtil.writeLine(fileWriter, motionDataString.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
-            listener.onVibrationChanged((int) accumulatedVibrationsManager.getBumpPercentage());
+            // If the device has no accelerometer we can't calculate vibrations intensity
+            if (hasAccelerometer) {
+                accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
+                listener.onVibrationChanged((int) accumulatedVibrationsManager.getBumpPercentage());
+            }
 
             // clean
             accelerometerData = null;
