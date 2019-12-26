@@ -6,9 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.cycling_advocacy.bumpy.entities.Motion;
 import com.cycling_advocacy.bumpy.utils.CsvMotionUtil;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
@@ -118,28 +116,9 @@ public class MotionManager implements SensorEventListener {
         }
 
         if ((accelerometerData != null || !hasAccelerometer) && (magnetometerData != null || !hasMagnetometer) && (gyroscopeData != null || !hasGyroscope)) {
-            // Motion motion = new Motion(accelerometerData, magnetometerData, gyroscopeData);
-
-            StringBuilder motionDataString = new StringBuilder();
-            motionDataString.append(GeneralUtil.formatTimestamp(GeneralUtil.toDate(System.currentTimeMillis())) + ",");
-            if (hasAccelerometer) {
-                motionDataString.append(accelerometerData[0] + "," + accelerometerData[1] + "," + accelerometerData[2] + ",");
-            } else {
-                motionDataString.append(",,,");
-            }
-            if (hasMagnetometer) {
-                motionDataString.append(magnetometerData[0] + "," + magnetometerData[1] + "," + magnetometerData[2] + ",");
-            } else {
-                motionDataString.append(",,,");
-            }
-            if (hasGyroscope) {
-                motionDataString.append(gyroscopeData[0] + "," + gyroscopeData[1] + "," + gyroscopeData[2]);
-            } else {
-                motionDataString.append(",,");
-            }
-
+            String motionDataString = motionToString();
             try {
-                CsvMotionUtil.writeLine(fileWriter, motionDataString.toString());
+                CsvMotionUtil.writeLine(fileWriter, motionDataString);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -159,5 +138,49 @@ public class MotionManager implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
+    }
+
+    private String motionToString() {
+        StringBuilder motionDataString = new StringBuilder();
+        motionDataString
+                .append(GeneralUtil.formatTimestamp(GeneralUtil.toDate(System.currentTimeMillis())))
+                .append(",");
+
+        if (hasAccelerometer) {
+            motionDataString
+                    .append(accelerometerData[0])
+                    .append(",")
+                    .append(accelerometerData[1])
+                    .append(",")
+                    .append(accelerometerData[2])
+                    .append(",");
+        } else {
+            motionDataString.append(",,,");
+        }
+
+        if (hasMagnetometer) {
+            motionDataString
+                    .append(magnetometerData[0])
+                    .append(",")
+                    .append(magnetometerData[1])
+                    .append(",")
+                    .append(magnetometerData[2])
+                    .append(",");
+        } else {
+            motionDataString.append(",,,");
+        }
+
+        if (hasGyroscope) {
+            motionDataString
+                    .append(gyroscopeData[0])
+                    .append(",")
+                    .append(gyroscopeData[1])
+                    .append(",")
+                    .append(gyroscopeData[2]);
+        } else {
+            motionDataString.append(",,");
+        }
+
+        return motionDataString.toString();
     }
 }
