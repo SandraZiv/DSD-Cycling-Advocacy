@@ -15,7 +15,7 @@ class Trip(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, device_uuid: str=None, trip_uuid: str=None, start_ts: datetime=None, end_ts: datetime=None, distance: float=None, gnss_data: List[TripGnssData]=None):  # noqa: E501
+    def __init__(self, device_uuid: str=None, trip_uuid: str=None, start_ts: datetime=None, end_ts: datetime=None, gnss_data: List[TripGnssData]=None):  # noqa: E501
         """Trip - a model defined in Swagger
 
         :param device_uuid: The device_uuid of this Trip.  # noqa: E501
@@ -26,8 +26,6 @@ class Trip(Model):
         :type start_ts: datetime
         :param end_ts: The end_ts of this Trip.  # noqa: E501
         :type end_ts: datetime
-        :param distance: The distance of this Trip.  # noqa: E501
-        :type distance: float
         :param gnss_data: The gnss_data of this Trip.  # noqa: E501
         :type gnss_data: List[TripGnssData]
         """
@@ -36,7 +34,6 @@ class Trip(Model):
             'trip_uuid': str,
             'start_ts': datetime,
             'end_ts': datetime,
-            'distance': float,
             'gnss_data': List[TripGnssData]
         }
 
@@ -45,14 +42,12 @@ class Trip(Model):
             'trip_uuid': 'tripUUID',
             'start_ts': 'startTS',
             'end_ts': 'endTS',
-            'distance': 'distance',
             'gnss_data': 'gnssData'
         }
         self._device_uuid = device_uuid
         self._trip_uuid = trip_uuid
         self._start_ts = start_ts
         self._end_ts = end_ts
-        self._distance = distance
         self._gnss_data = gnss_data
 
     @classmethod
@@ -149,29 +144,6 @@ class Trip(Model):
         """
 
         self._end_ts = end_ts
-
-    @property
-    def distance(self) -> float:
-        """Gets the distance of this Trip.
-
-        Expressed in meters  # noqa: E501
-
-        :return: The distance of this Trip.
-        :rtype: float
-        """
-        return self._distance
-
-    @distance.setter
-    def distance(self, distance: float):
-        """Sets the distance of this Trip.
-
-        Expressed in meters  # noqa: E501
-
-        :param distance: The distance of this Trip.
-        :type distance: float
-        """
-
-        self._distance = distance
 
     @property
     def gnss_data(self) -> List[TripGnssData]:

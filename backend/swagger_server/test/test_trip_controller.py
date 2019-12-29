@@ -6,6 +6,8 @@ from flask import json
 from six import BytesIO
 
 from swagger_server.models.api_response import ApiResponse  # noqa: E501
+from swagger_server.models.full_processed_trip import FullProcessedTrip  # noqa: E501
+from swagger_server.models.processed_trip import ProcessedTrip  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server.test import BaseTestCase
 
@@ -58,7 +60,8 @@ class TestTripController(BaseTestCase):
 
         Uploads a csv motion file, only a few checks are performed.
         """
-        data = dict(file='file_example', trip_uuid='38400000-8cf0-11bd-b23e-10b96e4ef00d')
+        data = dict(file='file_example',
+                    trip_uuid='38400000-8cf0-11bd-b23e-10b96e4ef00d')
         response = self.client.open(
             '/v1/trip/uploadMotionFile',
             method='POST',

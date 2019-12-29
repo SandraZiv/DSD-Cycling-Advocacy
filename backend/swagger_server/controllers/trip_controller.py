@@ -2,6 +2,8 @@ import connexion
 import six
 
 from swagger_server.models.api_response import ApiResponse  # noqa: E501
+from swagger_server.models.full_processed_trip import FullProcessedTrip  # noqa: E501
+from swagger_server.models.processed_trip import ProcessedTrip  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server.road_analysis import queue
 from swagger_server import constants as const
@@ -30,9 +32,7 @@ def get_trip_by_trip_uuid():  # noqa: E501
     trip = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
     if not trip:
         return ApiResponse(code=400, message='trip not found'), 400
-    print(trip.pop('_id'))
-    print(Trip.from_dict(trip))
-    return Trip.from_dict(trip).to_str(), 200
+    return FullProcessedTrip().from_dict(trip), 200
 
 
 def get_trips_by_device_uuid():  # noqa: E501
@@ -47,7 +47,7 @@ def get_trips_by_device_uuid():  # noqa: E501
     """
     device_uuid = connexion.request.args.get('deviceUUID', None)
     trips = mongodb_interface.get_trips_by_device_uuid(device_uuid)
-    return dumps(trips), 200
+    return list(map(ProcessedTrip.from_dict, trips)), 200
 
 
 def insert_new_trip():  # noqa: E501
@@ -66,7 +66,7 @@ def insert_new_trip():  # noqa: E501
         body = Trip.from_dict(connexion.request.get_json())  # noqa: E501
         mongodb_interface.insert_new_trip(body.to_dict())
         # enqueueing a trip road_analysis job
-        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=trip_uuid).enqueue_job(const.TRIP_ANALYSIS_QUEUE)
+        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=body.trip_uuid).enqueue_job(const.TRIP_ANALYSIS_QUEUE)
     except mongodb_interface.pymongo.errors.DuplicateKeyError:
         return ApiResponse(code=400, message="trip already exist"), 400
     return ApiResponse(code=200, message="ok"), 200
