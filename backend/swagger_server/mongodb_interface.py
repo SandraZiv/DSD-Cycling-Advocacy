@@ -31,6 +31,24 @@ def update_trip(trip_uuid, new_values):
     main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_values}, upsert=False)
     return
 
+
+#
+# DEVICES UUID
+#
+
+
+def get_device_uuid_map_by_short_device_uuid(short_device_uuid):
+    return main_db.devices_uuid_map.find_one({'short_device_uuid': short_device_uuid})
+
+
+def get_device_uuid_map_by_device_uuid(device_uuid):
+    return main_db.devices_uuid_map.find_one({'device_uuid': device_uuid})
+
+
+def insert_new_device_uuid_map(device_uuid_map):
+    main_db.devices_uuid_map.insert_one(device_uuid_map)
+
+
 #
 # GRIDFS
 #

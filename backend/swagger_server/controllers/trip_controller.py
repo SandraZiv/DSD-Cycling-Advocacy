@@ -7,9 +7,7 @@ from swagger_server.models.processed_trip import ProcessedTrip  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server.road_analysis import queue
 from swagger_server import constants as const
-from swagger_server import util
 from swagger_server import mongodb_interface
-from bson.json_util import dumps
 
 
 # TODO new trip road_analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
