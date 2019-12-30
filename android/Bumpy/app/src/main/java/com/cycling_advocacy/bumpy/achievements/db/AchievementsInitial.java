@@ -1,7 +1,11 @@
 package com.cycling_advocacy.bumpy.achievements.db;
 
+import android.content.Context;
+
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.achievements.Achievement;
+import com.cycling_advocacy.bumpy.achievements.AchievementCondition;
+import com.cycling_advocacy.bumpy.achievements.AchievementManager;
 import com.cycling_advocacy.bumpy.entities.Trip;
 
 import java.util.Calendar;
@@ -35,10 +39,10 @@ public class AchievementsInitial {
             R.string.a1_title,
             R.string.a1_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
-                public boolean isCompleted(Trip trip) {
-                    return false;
+                public boolean isCompleted(Context context) {
+                    return AchievementManager.getTotalTripCount(context) == 1;
                 }
             }
     );
@@ -48,7 +52,7 @@ public class AchievementsInitial {
             R.string.a2_title,
             R.string.a2_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
                     Calendar startCalendar = Calendar.getInstance();
@@ -70,13 +74,12 @@ public class AchievementsInitial {
             R.string.a3_title,
             R.string.a3_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
-                public boolean isCompleted(Trip trip) {
-                    return false;
+                public boolean isCompleted(Context context) {
+                    return AchievementManager.getDailyTripCount(context) == 5;
                 }
             }
-
     );
 
     private static Achievement a4 = new Achievement(
@@ -84,20 +87,21 @@ public class AchievementsInitial {
             R.string.a4_title,
             R.string.a4_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
-                public boolean isCompleted(Trip trip) {
-                    return false;
+                public boolean isCompleted(Context context) {
+                    return AchievementManager.getTotalTripCount(context) == 20;
                 }
             }
     );
 
+    // todo get vibration from trips
     private static Achievement a5 = new Achievement(
             5,
             R.string.a5_title,
             R.string.a5_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
                     return false;
@@ -110,7 +114,7 @@ public class AchievementsInitial {
             R.string.a6_title,
             R.string.a6_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
                     return trip.getDistance() > 5;
@@ -123,7 +127,7 @@ public class AchievementsInitial {
             R.string.a7_title,
             R.string.a7_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
                     return trip.getDistance() > 20;
@@ -136,7 +140,7 @@ public class AchievementsInitial {
             R.string.a8_title,
             R.string.a8_detail,
             false,
-            new Achievement.AchievementCondition() {
+            new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
                     long twoHours = 2 * 60 * 60 * 1000;  // in millis

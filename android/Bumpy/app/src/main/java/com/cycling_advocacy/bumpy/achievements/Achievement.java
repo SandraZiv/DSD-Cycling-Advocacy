@@ -2,8 +2,6 @@ package com.cycling_advocacy.bumpy.achievements;
 
 import androidx.annotation.StringRes;
 
-import com.cycling_advocacy.bumpy.entities.Trip;
-
 public class Achievement {
 
     private int id;
@@ -56,10 +54,5 @@ public class Achievement {
 
     public AchievementCondition getCondition() {
         return condition;
-    }
-
-
-    public interface AchievementCondition {
-        boolean isCompleted(Trip trip);
     }
 }
