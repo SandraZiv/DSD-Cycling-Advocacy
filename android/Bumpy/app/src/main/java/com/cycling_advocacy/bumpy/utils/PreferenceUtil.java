@@ -13,7 +13,7 @@ public class PreferenceUtil {
     private static final String SHOULD_SHOW_ONBOARDING_KEY = "SHOULD_SHOW_ONBOARDING_KEY";
     private static final boolean SHOULD_SHOW_ONBOARDING_DEFAULT = true;
 
-    private static SharedPreferences getSharedPreference(Context context) {
+    public static SharedPreferences getSharedPreference(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
