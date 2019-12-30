@@ -26,6 +26,7 @@
         android:layout_margin="@dimen/margin_small"
         app:divisions="10"
         app:rangeValues="@array/speed_range_values"
+        app:rangeColors="@array/range_colors"
         app:scaleEndValue="50"
         app:subdivisions="1"
         app:textUnit="@string/speed_unit" />
@@ -104,6 +105,7 @@
         android:layout_margin="@dimen/margin_standard"
         app:divisions="10"
         app:rangeValues="@array/vibration_range_values"
+        app:rangeColors="@array/range_colors"
         app:scaleEndValue="100"
         app:subdivisions="1"
         app:textUnit="@string/vibration_unit" />

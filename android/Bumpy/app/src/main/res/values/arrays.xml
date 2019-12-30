@@ -13,6 +13,19 @@
         <item>45</item>
         <item>50</item>
     </string-array>
+    <string-array name="range_colors">
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+        <item>"#16768256"</item>
+    </string-array>
     <string-array name="vibration_range_values">
         <item>0</item>
         <item>10</item>

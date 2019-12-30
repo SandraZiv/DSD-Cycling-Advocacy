@@ -14,7 +14,7 @@
         <item name="android:windowBackground">@color/cyclingAdvocacyBlack</item>
     </style>
 
-    <style name="SwitchCompatStyle" >
+    <style name="SwitchCompatStyle">
         <!-- active thumb & track color (30% transparency) -->
         <item name="colorControlActivated">@color/cyclingAdvocacyYellow</item>
         <item name="android:colorForeground">@color/white</item>
@@ -47,4 +47,13 @@
         <item name="textUnitSize">0.1</item>
         <item name="textValueSize">0.2</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

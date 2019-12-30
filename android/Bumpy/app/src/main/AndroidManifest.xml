@@ -5,13 +5,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -22,18 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <!-- todo this is due to http and not https service -->
 
+        <!-- todo this is due to http and not https service -->
         <activity
             android:name=".LauncherActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- todo onboarding activity no action bar style -->
+        </activity> <!-- todo onboarding activity no action bar style -->
         <activity
             android:name=".OnboardingActivity"
             android:screenOrientation="portrait" />
@@ -46,12 +42,16 @@
             android:label="@string/trip_in_progress"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".PastTripStatisticsActivity"
+            android:label="@string/title_past_trip_statistics"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceCompatStyle" />
 
-        <service android:name=".location.LocationService"/>
-
+        <service android:name=".location.LocationService" />
     </application>
+
 </manifest>

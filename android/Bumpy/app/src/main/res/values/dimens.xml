@@ -5,6 +5,7 @@
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">20dp</dimen>
     <dimen name="margin_double">28dp</dimen>
+    <dimen name="margin_extra_double">50dp</dimen>
 
     <dimen name="text_size_big">30sp</dimen>
     <dimen name="text_size_large">24sp</dimen>
@@ -13,5 +14,6 @@
     <dimen name="text_size_mini">12sp</dimen>
 
     <dimen name="gauge_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>
