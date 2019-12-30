@@ -115,25 +115,25 @@ public class MotionManager implements SensorEventListener {
             gyroscopeData = sensorEvent.values.clone();
         }
 
-        if ((accelerometerData != null || !hasAccelerometer) && (magnetometerData != null || !hasMagnetometer) && (gyroscopeData != null || !hasGyroscope)) {
-            String motionDataString = motionToString();
-            try {
-                CsvMotionUtil.writeLine(fileWriter, motionDataString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            // If the device has no accelerometer we can't calculate vibrations intensity
-            if (hasAccelerometer) {
-                accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
-                listener.onVibrationChanged((int) accumulatedVibrationsManager.getBumpPercentage());
-            }
-
-            // clean
-            accelerometerData = null;
-            magnetometerData = null;
-            gyroscopeData = null;
+        // write motion data
+        String motionDataString = motionToString();
+        try {
+            CsvMotionUtil.writeLine(fileWriter, motionDataString);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        // If the device has no accelerometer we can't calculate vibrations intensity
+        if (hasAccelerometer && accelerometerData != null) {
+            accumulatedVibrationsManager.addAccelerometerMeasurement(accelerometerData);
+            listener.onVibrationChanged((int) accumulatedVibrationsManager.getBumpPercentage());
+        }
+
+        // clean
+        accelerometerData = null;
+        magnetometerData = null;
+        gyroscopeData = null;
+
     }
 
     @Override
@@ -146,7 +146,7 @@ public class MotionManager implements SensorEventListener {
                 .append(GeneralUtil.formatTimestamp(GeneralUtil.toDate(System.currentTimeMillis())))
                 .append(",");
 
-        if (hasAccelerometer) {
+        if (hasAccelerometer && accelerometerData != null) {
             motionDataString
                     .append(accelerometerData[0])
                     .append(",")
@@ -158,7 +158,7 @@ public class MotionManager implements SensorEventListener {
             motionDataString.append(",,,");
         }
 
-        if (hasMagnetometer) {
+        if (hasMagnetometer && magnetometerData != null) {
             motionDataString
                     .append(magnetometerData[0])
                     .append(",")
@@ -170,7 +170,7 @@ public class MotionManager implements SensorEventListener {
             motionDataString.append(",,,");
         }
 
-        if (hasGyroscope) {
+        if (hasGyroscope && gyroscopeData != null) {
             motionDataString
                     .append(gyroscopeData[0])
                     .append(",")
