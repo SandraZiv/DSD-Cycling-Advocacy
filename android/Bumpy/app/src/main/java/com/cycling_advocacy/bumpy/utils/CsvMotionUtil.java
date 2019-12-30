@@ -32,6 +32,11 @@ public class CsvMotionUtil {
         return new FileWriter(file, true);
     }
 
+    public static void writeHeader(Writer w) throws IOException {
+        w.append("timestamp,accelerometerX,accelerometerY,accelerometerZ,magnetometerX,magnetometerY,magnetometerZ,gyroscopeX,gyroscopeY,gyroscopeZ");
+        w.append("\n");
+    }
+
     public static void writeLine(Writer w, String value) throws IOException {
         w.append(value);
         w.append("\n");
