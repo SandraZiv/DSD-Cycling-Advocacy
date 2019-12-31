@@ -2,7 +2,9 @@ package com.cycling_advocacy.bumpy.achievements;
 
 import androidx.annotation.StringRes;
 
-public class Achievement {
+import java.io.Serializable;
+
+public class Achievement implements Serializable {
 
     private int id;
 
