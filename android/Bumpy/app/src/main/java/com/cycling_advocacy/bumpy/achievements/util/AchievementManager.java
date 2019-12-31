@@ -14,6 +14,10 @@ import java.util.List;
 public class AchievementManager {
 
     public static ArrayList<Achievement> manageAchievements(Context context, Trip trip, List<Achievement> achievements) {
+        if (achievements == null) {
+            return new ArrayList<>();
+        }
+
         // todo trip condition check?
         AchievementsPrefs.increaseDailyTripCount(context);
         AchievementsPrefs.increaseTotalTripCount(context);

@@ -51,6 +51,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceCompatStyle" />
 
+        <activity
+            android:name=".achievements.ui.AchievementCompletedActivity"
+            android:screenOrientation="portrait"/>
+
         <service android:name=".location.LocationService"/>
 
     </application>
