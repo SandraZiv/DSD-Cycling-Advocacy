@@ -39,8 +39,8 @@ export class PastTrips extends Component {
                         return {
                             "trip_uuid": t.trip_uuid,
                             "distance": t.distance.toFixed(2),
-                            "start_ts": new Date(t.start_ts.$date).toLocaleString(),
-                            "end_ts": new Date(t.end_ts.$date).toLocaleString(),
+                            "start_ts": new Date(t.start_ts.$date).toUTCString(),
+                            "end_ts": new Date(t.end_ts.$date).toUTCString(),
                             "vibration": Math.floor(Math.random() * Math.floor(80))
                         };
                     }
