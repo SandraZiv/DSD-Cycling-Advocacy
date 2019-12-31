@@ -1,15 +1,13 @@
-package com.cycling_advocacy.bumpy.achievements;
+package com.cycling_advocacy.bumpy.achievements.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
-import com.cycling_advocacy.bumpy.achievements.db.AchievementsInitial;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 import java.util.Calendar;
 
-public class AchievementManager {
+public class AchievementsPrefs {
 
     private static final String COUNT_TOTAL_TRIPS = "COUNT_TOTAL_TRIPS";
 
@@ -90,12 +88,6 @@ public class AchievementManager {
         int year2 = calendar1.get(Calendar.YEAR);
 
         return year1 == year2 && day1 == day2;
-    }
-
-    public static Achievement convertToAchievement(AchievementEntity entity) {
-        Achievement achievement = AchievementsInitial.getAchievements()[entity.getId()];
-        achievement.setCompleted(entity.isCompleted());
-        return achievement;
     }
 
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.achievements.Achievement;
 import com.cycling_advocacy.bumpy.achievements.AchievementCondition;
-import com.cycling_advocacy.bumpy.achievements.AchievementManager;
+import com.cycling_advocacy.bumpy.achievements.util.AchievementsPrefs;
 import com.cycling_advocacy.bumpy.entities.Trip;
 
 import java.util.Calendar;
@@ -42,7 +42,7 @@ public class AchievementsInitial {
             new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Context context) {
-                    return AchievementManager.getTotalTripCount(context) == 1;
+                    return AchievementsPrefs.getTotalTripCount(context) == 1;
                 }
             }
     );
@@ -77,7 +77,7 @@ public class AchievementsInitial {
             new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Context context) {
-                    return AchievementManager.getDailyTripCount(context) == 5;
+                    return AchievementsPrefs.getDailyTripCount(context) == 5;
                 }
             }
     );
@@ -90,7 +90,7 @@ public class AchievementsInitial {
             new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Context context) {
-                    return AchievementManager.getTotalTripCount(context) == 20;
+                    return AchievementsPrefs.getTotalTripCount(context) == 20;
                 }
             }
     );
