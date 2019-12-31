@@ -3,7 +3,9 @@ package com.cycling_advocacy.bumpy.achievements;
 import android.content.Context;
 import com.cycling_advocacy.bumpy.entities.Trip;
 
-public interface AchievementCondition {
+import java.io.Serializable;
+
+public interface AchievementCondition extends Serializable {
 
     default boolean isCompleted(Trip trip) {
         return false;
