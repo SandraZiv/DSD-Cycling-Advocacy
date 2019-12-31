@@ -1,6 +1,7 @@
 package com.cycling_advocacy.bumpy.achievements.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +9,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.achievements.Achievement;
-import com.cycling_advocacy.bumpy.achievements.util.AchievementManager;
 import com.cycling_advocacy.bumpy.achievements.AchievementsViewModel;
 import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
+import com.cycling_advocacy.bumpy.achievements.util.AchievementManager;
 
 import java.util.List;
 
@@ -40,6 +41,6 @@ public class AchievementCompletedActivity extends AppCompatActivity {
         }
         achievementsViewModel.updateAll(entitiesToUpdate);
 
-
+        new Handler().postDelayed(this::finish, 5000);
     }
 }
