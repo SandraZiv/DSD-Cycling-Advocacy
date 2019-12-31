@@ -55,8 +55,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceCompatStyle" />
 
-        <service android:name=".location.LocationService" />
-        
+        <service android:name=".location.LocationService"/>
+
     </application>
 
 </manifest>
