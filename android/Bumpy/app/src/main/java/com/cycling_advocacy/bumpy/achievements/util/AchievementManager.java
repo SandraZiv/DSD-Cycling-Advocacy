@@ -9,22 +9,17 @@ import com.cycling_advocacy.bumpy.achievements.db.AchievementsInitial;
 import com.cycling_advocacy.bumpy.entities.Trip;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 public class AchievementManager {
 
-    public static ArrayList<Achievement> manageAchievements(Context context, Trip trip, List<Achievement> achievements) {
-        if (achievements == null) {
-            return new ArrayList<>();
-        }
-
+    public static ArrayList<Achievement> manageAchievements(Context context, Trip trip, Set<Achievement> achievements) {
         // todo trip condition check?
         AchievementsPrefs.increaseDailyTripCount(context);
         AchievementsPrefs.increaseTotalTripCount(context);
 
         // check for completed achievement
         ArrayList<Achievement> completedAchievements = new ArrayList<>();
-
         for (Achievement achievement : achievements) {
             AchievementCondition condition = achievement.getCondition();
             if (!achievement.isCompleted()

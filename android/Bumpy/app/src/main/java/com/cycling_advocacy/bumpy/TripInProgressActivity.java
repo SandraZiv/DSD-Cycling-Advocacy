@@ -22,10 +22,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.cycling_advocacy.bumpy.achievements.Achievement;
-import com.cycling_advocacy.bumpy.achievements.util.AchievementManager;
 import com.cycling_advocacy.bumpy.achievements.AchievementsViewModel;
 import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
 import com.cycling_advocacy.bumpy.achievements.ui.AchievementCompletedActivity;
+import com.cycling_advocacy.bumpy.achievements.util.AchievementManager;
 import com.cycling_advocacy.bumpy.entities.GnssData;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.location.LocationChangedListener;
@@ -40,7 +40,8 @@ import com.google.android.gms.location.LocationServices;
 import com.ntt.customgaugeview.library.GaugeView;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TripInProgressActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -60,7 +61,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
     private Trip trip;
 
-    private List<Achievement> achievements = null;
+    private Set<Achievement> achievements = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +103,8 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         AchievementsViewModel achievementsViewModel = ViewModelProviders
                 .of(this).get(AchievementsViewModel.class);
         achievementsViewModel.achievementsLiveData.observe(this, achievementEntities -> {
-            if (achievements == null) {
-                achievements = new ArrayList<>();
-                for(AchievementEntity entity : achievementEntities) {
-                    achievements.add(AchievementManager.convertToAchievement(entity));
-                }
+            for (AchievementEntity entity : achievementEntities) {
+                achievements.add(AchievementManager.convertToAchievement(entity));
             }
         });
     }

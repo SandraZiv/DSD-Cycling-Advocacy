@@ -23,7 +23,6 @@ public class AchievementCompletedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_achievement_completed);
 
-        // todo Set instead?
         List<Achievement> completedAchievements =
                 (List<Achievement>) getIntent().getSerializableExtra(EXTRA_COMPLETED_ACHIEVEMENTS);
 

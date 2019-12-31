@@ -1,5 +1,6 @@
 package com.cycling_advocacy.bumpy.achievements;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import java.io.Serializable;
@@ -56,5 +57,18 @@ public class Achievement implements Serializable {
 
     public AchievementCondition getCondition() {
         return condition;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Achievement)) {
+            return false;
+        }
+        return this.getId() == ((Achievement)obj).getId();
     }
 }
