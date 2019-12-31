@@ -26,7 +26,6 @@ public class AchievementsInitial {
             entities[i] = entity;
         }
 
-
         return entities;
     }
 
