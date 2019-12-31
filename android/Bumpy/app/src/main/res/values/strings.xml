@@ -66,12 +66,12 @@
 
     <!-- Trip statistics -->
     <string name="title_past_trip_statistics">Trip statistics</string>
-    <string name="dash"> - </string>
-    <string name="accumulated_vibration">Accumulated Vibrations : </string>
-    <string name="avg_speed">Average Speed : </string>
-    <string name="max_speed">Maximum Speed : </string>
-    <string name="dist">Distance : </string>
-    <string name="dur">Duration : </string>
-    <string name="bumps">Bumps : </string>
+    <string name="time_interval">%s - %s</string>
+    <string name="accumulated_vibration">Accumulated Vibrations: </string>
+    <string name="avg_speed">Average Speed: </string>
+    <string name="max_speed">Maximum Speed: </string>
+    <string name="dist">Distance: </string>
+    <string name="dur">Duration: </string>
+    <string name="bumps">Bumps: </string>
 
 </resources>

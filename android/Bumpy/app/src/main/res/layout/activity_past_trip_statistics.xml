@@ -25,26 +25,13 @@
         android:orientation="horizontal"
         android:layout_marginLeft="@dimen/margin_large">
         <TextView
-            android:id="@+id/trip_start_time"
+            android:id="@+id/trip_time_interval"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="12:10"
+            android:text="12:10 - 13:50"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text= "@string/dash"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            android:textSize="@dimen/text_size_small" />
-        <TextView
-            android:id="@+id/trip_end_time"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="13:10"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            android:textSize="@dimen/text_size_small" />
-    </LinearLayout>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
