@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
-import com.cycling_advocacy.bumpy.achievements.Achievement;
 import com.cycling_advocacy.bumpy.db.BumpyDB;
 
 import java.util.List;
@@ -20,13 +19,8 @@ public class AchievementRepository {
         achievements = achievementDao.getAchievements();
     }
 
-    public void updateAsync(final AchievementEntity achievement) {
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                achievementDao.update(achievement);
-            }
-        });
+    public void updateAllAsync(final AchievementEntity... achievement) {
+        Executors.newSingleThreadExecutor().execute(() -> achievementDao.updateAll(achievement));
     }
 
     public LiveData<List<AchievementEntity>> getAchievements() {

@@ -22,7 +22,7 @@ public class AchievementsViewModel extends AndroidViewModel {
         achievementsLiveData = repository.getAchievements();
     }
 
-    public void update(AchievementEntity achievement) {
-        repository.updateAsync(achievement);
+    public void updateAll(AchievementEntity... achievement) {
+        repository.updateAllAsync(achievement);
     }
 }

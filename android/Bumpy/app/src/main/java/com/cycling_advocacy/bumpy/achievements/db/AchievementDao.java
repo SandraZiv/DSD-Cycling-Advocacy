@@ -6,8 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.cycling_advocacy.bumpy.achievements.Achievement;
-
 import java.util.List;
 
 @Dao
@@ -21,5 +19,5 @@ public interface AchievementDao {
     void insertAll(AchievementEntity... achievements);
 
     @Update
-    void update(AchievementEntity achievement);
+    void updateAll(AchievementEntity... achievement);
 }
