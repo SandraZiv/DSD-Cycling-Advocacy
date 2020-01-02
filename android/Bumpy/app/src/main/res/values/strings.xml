@@ -52,14 +52,13 @@
     <string name="settings_mob_data_title">Use Mobile data</string>
     <string name="settings_mob_data_summary_on">Now sending collected data automatically using mobile data or WiFi</string>
     <string name="settings_mob_data_summary_off">Now sending collected data automatically using only Wifi</string>
-    <string name="settings_display_stat_title">Show statistics</string>
-    <string name="settings_display_stat_summary_off">Statistics is hidden during all trips</string>
-    <string name="settings_display_stat_summary_on">Statistics is shown during all trips</string>
+    <string name="settings_keep_awake_title">Keep screen awake</string>
+    <string name="settings_keep_awake_summary">While trip is in progress</string>
 
     <!-- preferences keys -->
     <string name="pref_uid_key">pref_uid_key</string>
     <string name="pref_mob_data_key">pref_mob_data_key</string>
-    <string name="pref_display_stat_key">pref_display_stat_key</string>
+    <string name="pref_keep_awake_key">pref_display_stat_key</string>
 
     <!-- notification -->
     <string name="channel_name">Background location channel</string>

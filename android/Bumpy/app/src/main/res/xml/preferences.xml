@@ -19,12 +19,11 @@
         app:defaultValue="@bool/pref_mob_data_default"/>
 
     <androidx.preference.SwitchPreferenceCompat
-        app:key="@string/pref_display_stat_key"
-        app:title="@string/settings_display_stat_title"
-        app:summaryOff="@string/settings_display_stat_summary_off"
-        app:summaryOn="@string/settings_display_stat_summary_on"
+        app:key="@string/pref_keep_awake_key"
+        app:title="@string/settings_keep_awake_title"
+        app:summary="@string/settings_keep_awake_summary"
         app:allowDividerBelow="true"
         app:iconSpaceReserved="false"
-        app:defaultValue="@bool/pref_display_stat_default"/>
+        app:defaultValue="@bool/pref_keep_awake_default" />
 
 </androidx.preference.PreferenceScreen>

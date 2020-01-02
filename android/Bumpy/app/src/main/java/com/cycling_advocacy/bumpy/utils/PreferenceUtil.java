@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import com.cycling_advocacy.bumpy.R;
+
 public class PreferenceUtil {
 
     private static final String DEVICE_UUID_KEY = "DEVICE_UUID_KEY";
@@ -36,5 +38,13 @@ public class PreferenceUtil {
 
     public static String getDeviceUUID(Context context) {
         return getSharedPreference(context).getString(DEVICE_UUID_KEY, DEVICE_UUID_DEFAULT);
+    }
+
+    public static boolean shouldKeepScreenAwake(Context context) {
+        return PreferenceUtil.getSharedPreference(context)
+                .getBoolean(
+                        context.getString(R.string.pref_keep_awake_key),
+                        context.getResources().getBoolean(R.bool.pref_keep_awake_default)
+                );
     }
 }
