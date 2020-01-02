@@ -17,7 +17,8 @@
         tools:text="13thDec,2019"
         android:textColor="@color/cyclingAdvocacyYellow"
         android:textSize="@dimen/text_size_medium"
-        android:paddingLeft="@dimen/margin_large"/>
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large"/>
 
     <TextView
         android:id="@+id/tv_trip_time_interval"
@@ -26,13 +27,15 @@
         tools:text="12:10 - 13:50"
         android:textColor="@color/cyclingAdvocacyYellow"
         android:textSize="@dimen/text_size_small"
-        android:paddingLeft="@dimen/margin_large"/>
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_large">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -54,7 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_large">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -76,7 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_large">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -98,7 +103,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_large">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -120,7 +126,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_large">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -142,7 +149,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="@dimen/margin_large">
+        android:paddingLeft="@dimen/margin_large"
+        android:paddingRight="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
