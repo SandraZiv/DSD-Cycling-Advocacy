@@ -21,7 +21,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.cycling_advocacy.bumpy.achievements.Achievement;
+import com.cycling_advocacy.bumpy.achievements.AchievementsViewModel;
+import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
+import com.cycling_advocacy.bumpy.achievements.ui.AchievementCompletedActivity;
+import com.cycling_advocacy.bumpy.achievements.util.AchievementManager;
 import com.cycling_advocacy.bumpy.entities.GnssData;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.location.LocationChangedListener;
@@ -34,6 +40,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.ntt.customgaugeview.library.GaugeView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TripInProgressActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -53,6 +63,8 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
     private Trip trip;
 
+    private Set<Achievement> achievements = new HashSet<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,12 +82,17 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         vibrationmeter = findViewById(R.id.gauge_view_vibration);
 
         btnEndTrip = findViewById(R.id.button_trip_end);
-        btnEndTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopTracking();
-                finish();
+        btnEndTrip.setOnClickListener(view -> {
+            stopTracking();
+
+            ArrayList<Achievement> completedAchievements =
+                    AchievementManager.manageAchievements(TripInProgressActivity.this, trip, achievements);
+            if (!completedAchievements.isEmpty()) {
+                Intent intent = new Intent(TripInProgressActivity.this, AchievementCompletedActivity.class);
+                intent.putExtra(AchievementCompletedActivity.EXTRA_COMPLETED_ACHIEVEMENTS, completedAchievements);
+                startActivity(intent);
             }
+            finish();
         });
 
         googleApiClient = new GoogleApiClient.Builder(this).
@@ -85,6 +102,15 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
                 .build();
 
         motionManager = new MotionManager(this, this);
+
+        // gather achievements for later usage when trip is ended
+        AchievementsViewModel achievementsViewModel = ViewModelProviders
+                .of(this).get(AchievementsViewModel.class);
+        achievementsViewModel.achievementsLiveData.observe(this, achievementEntities -> {
+            for (AchievementEntity entity : achievementEntities) {
+                achievements.add(AchievementManager.convertToAchievement(entity));
+            }
+        });
     }
 
     @Override
