@@ -47,4 +47,12 @@ public class PreferenceUtil {
                         context.getResources().getBoolean(R.bool.pref_keep_awake_default)
                 );
     }
+
+    public static boolean shouldUseMobileData(Context context) {
+        return PreferenceUtil.getSharedPreference(context)
+                .getBoolean(
+                        context.getString(R.string.pref_mob_data_key),
+                        context.getResources().getBoolean(R.bool.pref_mob_data_default)
+                );
+    }
 }

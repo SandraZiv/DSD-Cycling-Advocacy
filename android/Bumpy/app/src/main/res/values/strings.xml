@@ -51,7 +51,7 @@
     <string name="settings_uid_title">User Identifier</string>
     <string name="settings_mob_data_title">Use Mobile data</string>
     <string name="settings_mob_data_summary_on">Now sending collected data automatically using mobile data or WiFi</string>
-    <string name="settings_mob_data_summary_off">Now sending collected data automatically using only Wifi</string>
+    <string name="settings_mob_data_summary_off">Now sending collected data automatically using only WiFi</string>
     <string name="settings_keep_awake_title">Keep screen awake</string>
     <string name="settings_keep_awake_summary">While trip is in progress</string>
 
