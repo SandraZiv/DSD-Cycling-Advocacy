@@ -1,27 +1,33 @@
 import React from 'react';
-import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
+import {Route, Switch, Redirect, Router} from 'react-router-dom';
+import Store from "./Store";
+import {Navigation} from "./components/Navigation";
 import {Home} from './components/Home';  // Home without {} does not work no default export
+import {UserUUID} from "./components/UserUUID";
 import {PastTrips} from './components/PastTrips';  // PastTrips without {} does not work no default export
 import {ReportIssue} from './components/ReportIssue';  // ReportIssue without {} does not work no default export
-import {Navigation} from "./components/Navigation";
+import history from './setupHistory'
 import './App.css';
 
-function App() {
+const App = () => {
     return (
-        <BrowserRouter>
-            <div className="App">
-                <Navigation/>
-                <div className="App-body">
-                    <Switch>
-                        <Route exact path='/' component={Home}/>
-                        <Route exact path='/trips' component={PastTrips}/>
-                        <Route exact path='/fms' component={ReportIssue}/>
-                        <Redirect to="/"/>
-                    </Switch>
+        <Store>
+            <Router history={history}>
+                <div className="App">
+                    <Navigation/>
+                    <div className="App-body">
+                        <Switch>
+                            <Route exact path='/' component={Home}/>
+                            <Route exact path='/user' component={UserUUID}/>
+                            <Route path='/trips/' component={PastTrips}/>
+                            <Route exact path='/fms' component={ReportIssue}/>
+                            <Redirect to="/"/>
+                        </Switch>
+                    </div>
                 </div>
-            </div>
-        </BrowserRouter>
+            </Router>
+        </Store>
     );
-}
+};
 
 export default App;
