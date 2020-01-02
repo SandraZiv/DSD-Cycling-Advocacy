@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -36,8 +35,7 @@ public class MapFragment extends Fragment {
 
     private Button buttonStart;
     private Switch gpsButton;
-    private LocationManager locationManager;
-    Context ctx;
+    private Context ctx;
 
     private MapView map = null;
     private MyLocationNewOverlay mLocationOverlay = null;
@@ -46,7 +44,7 @@ public class MapFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map, container, false);
-     
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         ctx = getActivity().getApplicationContext();
@@ -85,11 +83,13 @@ public class MapFragment extends Fragment {
         });
 
         gpsButton = root.findViewById(R.id.switch_gps);
-        gpsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        gpsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton cb, boolean on) {
+            public void onClick(View view) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
+                
+                gpsButton.setChecked(!gpsButton.isChecked());
             }
         });
         return root;
@@ -102,19 +102,14 @@ public class MapFragment extends Fragment {
             buttonStart.setEnabled(true);
         } else {
             buttonStart.setEnabled(false);
-            Toast.makeText(getContext(), R.string.grant_location , Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.grant_location, Toast.LENGTH_LONG).show();
         }
         checkGpsStatus();
     }
 
-    public void checkGpsStatus(){
-        locationManager = (LocationManager)ctx.getSystemService(Context.LOCATION_SERVICE);
-        assert locationManager != null;
+    private void checkGpsStatus() {
+        LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if(gpsStatus == true) {
-            gpsButton.setChecked(true);
-        } else {
-            gpsButton.setChecked(false);
-        }
+        gpsButton.setChecked(gpsStatus);
     }
 }
