@@ -49,15 +49,23 @@
     <!--Settings-->
     <string name="title_activity_settings">Settings</string>
     <string name="settings_uid_title">User Identifier</string>
-    <string name="settings_mob_data_title">Use Mobile data</string>
-    <string name="settings_mob_data_summary_on">Now sending collected data automatically using mobile data or WiFi</string>
-    <string name="settings_mob_data_summary_off">Now sending collected data automatically using only WiFi</string>
+    <string name="settings_upload_trip_data_title">Upload trip data</string>
+    <string-array name="settings_upload_trip_data_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="settings_upload_trip_data_entries">
+        <item>Automatically using WiFi</item>
+        <item>Automatically using WiFi or Mobile data</item>
+        <item>Manual upload</item>
+    </string-array>
     <string name="settings_keep_awake_title">Keep screen awake</string>
     <string name="settings_keep_awake_summary">While trip is in progress</string>
 
     <!-- preferences keys -->
     <string name="pref_uid_key">pref_uid_key</string>
-    <string name="pref_mob_data_key">pref_mob_data_key</string>
+    <string name="pref_upload_trip_data_key">pref_upload_trip_data_key</string>
     <string name="pref_keep_awake_key">pref_display_stat_key</string>
 
     <!-- notification -->
