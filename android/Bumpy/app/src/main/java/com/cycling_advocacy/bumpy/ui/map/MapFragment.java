@@ -6,11 +6,13 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,8 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 public class MapFragment extends Fragment {
 
     private Button buttonStart;
+    private Switch gpsButton;
+    private Context ctx;
 
     private MapView map = null;
     private MyLocationNewOverlay mLocationOverlay = null;
@@ -40,10 +44,10 @@ public class MapFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_map, container, false);
-     
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        Context ctx = getActivity().getApplicationContext();
+        ctx = getActivity().getApplicationContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
         map = root.findViewById(R.id.map);
@@ -77,8 +81,18 @@ public class MapFragment extends Fragment {
                 startActivity(activity2Intent);
             }
         });
-        return root;
 
+        gpsButton = root.findViewById(R.id.switch_gps);
+        gpsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+                
+                gpsButton.setChecked(!gpsButton.isChecked());
+            }
+        });
+        return root;
     }
 
     @Override
@@ -88,7 +102,14 @@ public class MapFragment extends Fragment {
             buttonStart.setEnabled(true);
         } else {
             buttonStart.setEnabled(false);
-            Toast.makeText(getContext(), R.string.grant_location , Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.grant_location, Toast.LENGTH_LONG).show();
         }
+        checkGpsStatus();
+    }
+
+    private void checkGpsStatus() {
+        LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        gpsButton.setChecked(gpsStatus);
     }
 }
