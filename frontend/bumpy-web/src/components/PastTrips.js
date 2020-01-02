@@ -1,32 +1,25 @@
 import React, {Component} from 'react';
-import {Button} from "react-bootstrap";
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import {UserModal} from "./UserModal";
 import './PastTrips.css'
 
 export class PastTrips extends Component {
 
     componentDidMount() {
-        document.title = "Bumpy - Trips"
+        document.title = "Bumpy - Trips";
+
+        // parse URL to get UUID
+        let uuid = this.props.location.pathname.substring('/trips/'.length);
+        this.getTrips(uuid)
+
+        // todo save this
     }
 
     constructor(props) {
         super(props);
         this.state = {
             trips: undefined,
-            shouldShowModal: false
         };
-    }
-
-    // called when all components are rendered
-    // componentDidMount() {
-    //     this.getTrips()
-    // }
-
-    onModalClose(deviceUUID) {
-        this.setState({shouldShowModal: false});
-        this.getTrips(deviceUUID);
     }
 
     getTrips(deviceUUID) {
@@ -34,17 +27,11 @@ export class PastTrips extends Component {
         fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
             .then(response => response.json())
             .then(data => {
-                let parsedTrips = JSON.parse(data).map(t => {
-                        // console.log(t)
-                        return {
-                            "trip_uuid": t.trip_uuid,
-                            "distance": t.distance.toFixed(2),
-                            "start_ts": new Date(t.start_ts.$date).toUTCString(),
-                            "end_ts": new Date(t.end_ts.$date).toUTCString(),
-                            "vibration": Math.floor(Math.random() * Math.floor(80))
-                        };
-                    }
-                );
+                let parsedTrips = data.map(function(trip) {
+                    trip.startTS = new Date(trip.startTS).toUTCString();
+                    trip.endTS = new Date(trip.endTS).toUTCString();
+                    return trip
+                });
 
                 this.setState({trips: parsedTrips})
             });
@@ -57,32 +44,32 @@ export class PastTrips extends Component {
             // console.log(trips)
 
             const columns = [{
-                dataField: 'start_ts',
+                dataField: 'startTS',
                 text: 'Start time',
                 sort: true
             }, {
-                dataField: 'end_ts',
+                dataField: 'endTS',
                 text: 'End time',
                 sort: true
             }, {
                 dataField: 'distance',
                 text: 'Distance(km)',
                 sort: true
-            }, {
-                dataField: 'vibration',
-                text: 'Average vibration(%)',
-                sort: true
+            // }, {
+            //     dataField: 'vibration',
+            //     text: 'Average vibration(%)',
+            //     sort: true
             }];
 
             const defaultSorted = [{
-                dataField: 'start_ts',
+                dataField: 'startTS',
                 order: 'desc'
             }];
 
             tripTable =
                 <BootstrapTable
                     bootstrap4
-                    keyField="trip_uuid"
+                    keyField="tripUUID"
                     data={trips}
                     columns={columns}
                     defaultSorted={defaultSorted}
@@ -93,12 +80,6 @@ export class PastTrips extends Component {
 
         return (
             <div>
-                <Button className="btn"
-                        onClick={() => this.setState({shouldShowModal: true})}>
-                    Enter User Identifier
-                </Button>
-                <UserModal show={this.state.shouldShowModal} onHide={this.onModalClose.bind(this)}/>
-
                 {tripTable}
             </div>
         )
