@@ -102,7 +102,10 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/gauge_height"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginRight="@dimen/margin_standard"
+        android:layout_marginLeft="@dimen/margin_standard"
+        android:layout_marginBottom="@dimen/margin_small"
         app:divisions="10"
         app:rangeValues="@array/vibration_range_values"
         app:rangeColors="@array/range_colors"
@@ -115,7 +118,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:padding="@dimen/margin_standard">
+        android:layout_margin="@dimen/margin_standard">
 
         <Button
             android:id="@+id/button_trip_end"
