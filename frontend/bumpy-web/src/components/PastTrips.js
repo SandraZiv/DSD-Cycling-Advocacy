@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import {dateFormat} from "../dateformat";
 import './PastTrips.css'
 
 export class PastTrips extends Component {
@@ -28,8 +29,9 @@ export class PastTrips extends Component {
             .then(response => response.json())
             .then(data => {
                 let parsedTrips = data.map(function(trip) {
-                    trip.startTS = new Date(trip.startTS).toUTCString();
-                    trip.endTS = new Date(trip.endTS).toUTCString();
+                    trip.startTS = dateFormat(new Date(trip.startTS), "dddd, mmmm dS, yyyy, HH:MM");
+                    // trip.startTS = new Date(trip.startTS).toLocaleString()
+                    // trip.endTS = new Date(trip.endTS).toUTCString();
                     return trip
                 });
 
