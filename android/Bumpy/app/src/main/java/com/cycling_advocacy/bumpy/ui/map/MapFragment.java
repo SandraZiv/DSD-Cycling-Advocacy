@@ -85,17 +85,14 @@ public class MapFragment extends Fragment {
         });
 
         gpsButton = root.findViewById(R.id.switch_gps);
-        CheckGpsStatus();
         gpsButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton cb, boolean on) {
-                Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent1);
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
             }
         });
-
         return root;
-
     }
 
     @Override
@@ -107,13 +104,14 @@ public class MapFragment extends Fragment {
             buttonStart.setEnabled(false);
             Toast.makeText(getContext(), R.string.grant_location , Toast.LENGTH_LONG).show();
         }
+        checkGpsStatus();
     }
 
-    public void CheckGpsStatus(){
+    public void checkGpsStatus(){
         locationManager = (LocationManager)ctx.getSystemService(Context.LOCATION_SERVICE);
         assert locationManager != null;
-        boolean GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if(GpsStatus == true) {
+        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if(gpsStatus == true) {
             gpsButton.setChecked(true);
         } else {
             gpsButton.setChecked(false);

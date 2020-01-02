@@ -10,34 +10,29 @@
     <include layout="@layout/toolbar" />
 
     <TextView
-        android:id="@+id/trip_date"
+        android:id="@+id/tv_trip_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_standard"
-        android:text="13thDec,2019"
+        tools:text="13thDec,2019"
         android:textColor="@color/cyclingAdvocacyYellow"
         android:textSize="@dimen/text_size_medium"
-        android:layout_marginLeft="@dimen/margin_large"/>
+        android:paddingLeft="@dimen/margin_large"/>
+
+    <TextView
+        android:id="@+id/tv_trip_time_interval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="12:10 - 13:50"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_small"
+        android:paddingLeft="@dimen/margin_large"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_large">
-        <TextView
-            android:id="@+id/trip_time_interval"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="12:10 - 13:50"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            android:textSize="@dimen/text_size_small" />
-        </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_extra_double">
+        android:paddingLeft="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -46,11 +41,11 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
         <TextView
-            android:id="@+id/accumulated_vibration"
+            android:id="@+id/tv_accumulated_vibration"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_standard"
-            android:text="100"
+            tools:text="100"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
@@ -59,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_extra_double">
+        android:paddingLeft="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -68,11 +63,11 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
         <TextView
-            android:id="@+id/avg_speed"
+            android:id="@+id/tv_avg_speed"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_standard"
-            android:text="100"
+            tools:text="100"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
@@ -81,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_extra_double">
+        android:paddingLeft="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -90,11 +85,11 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
         <TextView
-            android:id="@+id/max_speed"
+            android:id="@+id/tv_max_speed"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_standard"
-            android:text="100"
+            tools:text="100"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
@@ -103,7 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_extra_double">
+        android:paddingLeft="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -112,11 +107,11 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
         <TextView
-            android:id="@+id/distance"
+            android:id="@+id/tv_distance"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_standard"
-            android:text="100"
+            tools:text="100"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
@@ -125,7 +120,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_extra_double">
+        android:paddingLeft="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -134,11 +129,11 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
         <TextView
-            android:id="@+id/duration"
+            android:id="@+id/tv_duration"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_standard"
-            android:text="100"
+            tools:text="100"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
@@ -147,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/margin_extra_double">
+        android:paddingLeft="@dimen/margin_large">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -156,11 +151,11 @@
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
         <TextView
-            android:id="@+id/bumps"
+            android:id="@+id/tv_bumps"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_standard"
-            android:text="100"
+            tools:text="100"
             android:textColor="@color/cyclingAdvocacyYellow"
             android:textSize="@dimen/text_size_small" />
     </LinearLayout>
