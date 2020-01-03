@@ -1,6 +1,7 @@
 package com.cycling_advocacy.bumpy;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -34,8 +34,9 @@ import com.cycling_advocacy.bumpy.location.LocationChangedListener;
 import com.cycling_advocacy.bumpy.location.LocationService;
 import com.cycling_advocacy.bumpy.motion.MotionManager;
 import com.cycling_advocacy.bumpy.motion.VibrationChangedListener;
-import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.ui.map.MapFragment;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
+import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -54,7 +55,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     private Chronometer chronometerDuration;
     private GaugeView speedometer;
     private GaugeView vibrationmeter;
-    private Button btnEndTrip;
 
     private GoogleApiClient googleApiClient;
 
@@ -68,7 +68,10 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (PreferenceUtil.shouldKeepScreenAwake(this)) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
 
         setContentView(R.layout.activity_trip_in_progress);
 
@@ -81,7 +84,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         speedometer = findViewById(R.id.gauge_view_speed);
         vibrationmeter = findViewById(R.id.gauge_view_vibration);
 
-        btnEndTrip = findViewById(R.id.button_trip_end);
+        Button btnEndTrip = findViewById(R.id.button_trip_end);
         btnEndTrip.setOnClickListener(view -> {
             stopTracking();
 
@@ -92,6 +95,10 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
                 intent.putExtra(AchievementCompletedActivity.EXTRA_COMPLETED_ACHIEVEMENTS, completedAchievements);
                 startActivity(intent);
             }
+
+            Intent data = new Intent();
+            data.putExtra(MapFragment.EXTRA_TRIP, trip);
+            setResult(Activity.RESULT_OK, data);
             finish();
         });
 
@@ -179,8 +186,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
         locationService.stopTracking();
         motionManager.stopSensorUpdates();
-
-        DataSender.sendData(this, trip);
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

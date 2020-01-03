@@ -1,30 +1,30 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-     <androidx.preference.Preference
-         app:key="@string/pref_uid_key"
-         app:title="@string/settings_uid_title"
-         app:summary=""
-         tools:summary="534f35s453s45fds"
-         app:allowDividerBelow="true"
-         app:iconSpaceReserved="false" />
-
-    <androidx.preference.SwitchPreferenceCompat
-        app:key="@string/pref_mob_data_key"
-        app:title="@string/settings_mob_data_title"
-        app:summaryOff="@string/settings_mob_data_summary_off"
-        app:summaryOn="@string/settings_mob_data_summary_on"
+    <androidx.preference.Preference
         app:allowDividerBelow="true"
         app:iconSpaceReserved="false"
-        app:defaultValue="@bool/pref_mob_data_default"/>
+        app:key="@string/pref_uid_key"
+        app:summary=""
+        app:title="@string/settings_uid_title"
+        tools:summary="534f35s453s45fds" />
+
+    <ListPreference
+        app:allowDividerBelow="true"
+        app:defaultValue="@string/settings_upload_trip_data_default"
+        app:entries="@array/settings_upload_trip_data_entries"
+        app:entryValues="@array/settings_upload_trip_data_values"
+        app:iconSpaceReserved="false"
+        app:key="@string/pref_upload_trip_data_key"
+        app:title="@string/settings_upload_trip_data_title"
+        tools:summary="Manual upload" />
 
     <androidx.preference.SwitchPreferenceCompat
-        app:key="@string/pref_display_stat_key"
-        app:title="@string/settings_display_stat_title"
-        app:summaryOff="@string/settings_display_stat_summary_off"
-        app:summaryOn="@string/settings_display_stat_summary_on"
         app:allowDividerBelow="true"
+        app:defaultValue="@bool/pref_keep_awake_default"
         app:iconSpaceReserved="false"
-        app:defaultValue="@bool/pref_display_stat_default"/>
+        app:key="@string/pref_keep_awake_key"
+        app:summary="@string/settings_keep_awake_summary"
+        app:title="@string/settings_keep_awake_title" />
 
 </androidx.preference.PreferenceScreen>

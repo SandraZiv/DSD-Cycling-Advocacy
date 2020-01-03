@@ -7,9 +7,10 @@ import androidx.annotation.NonNull;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class GnssData {
+public class GnssData implements Serializable {
 
     @SerializedName("timeTS")
     private Date timestamp;

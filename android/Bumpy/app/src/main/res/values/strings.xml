@@ -32,6 +32,13 @@
     <string name="distance">DISTANCE</string>
     <string name="duration">DURATION</string>
 
+    <!-- Trip upload -->
+    <string name="dialog_upload_trip_title">Upload trip data?</string>
+    <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="trip_not_uploaded">Trip data not uploaded</string>
+
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
     <string name="choose_issue">Choose an issue</string>
@@ -49,17 +56,27 @@
     <!--Settings-->
     <string name="title_activity_settings">Settings</string>
     <string name="settings_uid_title">User Identifier</string>
-    <string name="settings_mob_data_title">Use Mobile data</string>
-    <string name="settings_mob_data_summary_on">Now sending collected data automatically using mobile data or WiFi</string>
-    <string name="settings_mob_data_summary_off">Now sending collected data automatically using only Wifi</string>
-    <string name="settings_display_stat_title">Show statistics</string>
-    <string name="settings_display_stat_summary_off">Statistics is hidden during all trips</string>
-    <string name="settings_display_stat_summary_on">Statistics is shown during all trips</string>
+    <string name="settings_upload_trip_data_title">Upload trip data</string>
+
+    <!-- make sure to update TripUploadType !!! -->
+    <string name="settings_upload_trip_data_default">WIFI</string>
+    <string-array name="settings_upload_trip_data_values">
+        <item>@string/settings_upload_trip_data_default</item>
+        <item>MOBILE_DATA</item>
+        <item>MANUAL</item>
+    </string-array>
+    <string-array name="settings_upload_trip_data_entries">
+        <item>Automatically using WiFi</item>
+        <item>Automatically using WiFi or Mobile data</item>
+        <item>Manual upload</item>
+    </string-array>
+    <string name="settings_keep_awake_title">Keep screen awake</string>
+    <string name="settings_keep_awake_summary">While trip is in progress</string>
 
     <!-- preferences keys -->
     <string name="pref_uid_key">pref_uid_key</string>
-    <string name="pref_mob_data_key">pref_mob_data_key</string>
-    <string name="pref_display_stat_key">pref_display_stat_key</string>
+    <string name="pref_upload_trip_data_key">pref_upload_trip_data_key</string>
+    <string name="pref_keep_awake_key">pref_display_stat_key</string>
 
     <!-- notification -->
     <string name="channel_name">Background location channel</string>
