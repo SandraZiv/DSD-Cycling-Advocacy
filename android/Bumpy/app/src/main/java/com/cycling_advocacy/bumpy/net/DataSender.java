@@ -4,14 +4,16 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.TripUploadType;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
 import com.cycling_advocacy.bumpy.utils.CsvMotionUtil;
-import com.cycling_advocacy.bumpy.utils.GeneralUtil;
+import com.cycling_advocacy.bumpy.utils.NetworkUtil;
+import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 import java.io.File;
-import java.util.Date;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,29 +26,13 @@ import retrofit2.Response;
 
 public class DataSender {
 
-    // Minimum trip duration in seconds; trips shorter than this won't be stored/sent
-    private static final int MIN_TRIP_DURATION = 300;
-
-    // Minimum trip duration in kilometers; trips shorter than this won't be stored/sent
-    private static final double MIN_TRIP_DISTANCE = 0.5;
-
     public static void sendData(Context context, Trip trip) {
-        Date startTS = trip.getStartTs();
-        Date stopTS = trip.getStopTs();
-        long duration = GeneralUtil.getDurationInSeconds(startTS, stopTS);
-
-        double distance = trip.getDistance();
-
-        if (duration >= MIN_TRIP_DURATION && distance >= MIN_TRIP_DISTANCE) {
+        if (shouldUploadTrip(context)) {
             sendLocationData(context, trip);
             sendMotionData(context, trip);
         } else {
-            // The motion file is constructed during the trip so we need to delete it
-            CsvMotionUtil.deleteMotionDataFile(context, trip.getTripUUID());
-            Log.d("Trip end", "Trip duration or distance too short for the trip to be considered.");
-            Log.d("Trip end", "Trip duration is " + duration + " while minimum is " + MIN_TRIP_DURATION);
-            Log.d("Trip end", "Trip distance is " + distance + " while minimum is " + MIN_TRIP_DISTANCE);
-            Toast.makeText(context, "Trip duration or distance too short for the trip to be considered", Toast.LENGTH_SHORT).show();
+            // todo save trip in DB for later upload
+            Toast.makeText(context, R.string.trip_not_uploaded, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -110,5 +96,16 @@ public class DataSender {
                         Log.d("Motion data", "Failed to upload motion data for trip " + trip.getTripUUID() + " to the server: " + e.getMessage());
                     }
                 });
+    }
+
+    private static boolean shouldUploadTrip(Context context) {
+        TripUploadType uploadType = PreferenceUtil.getTripUploadType(context);
+        if (uploadType == TripUploadType.MANUAL) {
+            // todo display dialog for manual upload
+            return false;
+        }
+
+        return (uploadType == TripUploadType.WIFI && NetworkUtil.isWifiAvailable(context))
+                || (uploadType == TripUploadType.MOBILE_DATA && NetworkUtil.isWifiOrMobileDataAvailable(context));
     }
 }

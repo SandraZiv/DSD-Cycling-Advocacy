@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         private void setUploadTripDataSummary(SharedPreferences sharedPreferences, ListPreference listPreference) {
             int prefIndex = listPreference.findIndexOfValue(
-                    sharedPreferences.getString(listPreference.getKey(), "0")
+                    sharedPreferences.getString(listPreference.getKey(), TripUploadType.WIFI.name())
             );
             listPreference.setSummary(listPreference.getEntries()[prefIndex]);
         }

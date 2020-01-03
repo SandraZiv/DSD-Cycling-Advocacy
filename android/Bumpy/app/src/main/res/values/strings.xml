@@ -32,6 +32,8 @@
     <string name="distance">DISTANCE</string>
     <string name="duration">DURATION</string>
 
+    <string name="trip_not_uploaded">Trip data not uploaded</string>
+
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
     <string name="choose_issue">Choose an issue</string>
@@ -50,10 +52,12 @@
     <string name="title_activity_settings">Settings</string>
     <string name="settings_uid_title">User Identifier</string>
     <string name="settings_upload_trip_data_title">Upload trip data</string>
+
+    <!-- make sure to update TripUploadType and preferences.xml default value!!! -->
     <string-array name="settings_upload_trip_data_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+        <item>WIFI</item>
+        <item>MOBILE_DATA</item>
+        <item>MANUAL</item>
     </string-array>
     <string-array name="settings_upload_trip_data_entries">
         <item>Automatically using WiFi</item>

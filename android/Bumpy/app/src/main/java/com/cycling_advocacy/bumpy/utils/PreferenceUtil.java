@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
 
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.TripUploadType;
 
 public class PreferenceUtil {
 
@@ -48,11 +49,13 @@ public class PreferenceUtil {
                 );
     }
 
-    public static boolean shouldUseMobileData(Context context) {
-        return PreferenceUtil.getSharedPreference(context)
-                .getBoolean(
-                        context.getString(R.string.pref_mob_data_key),
-                        context.getResources().getBoolean(R.bool.pref_mob_data_default)
+    public static TripUploadType getTripUploadType(Context context) {
+        String key = PreferenceUtil.getSharedPreference(context)
+                .getString(
+                        context.getString(R.string.pref_upload_trip_data_key),
+                        TripUploadType.WIFI.name()
                 );
+
+        return TripUploadType.valueOf(key);
     }
 }
