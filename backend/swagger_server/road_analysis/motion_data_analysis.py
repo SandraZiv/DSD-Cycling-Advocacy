@@ -27,7 +27,7 @@ def haversine(lon1, lat1, lon2, lat2):
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
     trip_data = db.get_trip_by_trip_uuid(trip_uuid)
-    motion_file = db.get_file_by_filename("\"" + trip_uuid + "\"")
+    motion_file = db.get_file_by_filename(trip_uuid)
     trip_df = pd.DataFrame(trip_data['gnss_data'])
     log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
     log += 'TRIP %s\n' % trip_data
@@ -42,8 +42,6 @@ def retrieve_data(trip_uuid):
     with open("tmp.csv", "r") as fp:
         motion_df = pd.read_csv(fp)
     os.remove("tmp.csv")
-    # TODO DEBUG ONLY there's an error in last row of the motion file I'm using, so I remove it
-    motion_df = motion_df.head(-1)
     motion_df['ts'] = motion_df['ts'].apply(datetime.datetime.strptime, args=['%Y-%m-%dT%H:%M:%SZ'])
     log += 'MOTION DATA PREVIEW FOR TRIP %s %s\n' % (trip_uuid, motion_df.head(5))
     log += 'First timestamp of motion data is: %s\n' % motion_df.iloc[0]['ts']
