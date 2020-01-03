@@ -1,6 +1,7 @@
 package com.cycling_advocacy.bumpy;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +34,7 @@ import com.cycling_advocacy.bumpy.location.LocationChangedListener;
 import com.cycling_advocacy.bumpy.location.LocationService;
 import com.cycling_advocacy.bumpy.motion.MotionManager;
 import com.cycling_advocacy.bumpy.motion.VibrationChangedListener;
-import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.ui.map.MapFragment;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 import com.google.android.gms.common.ConnectionResult;
@@ -95,6 +96,10 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
                 intent.putExtra(AchievementCompletedActivity.EXTRA_COMPLETED_ACHIEVEMENTS, completedAchievements);
                 startActivity(intent);
             }
+
+            Intent data = new Intent();
+            data.putExtra(MapFragment.EXTRA_TRIP, trip);
+            setResult(Activity.RESULT_OK, data);
             finish();
         });
 
@@ -182,8 +187,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
         locationService.stopTracking();
         motionManager.stopSensorUpdates();
-
-        DataSender.sendData(this, trip);
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

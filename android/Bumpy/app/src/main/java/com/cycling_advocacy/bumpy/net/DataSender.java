@@ -1,5 +1,6 @@
 package com.cycling_advocacy.bumpy.net;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -27,11 +28,18 @@ import retrofit2.Response;
 public class DataSender {
 
     public static void sendData(Context context, Trip trip) {
-        if (shouldUploadTrip(context)) {
+        TripUploadType uploadType = PreferenceUtil.getTripUploadType(context);
+        if (uploadType == TripUploadType.MANUAL) {
+            buildUploadDialog(context, trip).show();
+            return;
+        }
+
+        if ((uploadType == TripUploadType.WIFI && NetworkUtil.isWifiAvailable(context))
+                || (uploadType == TripUploadType.MOBILE_DATA && NetworkUtil.isWifiOrMobileDataAvailable(context))) {
             sendLocationData(context, trip);
             sendMotionData(context, trip);
         } else {
-            // todo save trip in DB for later upload
+            savePendingTripToDB(context);
             Toast.makeText(context, R.string.trip_not_uploaded, Toast.LENGTH_LONG).show();
         }
     }
@@ -98,14 +106,20 @@ public class DataSender {
                 });
     }
 
-    private static boolean shouldUploadTrip(Context context) {
-        TripUploadType uploadType = PreferenceUtil.getTripUploadType(context);
-        if (uploadType == TripUploadType.MANUAL) {
-            // todo display dialog for manual upload
-            return false;
-        }
+    private static void savePendingTripToDB(Context context) {
+        // todo save trip in DB for later upload
+    }
 
-        return (uploadType == TripUploadType.WIFI && NetworkUtil.isWifiAvailable(context))
-                || (uploadType == TripUploadType.MOBILE_DATA && NetworkUtil.isWifiOrMobileDataAvailable(context));
+    private static AlertDialog.Builder buildUploadDialog(Context context, Trip trip) {
+        return new AlertDialog.Builder(context)
+                .setTitle(R.string.dialog_upload_trip_title)
+                .setMessage(R.string.dialog_upload_trip_message)
+                .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
+                    sendLocationData(context, trip);
+                    sendMotionData(context, trip);
+                })
+                .setNegativeButton(R.string.dialog_no, (dialogInterface, i) -> {
+                    savePendingTripToDB(context);
+                });
     }
 }

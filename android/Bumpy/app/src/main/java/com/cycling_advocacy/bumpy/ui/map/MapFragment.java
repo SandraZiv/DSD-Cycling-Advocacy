@@ -1,5 +1,6 @@
 package com.cycling_advocacy.bumpy.ui.map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
@@ -16,10 +17,13 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripInProgressActivity;
+import com.cycling_advocacy.bumpy.entities.Trip;
+import com.cycling_advocacy.bumpy.net.DataSender;
 import com.cycling_advocacy.bumpy.utils.PermissionUtil;
 
 import org.osmdroid.api.IMapController;
@@ -32,6 +36,9 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 
 public class MapFragment extends Fragment {
+
+    public static final int REQ_CODE_TRIP_UPLOAD = 21021;
+    public static final String EXTRA_TRIP = "EXTRA_TRIP";
 
     private Button buttonStart;
     private Switch gpsButton;
@@ -47,7 +54,7 @@ public class MapFragment extends Fragment {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        ctx = getActivity().getApplicationContext();
+        ctx = getContext();
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
 
         map = root.findViewById(R.id.map);
@@ -64,33 +71,25 @@ public class MapFragment extends Fragment {
         map.getOverlays().add(this.mLocationOverlay);
 
         ImageButton btCenterMap = root.findViewById(R.id.ic_center_map);
-        btCenterMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GeoPoint myPosition = new GeoPoint(mLocationOverlay.getLastFix());
-                map.getController().animateTo(myPosition);
-            }
+        btCenterMap.setOnClickListener(v -> {
+            GeoPoint myPosition = new GeoPoint(mLocationOverlay.getLastFix());
+            map.getController().animateTo(myPosition);
         });
 
         map.invalidate();
 
         buttonStart = root.findViewById(R.id.btn_start_trip);
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent activity2Intent = new Intent(getContext(), TripInProgressActivity.class);
-                startActivity(activity2Intent);
-            }
+        buttonStart.setOnClickListener(v -> {
+            Intent intent = new Intent(ctx, TripInProgressActivity.class);
+            startActivityForResult(intent, REQ_CODE_TRIP_UPLOAD);
         });
 
         gpsButton = root.findViewById(R.id.switch_gps);
-        gpsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-                
-                gpsButton.setChecked(!gpsButton.isChecked());
-            }
+        gpsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+
+            gpsButton.setChecked(!gpsButton.isChecked());
         });
         return root;
     }
@@ -105,6 +104,15 @@ public class MapFragment extends Fragment {
             Toast.makeText(getContext(), R.string.grant_location, Toast.LENGTH_LONG).show();
         }
         checkGpsStatus();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == REQ_CODE_TRIP_UPLOAD && resultCode == Activity.RESULT_OK) {
+            Trip trip = (Trip) data.getSerializableExtra(EXTRA_TRIP);
+            DataSender.sendData(getContext(), trip);
+        }
     }
 
     private void checkGpsStatus() {

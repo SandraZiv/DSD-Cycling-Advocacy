@@ -32,6 +32,11 @@
     <string name="distance">DISTANCE</string>
     <string name="duration">DURATION</string>
 
+    <!-- Trip upload -->
+    <string name="dialog_upload_trip_title">Upload trip data?</string>
+    <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
     <string name="trip_not_uploaded">Trip data not uploaded</string>
 
     <!--Issue Reporting -->

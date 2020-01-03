@@ -9,11 +9,12 @@ import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Trip {
+public class Trip implements Serializable {
 
     @SerializedName("deviceUUID")
     private String deviceUUID;
