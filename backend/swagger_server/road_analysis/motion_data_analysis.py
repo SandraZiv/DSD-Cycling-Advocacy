@@ -30,7 +30,6 @@ def retrieve_data(trip_uuid):
     motion_file = db.get_file_by_filename(trip_uuid)
     trip_df = pd.DataFrame(trip_data['gnss_data'])
     log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
-    log += 'TRIP %s\n' % trip_data
     log += 'First timestamp of trip is: %s\n' % trip_df.head(1)['time_ts']
     log += 'Last timestamp of trip is: %s\n' % trip_df.tail(1)['time_ts']
     # motion dataframe creation
@@ -43,7 +42,6 @@ def retrieve_data(trip_uuid):
         motion_df = pd.read_csv(fp)
     os.remove("tmp.csv")
     motion_df['ts'] = motion_df['ts'].apply(datetime.datetime.strptime, args=['%Y-%m-%dT%H:%M:%SZ'])
-    log += 'MOTION DATA PREVIEW FOR TRIP %s %s\n' % (trip_uuid, motion_df.head(5))
     log += 'First timestamp of motion data is: %s\n' % motion_df.iloc[0]['ts']
     log += 'Last timestamp of motion data is: %s\n' % motion_df.iloc[-1]['ts']
 
@@ -53,12 +51,10 @@ def retrieve_data(trip_uuid):
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_df, motion_df):
-    log = 'MOTION DATA ANALYSIS\nPRINTING OUT ONLY FIRST THREE CHUNKS OF DATA\n'
+    log = 'MOTION DATA SUMMARY DESCRIPTION\n'
+    log += motion_df.describe()
     for index, ts in enumerate(trip_df['time_ts']):
         chunk = motion_df.loc[motion_df['ts'] == ts]
-        if index < 3:  # print only first 5 chunks for shortness
-            log += 'CHUNK %s FOR TS %s\n' % (index, ts)
-            log += '%s\n' % chunk.describe()
     max_road_quality = 0
     min_road_quality = 0
     avg_road_quality = 0
@@ -97,7 +93,7 @@ def run_motion_data_analysis(trip_uuid):
     db.update_trip(trip_uuid, {'distance': distance, 'max_speed': max_speed, 'avg_speed': avg_speed,
                                'max_elevation': max_elevation, 'min_elevation': min_elevation,
                                'avg_elevation': avg_elevation})
-    log += 'TRIP STATISTICS\nDistance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
+    log += 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
            % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
     max_road_quality, min_road_quality, avg_road_quality, motion_log = calculate_road_quality(trip_df, motion_df)
     log += motion_log

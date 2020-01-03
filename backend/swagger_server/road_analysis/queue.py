@@ -39,7 +39,7 @@ class Job:
         channel = connection.channel()
         channel.queue_declare(queue=queue)
         channel.basic_publish(exchange='', routing_key=queue, body=job)
-        logging.info('New job published on queue: %s' % queue)
+        logging.info('New job published on queue: %s' % job)
         connection.close()
         return
 
@@ -68,7 +68,6 @@ def start_consuming(queue_name):
 
 # callback function for TRIP_ANALYSIS_JOB
 def execute_trip_analysis_job(trip_uuid):
-    logging.info('Executing trip analysis job for %s' % trip_uuid)
     motion_data_analysis.run_motion_data_analysis(trip_uuid)
     # map_update.run_map_update(trip_uuid)
     return
