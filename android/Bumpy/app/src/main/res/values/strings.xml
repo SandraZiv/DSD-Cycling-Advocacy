@@ -39,7 +39,8 @@
     <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
-    <string name="trip_not_uploaded">Trip data not uploaded</string>
+    <string name="trip_not_uploaded_wifi">Trip data not uploaded due to WiFi not available</string>
+    <string name="trip_not_uploaded_mobile">Trip data not uploaded due to no network</string>
 
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
