@@ -16,15 +16,15 @@ public class AchievementRepository {
 
     public AchievementRepository(Context context) {
         this.achievementDao = BumpyDB.getInstance(context).achievementDao();
-        achievements = achievementDao.getAchievements();
+        this.achievements = achievementDao.getAchievements();
     }
 
     public void updateAllAsync(final AchievementEntity... achievement) {
-        Executors.newSingleThreadExecutor().execute(() -> achievementDao.updateAll(achievement));
+        Executors.newSingleThreadExecutor().execute(() -> this.achievementDao.updateAll(achievement));
     }
 
     public LiveData<List<AchievementEntity>> getAchievements() {
-        return achievements;
+        return this.achievements;
     }
 
 }
