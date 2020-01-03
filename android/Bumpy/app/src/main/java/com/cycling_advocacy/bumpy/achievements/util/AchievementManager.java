@@ -14,7 +14,6 @@ import java.util.Set;
 public class AchievementManager {
 
     public static ArrayList<Achievement> manageAchievements(Context context, Trip trip, Set<Achievement> achievements) {
-        // todo trip condition check?
         AchievementsPrefs.increaseDailyTripCount(context);
         AchievementsPrefs.increaseTotalTripCount(context);
 
