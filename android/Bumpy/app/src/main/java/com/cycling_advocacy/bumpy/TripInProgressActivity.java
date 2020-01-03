@@ -55,7 +55,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     private Chronometer chronometerDuration;
     private GaugeView speedometer;
     private GaugeView vibrationmeter;
-    private Button btnEndTrip;
 
     private GoogleApiClient googleApiClient;
 
@@ -85,7 +84,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         speedometer = findViewById(R.id.gauge_view_speed);
         vibrationmeter = findViewById(R.id.gauge_view_vibration);
 
-        btnEndTrip = findViewById(R.id.button_trip_end);
+        Button btnEndTrip = findViewById(R.id.button_trip_end);
         btnEndTrip.setOnClickListener(view -> {
             stopTracking();
 

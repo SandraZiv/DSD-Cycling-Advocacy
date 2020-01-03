@@ -37,7 +37,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 public class MapFragment extends Fragment {
 
-    public static final int REQ_CODE_TRIP_UPLOAD = 21021;
+    private static final int REQ_CODE_TRIP_UPLOAD = 21021;
     public static final String EXTRA_TRIP = "EXTRA_TRIP";
 
     private Button buttonStart;
