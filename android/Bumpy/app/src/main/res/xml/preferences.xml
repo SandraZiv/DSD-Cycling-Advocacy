@@ -11,7 +11,7 @@
 
     <ListPreference
         app:allowDividerBelow="true"
-        app:defaultValue="0"
+        app:defaultValue="@string/settings_upload_trip_data_default"
         app:entries="@array/settings_upload_trip_data_entries"
         app:entryValues="@array/settings_upload_trip_data_values"
         app:iconSpaceReserved="false"

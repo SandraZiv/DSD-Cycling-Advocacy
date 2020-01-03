@@ -53,9 +53,10 @@
     <string name="settings_uid_title">User Identifier</string>
     <string name="settings_upload_trip_data_title">Upload trip data</string>
 
-    <!-- make sure to update TripUploadType and preferences.xml default value!!! -->
+    <!-- make sure to update TripUploadType !!! -->
+    <string name="settings_upload_trip_data_default">WIFI</string>
     <string-array name="settings_upload_trip_data_values">
-        <item>WIFI</item>
+        <item>@string/settings_upload_trip_data_default</item>
         <item>MOBILE_DATA</item>
         <item>MANUAL</item>
     </string-array>
