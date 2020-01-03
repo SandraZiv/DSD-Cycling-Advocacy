@@ -110,7 +110,7 @@ public class MapFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && requestCode == REQ_CODE_TRIP_UPLOAD && resultCode == Activity.RESULT_OK) {
             Trip trip = (Trip) data.getSerializableExtra(EXTRA_TRIP);
-            DataSender.sendData(getContext(), trip);
+            DataSender.sendData(getContext(), this, trip);
         }
     }
 
