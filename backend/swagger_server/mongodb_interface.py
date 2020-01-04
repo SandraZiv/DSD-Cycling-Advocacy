@@ -27,9 +27,15 @@ def get_trips_by_device_uuid(device_uuid):
     return main_db.trips.find({'device_uuid': device_uuid})
 
 
-def update_trip(trip_uuid, new_values):
+def update_trip_statistics(trip_uuid, new_values):
     main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_values}, upsert=False)
     return
+
+
+# TODO update road quality https://docs.mongodb.com/manual/tutorial/update-documents/
+def update_trip_road_quality(trip_uuid, gnss_index, road_quality):
+    main_db.trips.update_one({'trip_uuid': trip_uuid},
+                             {"$set": {'gnss_data.'+str(gnss_index)+'.road_quality': road_quality}})
 
 
 #
