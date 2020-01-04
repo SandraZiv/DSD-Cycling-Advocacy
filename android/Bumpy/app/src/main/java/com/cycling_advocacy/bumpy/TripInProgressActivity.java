@@ -44,6 +44,7 @@ import com.ntt.customgaugeview.library.GaugeView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 public class TripInProgressActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -60,6 +61,8 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
     private LocationService locationService;
     private MotionManager motionManager;
+
+    private Intent serviceIntent;
 
     private Trip trip;
 
@@ -79,9 +82,11 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         setSupportActionBar(toolbar);
 
         tvDistance = findViewById(R.id.tv_distance);
+        tvDistance.setText(String.format(Locale.getDefault(), "%.2f", 0.00));
         chronometerDuration = findViewById(R.id.chronometer_duration);
 
         speedometer = findViewById(R.id.gauge_view_speed);
+        speedometer.setTargetValue(0);
         vibrationmeter = findViewById(R.id.gauge_view_vibration);
 
         Button btnEndTrip = findViewById(R.id.button_trip_end);
@@ -140,6 +145,13 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     @Override
     protected void onDestroy() {
         locationService.stopTracking();
+
+        if (serviceIntent != null) {
+            stopService(serviceIntent);
+        }
+        if (serviceConnection != null) {
+            unbindService(serviceConnection);
+        }
         super.onDestroy();
     }
 
@@ -154,9 +166,9 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
             return;
         }
 
-        Intent intent = new Intent(this, LocationService.class);
-        startService(intent);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        serviceIntent = new Intent(this, LocationService.class);
+        startService(serviceIntent);
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override

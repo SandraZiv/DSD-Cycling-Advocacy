@@ -78,10 +78,6 @@ public class LocationService extends Service {
         if (locationProviderClient != null) {
             locationProviderClient.removeLocationUpdates(locationCallback);
         }
-
-        //todo
-//        stopForeground(false);
-//        notificationManager.cancelAll();
     }
 
     public void startTracking() {

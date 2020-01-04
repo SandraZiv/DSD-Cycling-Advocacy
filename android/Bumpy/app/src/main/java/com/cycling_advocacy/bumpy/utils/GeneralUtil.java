@@ -8,6 +8,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class GeneralUtil {
@@ -15,8 +16,7 @@ public class GeneralUtil {
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static String formatTimestamp(Date timestamp) {
-        // yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
-        return new SimpleDateFormat(DATE_FORMAT).format(timestamp);
+        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(timestamp);
     }
 
     public static Date toDate(long timestamp) {
