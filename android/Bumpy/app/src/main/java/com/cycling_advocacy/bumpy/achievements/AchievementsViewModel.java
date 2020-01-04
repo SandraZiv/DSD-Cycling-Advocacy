@@ -18,11 +18,11 @@ public class AchievementsViewModel extends AndroidViewModel {
     public AchievementsViewModel(Application application) {
         super(application);
 
-        repository = new AchievementRepository(application);
-        achievementsLiveData = repository.getAchievements();
+        this.repository = new AchievementRepository(application);
+        this.achievementsLiveData = this.repository.getAchievements();
     }
 
     public void updateAll(AchievementEntity... achievement) {
-        repository.updateAllAsync(achievement);
+        this.repository.updateAllAsync(achievement);
     }
 }

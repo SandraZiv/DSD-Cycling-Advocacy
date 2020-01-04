@@ -15,6 +15,8 @@
     <string name="bottom_nav_title_achievements">Achievements</string>
     <string name="bottom_nav_title_settings">Settings</string>
 
+    <string name="mandatory_permissions">These permissions are mandatory to get your location. You need to allow them.</string>
+
     <!--Map and buttons -->
     <string name="gps">GPS</string>
     <string name="start_trip">Start Trip</string>
@@ -37,7 +39,8 @@
     <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
-    <string name="trip_not_uploaded">Trip data not uploaded</string>
+    <string name="trip_not_uploaded_wifi">Trip data not uploaded due to WiFi not available</string>
+    <string name="trip_not_uploaded_mobile">Trip data not uploaded due to no network</string>
 
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>

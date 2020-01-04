@@ -1,7 +1,6 @@
 package com.cycling_advocacy.bumpy;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -76,16 +75,13 @@ public class MainActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
                         new AlertDialog.Builder(MainActivity.this).
-                                setMessage("These permissions are mandatory to get your location. You need to allow them.").
-                                setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                            requestPermissions(permissionsRejected.
-                                                    toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT_REQ_CODE);
-                                        }
+                                setMessage(R.string.mandatory_permissions).
+                                setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        requestPermissions(permissionsRejected.
+                                                toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT_REQ_CODE);
                                     }
-                                }).setNegativeButton("Cancel", null).create().show();
+                                }).setNegativeButton(android.R.string.cancel, null).create().show();
                     }
                 }
             }

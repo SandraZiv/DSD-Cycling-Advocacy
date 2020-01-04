@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,11 +96,11 @@ public class MapFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // todo don't disable the btn, rather take user to permission screen
         if (PermissionUtil.isLocationPermissionGranted(getContext())) {
             buttonStart.setEnabled(true);
         } else {
             buttonStart.setEnabled(false);
-            Toast.makeText(getContext(), R.string.grant_location, Toast.LENGTH_LONG).show();
         }
         checkGpsStatus();
     }
@@ -111,7 +110,7 @@ public class MapFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null && requestCode == REQ_CODE_TRIP_UPLOAD && resultCode == Activity.RESULT_OK) {
             Trip trip = (Trip) data.getSerializableExtra(EXTRA_TRIP);
-            DataSender.sendData(getContext(), trip);
+            DataSender.sendData(getContext(), this, trip);
         }
     }
 

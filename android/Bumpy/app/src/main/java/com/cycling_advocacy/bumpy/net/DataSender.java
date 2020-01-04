@@ -5,8 +5,12 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripUploadType;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTripsViewModel;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
@@ -27,10 +31,10 @@ import retrofit2.Response;
 
 public class DataSender {
 
-    public static void sendData(Context context, Trip trip) {
+    public static void sendData(Context context, Fragment fragment, Trip trip) {
         TripUploadType uploadType = PreferenceUtil.getTripUploadType(context);
         if (uploadType == TripUploadType.MANUAL) {
-            buildUploadDialog(context, trip).show();
+            buildUploadDialog(context, fragment, trip).show();
             return;
         }
 
@@ -39,8 +43,17 @@ public class DataSender {
             sendLocationData(context, trip);
             sendMotionData(context, trip);
         } else {
-            savePendingTripToDB(context);
-            Toast.makeText(context, R.string.trip_not_uploaded, Toast.LENGTH_LONG).show();
+            savePendingTripToDB(fragment, trip);
+
+            // check to display error message
+            int message;
+            if (!(uploadType == TripUploadType.WIFI && NetworkUtil.isWifiAvailable(context))) {
+                message = R.string.trip_not_uploaded_wifi;
+            } else {
+                message = R.string.trip_not_uploaded_mobile;
+            }
+
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -106,11 +119,14 @@ public class DataSender {
                 });
     }
 
-    private static void savePendingTripToDB(Context context) {
-        // todo save trip in DB for later upload
+    private static void savePendingTripToDB(Fragment fragment, Trip trip) {
+        PendingTripsViewModel viewModel = ViewModelProviders
+                .of(fragment).get(PendingTripsViewModel.class);
+
+        viewModel.insert(trip);
     }
 
-    private static AlertDialog.Builder buildUploadDialog(Context context, Trip trip) {
+    private static AlertDialog.Builder buildUploadDialog(Context context, Fragment fragment, Trip trip) {
         return new AlertDialog.Builder(context)
                 .setTitle(R.string.dialog_upload_trip_title)
                 .setMessage(R.string.dialog_upload_trip_message)
@@ -119,7 +135,7 @@ public class DataSender {
                     sendMotionData(context, trip);
                 })
                 .setNegativeButton(R.string.dialog_no, (dialogInterface, i) -> {
-                    savePendingTripToDB(context);
+                    savePendingTripToDB(fragment, trip);
                 });
     }
 }
