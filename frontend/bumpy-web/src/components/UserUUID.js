@@ -12,7 +12,7 @@ export const UserUUID = (props) => {
     });
 
     return (
-        <Form className="centeredForm" onSubmit={(e) => {
+        <Form onSubmit={(e) => {
             e.preventDefault();
 
             setUuid(e.target.deviceUUID.value);
@@ -20,7 +20,7 @@ export const UserUUID = (props) => {
         }}>
             <Form.Group controlId="deviceUUID">
                 <Form.Label column="">Enter User Identifier</Form.Label>
-                <Form.Control className="enterUUID"
+                <Form.Control className="enterUUID col-md-4 mx-auto"
                               placeholder="dfsdfg6523-fsdf52s-56s2a"
                               type="text" name="deviceUUID" required/>
                 <Form.Text className="text-muted">
