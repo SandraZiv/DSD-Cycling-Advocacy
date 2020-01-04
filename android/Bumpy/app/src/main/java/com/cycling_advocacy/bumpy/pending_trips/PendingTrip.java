@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(tableName = "pendingTrips")
+@Entity(tableName = "pending_trips")
 public class PendingTrip {
 
     @NotNull

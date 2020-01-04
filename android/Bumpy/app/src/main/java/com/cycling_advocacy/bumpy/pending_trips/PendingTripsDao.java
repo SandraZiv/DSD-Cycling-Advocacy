@@ -12,7 +12,7 @@ import java.util.List;
 public interface PendingTripsDao {
     // define methods that access the db
 
-    @Query("Select * from pendingTrips order by tripUUID")
+    @Query("Select * from pending_trips order by tripUUID")
     LiveData<List<PendingTrip>> getPendingTrips();
 
     @Insert
