@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import datetime
 import logging
-import tkinter
+# import tkinter
 import matplotlib.pyplot as plt
 from math import radians, cos, sin, asin, sqrt
 
@@ -27,8 +27,8 @@ def haversine(lon1, lat1, lon2, lat2):
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
     trip_data = db.get_trip_by_trip_uuid(trip_uuid)
-    # motion_file = db.get_file_by_filename("\""+trip_uuid+"\"")
-    motion_file = db.get_file_by_filename(trip_uuid)
+    motion_file = db.get_file_by_filename("\""+trip_uuid+"\"")
+    # motion_file = db.get_file_by_filename(trip_uuid)
     trip_df = pd.DataFrame(trip_data['gnss_data'])
     log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
     log += 'First timestamp of trip is: %s\n' % trip_df.head(1)['time_ts']
@@ -55,7 +55,7 @@ def retrieve_data(trip_uuid):
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_uuid, trip_df, motion_df):
     log = 'MOTION DATA SUMMARY DESCRIPTION\n'
-    #log += motion_df.describe()
+    log += str(motion_df.describe())
     for index, ts in enumerate(trip_df['time_ts']):
         chunk = motion_df.loc[motion_df['ts'] == ts]
         # calculate road quality
@@ -97,9 +97,19 @@ def run_motion_data_analysis(trip_uuid):
     trip_df, motion_df, log = retrieve_data(trip_uuid)
     # plot(trip_df, motion_df)
     distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation = calculate_trip_statistics(trip_df)
-    db.update_trip_statistics(trip_uuid, {'distance': distance, 'max_speed': max_speed, 'avg_speed': avg_speed,
-                               'max_elevation': max_elevation, 'min_elevation': min_elevation,
-                               'avg_elevation': avg_elevation})
+    db.update_trip_statistics(trip_uuid,
+                              {
+                                  "elevation": {
+                                      "minElevation": min_elevation,
+                                      "maxElevation": max_elevation,
+                                      "avgElevation": avg_elevation
+                                  },
+                                  "distance": distance,
+                                  "speed": {
+                                      "maxSpeed": max_speed,
+                                      "avgSpeed": avg_speed
+                                  }
+                              })
     log += 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
            % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
     max_road_quality, min_road_quality, avg_road_quality, motion_log = calculate_road_quality(trip_uuid, trip_df, motion_df)
