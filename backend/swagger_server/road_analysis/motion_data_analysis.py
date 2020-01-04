@@ -95,7 +95,7 @@ def calculate_trip_statistics(trip_df):
 
 def run_motion_data_analysis(trip_uuid):
     trip_df, motion_df, log = retrieve_data(trip_uuid)
-    # plot(trip_df, motion_df)
+    plot(trip_df, motion_df)
     distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation = calculate_trip_statistics(trip_df)
     db.update_trip_statistics(trip_uuid,
                               {
@@ -112,7 +112,8 @@ def run_motion_data_analysis(trip_uuid):
                               })
     log += 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
            % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
-    max_road_quality, min_road_quality, avg_road_quality, motion_log = calculate_road_quality(trip_uuid, trip_df, motion_df)
+    max_road_quality, min_road_quality, avg_road_quality, motion_log = \
+        calculate_road_quality(trip_uuid, trip_df, motion_df)
     log += motion_log
     if const.VERBOSITY:
         logging.info(log)

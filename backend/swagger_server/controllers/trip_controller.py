@@ -63,8 +63,6 @@ def insert_new_trip():  # noqa: E501
     try:
         body = Trip.from_dict(connexion.request.get_json())  # noqa: E501
         mongodb_interface.insert_new_trip(body.to_dict())
-        # enqueueing a trip road_analysis job
-        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=body.trip_uuid).enqueue_job(const.TRIP_ANALYSIS_QUEUE)
     except mongodb_interface.pymongo.errors.DuplicateKeyError:
         return ApiResponse(code=400, message="trip already exist"), 400
     return ApiResponse(code=200, message="ok"), 200
@@ -90,5 +88,7 @@ def upload_motion_file():  # noqa: E501
         return ApiResponse(code=400, message='no file selected'), 400
     if file and '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() == 'csv':
         mongodb_interface.insert_new_file(trip_uuid, file)
+        # enqueueing a trip road_analysis job
+        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=trip_uuid).enqueue_job(const.TRIP_ANALYSIS_QUEUE)
         return ApiResponse(code=200, message='ok'), 200
     return ApiResponse(code=400, message='wrong file selected'), 400

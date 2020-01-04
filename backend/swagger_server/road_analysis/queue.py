@@ -6,6 +6,7 @@ from threading import Thread
 from pika.exceptions import AMQPConnectionError
 from swagger_server.road_analysis import motion_data_analysis
 from swagger_server import constants as const
+import time
 
 """
 --- JOB PUBLISHING ---
@@ -68,6 +69,9 @@ def start_consuming(queue_name):
 
 # callback function for TRIP_ANALYSIS_JOB
 def execute_trip_analysis_job(trip_uuid):
+    # TODO development only
+    # to be sure that there is time to complete the uploading. should be done in another way
+    time.sleep(3)
     motion_data_analysis.run_motion_data_analysis(trip_uuid)
     # map_update.run_map_update(trip_uuid)
     return
