@@ -48,15 +48,25 @@ export class TripPreview extends Component {
         let card = '';
         if (this.state.trip !== undefined) {
             let tripData = this.state.trip;
-            let distance = this.formatFloat(tripData.distance) + ' km';
+
+            let distance = (tripData.distance !== undefined)? this.formatFloat(tripData.distance) + ' km' : '';
             let duration = this.buildDuration(tripData.startTS, tripData.endTS);
-            let avgSpeed = this.formatFloat(tripData.speed.avgSpeed) + ' km/h';
-            let maxSpeed = this.formatFloat(tripData.speed.maxSpeed) + ' km/h';
+
+            let avgSpeed = '', maxSpeed = '';
+            if (tripData.speed !== undefined) {
+               avgSpeed = this.formatFloat(tripData.speed.avgSpeed) + ' km/h';
+               maxSpeed = this.formatFloat(tripData.speed.maxSpeed) + ' km/h';
+            }
+
             let avgVibration = '15%';
             let bumpsDetected = '12';
-            let avgElevation = this.formatFloat(tripData.elevation.avgElevation) + ' m';
-            let maxElevation = this.formatFloat(tripData.elevation.maxElevation) + ' m';
-            let minElevation = this.formatFloat(tripData.elevation.minElevation) + ' m';
+
+            let avgElevation = '', maxElevation = '', minElevation = '';
+            if (tripData.elevation !== undefined) {
+              avgElevation = this.formatFloat(tripData.elevation.avgElevation) + ' m';
+              maxElevation = this.formatFloat(tripData.elevation.maxElevation) + ' m';
+              minElevation = this.formatFloat(tripData.elevation.minElevation) + ' m';
+            }
 
             card = <Card className="text-left">
                 <Card.Header as="h5">{new Date(tripData.startTS).toLocaleDateString()}
