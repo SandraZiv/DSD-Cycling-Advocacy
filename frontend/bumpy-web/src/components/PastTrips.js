@@ -24,7 +24,7 @@ export const PastTrips = (props) => {
     };
 
     useEffect(() => {
-        let urlUUID = props.location.pathname.substring('/user/'.length);
+        let urlUUID = props.location.pathname.split('/').pop();
 
         if (urlUUID === '' && (uuid === undefined || uuid === '')) {
             props.history.push('/login');
