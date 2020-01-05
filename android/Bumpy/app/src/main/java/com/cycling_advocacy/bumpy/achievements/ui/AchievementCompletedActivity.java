@@ -20,7 +20,6 @@ import java.util.List;
 public class AchievementCompletedActivity extends AppCompatActivity {
 
     public static final String EXTRA_COMPLETED_ACHIEVEMENTS = "EXTRA_COMPLETED_ACHIEVEMENTS";
-    private Context context;
 
     @SuppressLint("SetTextI18n")
     @Override
