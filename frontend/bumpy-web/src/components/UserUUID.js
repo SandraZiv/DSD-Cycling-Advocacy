@@ -1,7 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {UuidContext} from "../Store";
-import {withRouter} from "react-router-dom";
 import './UserUUID.css'
 
 export const UserUUID = (props) => {
@@ -45,5 +44,3 @@ export const UserUUID = (props) => {
         </Form>
     )
 };
-
-export default withRouter(UserUUID)
