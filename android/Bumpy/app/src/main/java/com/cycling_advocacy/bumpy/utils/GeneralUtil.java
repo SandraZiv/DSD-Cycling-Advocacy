@@ -53,14 +53,4 @@ public class GeneralUtil {
 
         return true;
     }
-
-    public static double roundDouble(double value, int places) {
-        if (places < 0) {
-            throw new IllegalArgumentException("Rounding places must not be less than 0");
-        }
-
-        BigDecimal bd = BigDecimal.valueOf(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
 }

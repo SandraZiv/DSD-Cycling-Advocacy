@@ -27,7 +27,7 @@ public class PastTripsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_past_trips, container, false);
         RecyclerView rv = root.findViewById(R.id.rv_past_trips);
 
-        final PastTripAdapter adapter = new PastTripAdapter();
+        final PastTripAdapter adapter = new PastTripAdapter(getContext());
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
@@ -43,13 +44,13 @@ public class DataRetriever {
                     public void onSuccess(Response<List<PastTripGeneralResponse>> response) {
                         Log.d("Get trips for device", "Get trips for device response: " + response.message());
                         if (!response.isSuccessful()) {
-                            Toast.makeText(context, "Get trips for device not successful!: " + response.message(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getString(R.string.get_trips_not_successful, response.message()), Toast.LENGTH_SHORT).show();
                         } else {
                             List<PastTripGeneralResponse> pastTripsGeneral = response.body();
                             List<PastTrip> pastTrips = new ArrayList<>();
                             for (PastTripGeneralResponse pastTripGeneral : pastTripsGeneral) {
                                 long duration = GeneralUtil.getDurationInSeconds(pastTripGeneral.getStartTS(), pastTripGeneral.getEndTS());
-                                // TODO: isUploaded is true since these trips are retrieved from the server
+                                // isUploaded is true since these trips are retrieved from the server
                                 pastTrips.add(new PastTrip(pastTripGeneral.getStartTS().toString(), pastTripGeneral.getEndTS().toString(), pastTripGeneral.getDistance(), duration, true));
                             }
 

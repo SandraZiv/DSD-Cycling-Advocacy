@@ -1,5 +1,6 @@
 package com.cycling_advocacy.bumpy.ui.pastTrips;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,11 @@ import java.util.List;
 public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHolder>  {
 
         private List<PastTrip> pastTripList = new ArrayList<>();
+        private Context context;
+
+        public PastTripAdapter(Context context) {
+            this.context = context;
+        }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView title, detail;
@@ -48,15 +54,11 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             String startTime = pastTrip.getStartTime();
             holder.title.setText(startTime);
 
-            StringBuilder descriptionBuilder = new StringBuilder();
-
             long duration = pastTrip.getDuration();
+            // TODO: This should either be handled by an util or extracted to some class
             String durationString = String.format("%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
-            descriptionBuilder.append("Duration: " + durationString + "  ");
 
-            descriptionBuilder.append("Distance: " + GeneralUtil.roundDouble(pastTrip.getDistance(), 2) + " km  ");
-
-            holder.detail.setText(descriptionBuilder.toString());
+            holder.detail.setText(context.getString(R.string.trip_description_display, durationString, pastTrip.getDistance()));
 
             if (!pastTrip.isUploaded()) {
                 holder.imageUpload.setVisibility(View.VISIBLE);

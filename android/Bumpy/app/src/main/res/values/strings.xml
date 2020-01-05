@@ -32,6 +32,9 @@
     <string name="distance">DISTANCE</string>
     <string name="duration">DURATION</string>
 
+    <!--Data retriever-->
+    <string name="get_trips_not_successful">Get trips for device not successful!: %1$s</string>
+
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>
     <string name="choose_issue">Choose an issue</string>
@@ -48,6 +51,9 @@
 
     <!--Past trips-->
     <string name="upload_data_description">Upload cycling data</string>
+    <string name="trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
+    <string name="duration_display">Duration: %1$s  </string>
+    <string name="distance_display">Distance: %1$.2f km  </string>
 
     <!--Settings-->
     <string name="title_activity_settings">Settings</string>
