@@ -35,10 +35,12 @@
 
     <ImageButton
         android:id="@+id/image_uploaded"
-        android:layout_width="40dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="@color/cyclingAdvocacyBlack"
         android:contentDescription="@string/upload_data_description"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:tint="@color/cyclingAdvocacyYellow"
+        app:srcCompat="@android:drawable/ic_popup_sync" />
 
 </LinearLayout>
 
