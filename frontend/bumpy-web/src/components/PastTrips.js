@@ -3,31 +3,38 @@ import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import {dateFormat} from "../dateformat";
 import {UuidContext} from "../Store";
+import {Link} from "react-router-dom";
 import './PastTrips.css'
 
 export const PastTrips = (props) => {
-    const [, setUuid] = useContext(UuidContext);
+    const [uuid, setUuid] = useContext(UuidContext);
     const [trips, setTrips] = useState(undefined);
 
     useEffect(() => {
+        let urlUUID = props.location.pathname.substring('/user/'.length);
+
+        if (urlUUID === '' && (uuid === undefined || uuid === '')) {
+            props.history.push('/login');
+            return;
+        }
+
         document.title = "Bumpy - Trips";
 
-        // parse URL to get UUID
-        let uuid = props.location.pathname.substring('/trips/'.length);
-        setUuid(uuid);
+        setUuid(urlUUID);
 
         // testing id: 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f
-        fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${uuid}`)
+        fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`)
             .then(response => response.json())
             .then(data => {
                 setTrips(data.map(function (trip) {
                     trip.startTS = dateFormat(new Date(trip.startTS), "dddd, mmmm dS, yyyy, HH:MM");
-                    // trip.startTS = new Date(trip.startTS).toLocaleString()
-                    // trip.endTS = new Date(trip.endTS).toUTCString();
+                    trip.endTS = dateFormat(new Date(trip.endTS), "dddd, mmmm dS, yyyy, HH:MM");
                     return trip
                 }));
             });
     });
+
+    let detailsFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}>Details</Link>;
 
     let tripTable = "";
     if (trips !== undefined) {
@@ -49,6 +56,12 @@ export const PastTrips = (props) => {
             //     dataField: 'vibration',
             //     text: 'Average vibration(%)',
             //     sort: true
+        }, {
+            dataField: 'details',
+            text: '',
+            sort: false,
+            isDummyField: true,
+            formatter: detailsFormatter
         }];
 
         const defaultSorted = [{
