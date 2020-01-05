@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
-import com.cycling_advocacy.bumpy.utils.GeneralUtil;
-
-import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +48,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         public void onBindViewHolder(ViewHolder holder, int position) {
             PastTrip pastTrip = pastTripList.get(position);
 
-            String startTime = pastTrip.getStartTime();
+            String startTime = pastTrip.getStartTime().toString();
             holder.title.setText(startTime);
 
             long duration = pastTrip.getDuration();
