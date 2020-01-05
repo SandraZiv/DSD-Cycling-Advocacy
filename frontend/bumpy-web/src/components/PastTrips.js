@@ -10,6 +10,19 @@ export const PastTrips = (props) => {
     const [uuid, setUuid] = useContext(UuidContext);
     const [trips, setTrips] = useState(undefined);
 
+    const fetchData = async (urlUUID, signal) => {
+        // testing id: 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f
+        await fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`, {signal: signal})
+            .then(response => response.json())
+            .then(data => {
+                setTrips(data.map(function (trip) {
+                    trip.startTS = dateFormat(new Date(trip.startTS), "dddd, mmmm dS, yyyy, HH:MM");
+                    trip.endTS = dateFormat(new Date(trip.endTS), "dddd, mmmm dS, yyyy, HH:MM");
+                    return trip
+                }));
+            });
+    };
+
     useEffect(() => {
         let urlUUID = props.location.pathname.substring('/user/'.length);
 
@@ -22,17 +35,14 @@ export const PastTrips = (props) => {
 
         setUuid(urlUUID);
 
-        // testing id: 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f
-        fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`)
-            .then(response => response.json())
-            .then(data => {
-                setTrips(data.map(function (trip) {
-                    trip.startTS = dateFormat(new Date(trip.startTS), "dddd, mmmm dS, yyyy, HH:MM");
-                    trip.endTS = dateFormat(new Date(trip.endTS), "dddd, mmmm dS, yyyy, HH:MM");
-                    return trip
-                }));
-            });
-    });
+        const abortController = new AbortController();
+        fetchData(urlUUID, abortController.signal);
+
+        return () => {
+            // clean up
+            abortController.abort();
+        };
+    }, [uuid, setUuid, props.history, props.location.pathname]);
 
     let detailsFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}>Details</Link>;
 
