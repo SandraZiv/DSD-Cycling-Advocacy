@@ -14,10 +14,10 @@
     border-color: #ffd200 !important;
 }
 
-.centeredForm {
-    width: 60%;
-}
-
 .enterUUID {
     width: 50%;
+}
+
+.padding-bottom-standard {
+    margin-bottom: 20px;
 }

@@ -19,11 +19,11 @@ export const UserUUID = (props) => {
             props.history.push('/trips/' + e.target.deviceUUID.value)
         }}>
             <Form.Group controlId="deviceUUID">
-                <Form.Label column="">Enter User Identifier</Form.Label>
-                <Form.Control className="enterUUID col-md-4 mx-auto"
-                              placeholder="dfsdfg6523-fsdf52s-56s2a"
+                <Form.Label className="padding-bottom-standard" column="">Enter User Identifier</Form.Label>
+                <Form.Control className="enterUUID col-md-3 mx-auto"
+                              placeholder="1f577249-04f7-4d10-9e51-78bca31773e7"
                               type="text" name="deviceUUID" required/>
-                <Form.Text className="text-muted">
+                <Form.Text className="text-muted padding-bottom-standard">
                     User Identifier can be found in mobile app under Settings.
                 </Form.Text>
                 <Button className="btn" type="submit">Enter</Button>
