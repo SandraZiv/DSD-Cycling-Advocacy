@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/cyclingAdvocacyBlack"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context=".achievements.ui.AchievementCompletedActivity">
+
+    <TextView
+        android:id="@+id/tv_achievement_hurray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:text="@string/achievements_hurray"
+        android:textSize="@dimen/text_size_big"
+        android:textStyle="bold"
+        android:textColor="@color/cyclingAdvocacyYellow"/>
 
     <TextView
         android:id="@+id/tv_achievement_completed_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:gravity="center"
-        android:textColor="@color/cyclingAdvocacyYellow"
-        tools:text="You just completed 2 achievements" />
+        tools:text="2 Achievements Completed!"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        app:srcCompat="@drawable/ic_trophy"/>
 
 </LinearLayout>

@@ -26,4 +26,10 @@
     <string name="a8_title">Heavy duty</string>
     <string name="a8_detail">Complete trip that lasts more than two hours.</string>
 
+    <string name="achievements_hurray">HURRAY!</string>
+    <plurals name="achievement_completed">
+        <item quantity="one"> Achievement completed!</item>
+        <item quantity="other"> Achievements completed!</item>
+    </plurals>
+
 </resources>
