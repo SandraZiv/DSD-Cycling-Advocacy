@@ -40,6 +40,7 @@ public class MapFragment extends Fragment {
     public static final String EXTRA_TRIP = "EXTRA_TRIP";
 
     private Button btnStart;
+    private ImageButton btnCenterMap;
     private Switch gpsButton;
     private Context ctx;
 
@@ -53,7 +54,7 @@ public class MapFragment extends Fragment {
         ctx = getContext();
 
         initMap(root);
-        ImageButton btnCenterMap = root.findViewById(R.id.ic_center_map);
+        btnCenterMap = root.findViewById(R.id.ic_center_map);
         btnCenterMap.setOnClickListener(v -> {
             GeoPoint myPosition = mLocationOverlay.getMyLocation();
             if (myPosition != null) {
@@ -115,6 +116,7 @@ public class MapFragment extends Fragment {
         LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         gpsButton.setChecked(gpsStatus);
+        btnCenterMap.setVisibility(gpsStatus? View.VISIBLE: View.GONE);
     }
 
     private void initMap(View parent) {
