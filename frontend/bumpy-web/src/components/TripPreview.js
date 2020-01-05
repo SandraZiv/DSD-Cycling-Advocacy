@@ -69,7 +69,7 @@ export class TripPreview extends Component {
             }
 
             card = <Card className="text-left">
-                <Card.Header as="h5">{new Date(tripData.startTS).toLocaleDateString()}
+                <Card.Header as="h5">{`Trip started: ${new Date(tripData.startTS).toLocaleString()}`}
                     <Button className="btn float-right ">Export</Button>
                 </Card.Header>
                 <Card.Body>
