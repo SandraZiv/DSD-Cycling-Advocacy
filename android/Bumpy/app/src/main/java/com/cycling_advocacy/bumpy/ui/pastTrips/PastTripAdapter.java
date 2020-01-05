@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
+import com.cycling_advocacy.bumpy.utils.GeneralUtil;
+
+import org.apache.commons.lang3.time.DurationFormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +46,17 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             PastTrip pastTrip = pastTripList.get(position);
 
             String startTime = pastTrip.getStartTime();
-            String endTime = pastTrip.getEndTime();
-            holder.title.setText(startTime + "-" + endTime);
-            //holder.detail.setText("description");
+            holder.title.setText(startTime);
+
+            StringBuilder descriptionBuilder = new StringBuilder();
+
+            long duration = pastTrip.getDuration();
+            String durationString = String.format("%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
+            descriptionBuilder.append("Duration: " + durationString + "  ");
+
+            descriptionBuilder.append("Distance: " + GeneralUtil.roundDouble(pastTrip.getDistance(), 2) + " km  ");
+
+            holder.detail.setText(descriptionBuilder.toString());
 
             if (!pastTrip.isUploaded()) {
                 holder.imageUpload.setVisibility(View.VISIBLE);

@@ -7,21 +7,24 @@ import java.util.Date;
 public class PastTripGeneralResponse {
 
     // TODO: Data from this model should be displayed in the trip list. Add anything else?
-    // TODO: At time of writing the backend API response was not updated: Changes might be necessary!
 
-    @SerializedName("trip_uuid")
+    @SerializedName("tripUUID")
     private String tripUUID;
 
-    @SerializedName("start_ts")
+    @SerializedName("startTS")
     private Date startTS;
 
-    @SerializedName("end_ts")
+    @SerializedName("endTS")
     private Date endTS;
 
-    public PastTripGeneralResponse(String tripUUID, Date startTS, Date endTS) {
+    @SerializedName("distance")
+    private double distance;
+
+    public PastTripGeneralResponse(String tripUUID, Date startTS, Date endTS, double distance) {
         this.tripUUID = tripUUID;
         this.startTS = startTS;
         this.endTS = endTS;
+        this.distance = distance;
     }
 
     public String getTripUUID() {
@@ -46,5 +49,13 @@ public class PastTripGeneralResponse {
 
     public void setEndTS(Date endTS) {
         this.endTS = endTS;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 }

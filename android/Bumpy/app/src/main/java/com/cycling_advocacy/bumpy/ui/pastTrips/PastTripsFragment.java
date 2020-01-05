@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
+import com.cycling_advocacy.bumpy.net.DataRetriever;
 
 import java.util.List;
 
@@ -37,5 +39,12 @@ public class PastTripsFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        PastTripsViewModel pastTripsViewModel = ViewModelProviders.of(this).get(PastTripsViewModel.class);
+        DataRetriever.updatePastTripsList(getContext(), pastTripsViewModel);
     }
 }

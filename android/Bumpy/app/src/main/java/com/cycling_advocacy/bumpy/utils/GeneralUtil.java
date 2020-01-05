@@ -6,6 +6,8 @@ import android.content.Context;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -27,7 +29,7 @@ public class GeneralUtil {
 
     public static long getDurationInSeconds(Date startTS, Date endTS) {
         long diff = endTS.getTime() - startTS.getTime();
-        return diff / 1000 % 60;
+        return diff / 1000;
     }
 
     public static String generateUUID() {
@@ -52,4 +54,13 @@ public class GeneralUtil {
         return true;
     }
 
+    public static double roundDouble(double value, int places) {
+        if (places < 0) {
+            throw new IllegalArgumentException("Rounding places must not be less than 0");
+        }
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 }

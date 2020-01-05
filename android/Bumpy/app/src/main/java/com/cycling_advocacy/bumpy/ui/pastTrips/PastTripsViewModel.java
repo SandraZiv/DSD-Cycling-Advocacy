@@ -9,9 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
-import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PastTripsViewModel extends AndroidViewModel {
@@ -22,12 +20,6 @@ public class PastTripsViewModel extends AndroidViewModel {
         super(application);
         pastTripsLiveData = new MutableLiveData<>();
 
-        String deviceUUID = PreferenceUtil.getDeviceUUID(application.getApplicationContext());
-
-        // TODO: Remove test list
-        /*List<PastTrip> testList = new ArrayList<>();
-        testList.add(new PastTrip("A", "B", "0", false));
-        pastTripsLiveData.setValue(testList);*/
         updatePastTrips(application.getApplicationContext());
     }
 
@@ -40,9 +32,6 @@ public class PastTripsViewModel extends AndroidViewModel {
     }
 
     public void updatePastTrips(Context context) {
-        // TODO: Make call to API and set pastTripsLiveData with new values?
-        // This should cause an update in the PastTripsFragment observer which should cause an update in the adapter (?)
-
         DataRetriever.updatePastTripsList(context, this);
     }
 }

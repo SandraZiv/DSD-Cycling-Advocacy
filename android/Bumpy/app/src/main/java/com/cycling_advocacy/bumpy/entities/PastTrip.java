@@ -4,13 +4,17 @@ package com.cycling_advocacy.bumpy.entities;
 public class PastTrip {
 
     // todo fix this types
-    private String startTime, endTime, vibration;
+    private String startTime, endTime;
+    private double distance;
+    // in seconds
+    private long duration;
     private boolean isUploaded;
 
-    public PastTrip(String startTime, String endTime, String vibration, boolean isUploaded) {
+    public PastTrip(String startTime, String endTime, double distance, long duration, boolean isUploaded) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.vibration = vibration;
+        this.distance = distance;
+        this.duration = duration;
         this.isUploaded = isUploaded;
     }
 
@@ -30,13 +34,13 @@ public class PastTrip {
         this.endTime = endTime;
     }
 
-    public void setVibration(String vibration) {
-        this.vibration = vibration;
-    }
+    public double getDistance() { return distance; }
 
-    public String getVibration() {
-        return vibration;
-    }
+    public void setDistance(double distance) { this.distance = distance; }
+
+    public long getDuration() { return duration; }
+
+    public void setDuration(long duration) { this.duration = duration; }
 
     public boolean isUploaded() {
         return isUploaded;
