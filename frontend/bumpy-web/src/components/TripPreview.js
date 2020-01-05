@@ -1,21 +1,18 @@
 import React, {Component} from 'react';
-import { Card, CardGroup } from 'react-bootstrap';
-import { Map as LeafletMap, TileLayer } from 'react-leaflet';
-import {Button} from "react-bootstrap";
-import './PastTrip.css'
+import {Button, Card, CardGroup} from 'react-bootstrap';
+import {Map as LeafletMap, TileLayer} from 'react-leaflet';
 
-
-export class PastTrip extends Component {
+export class TripPreview extends Component {
 
     componentDidMount() {
-            document.title = "Bumpy - Past Trip"
+            document.title = "Bumpy - Trip Preview"
           }
 
     render() {
         return(
         <Card className="text-left">
             <Card.Header as="h5">Past trip on 27.10.2019
-                <button class="btn float-right ">Export</button>
+                <Button className="btn float-right ">Export</Button>
             </Card.Header>
             <Card.Body>
                 <CardGroup>
@@ -92,7 +89,22 @@ export class PastTrip extends Component {
                         </Card.Body>
                     </Card>
                 </CardGroup>
-                <LeafletMap center={[45.807323, 15.967772]} zoom={15} maxZoom={20} attributionControl={true} zoomControl={true} doubleClickZoom={true} scrollWheelZoom={true} dragging={true} animate={true} easeLinearity={0.35}>
+                <LeafletMap
+                    style={{
+                        height: '360px',
+                        width: '100%',
+                        margin: '10px auto'
+                    }}
+                    center={[45.807323, 15.967772]}
+                    zoom={15}
+                    maxZoom={20}
+                    attributionControl={true}
+                    zoomControl={true}
+                    doubleClickZoom={true}
+                    scrollWheelZoom={true}
+                    dragging={true}
+                    animate={true}
+                    easeLinearity={0.35}>
                     <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
                 </LeafletMap>
             </Card.Body>

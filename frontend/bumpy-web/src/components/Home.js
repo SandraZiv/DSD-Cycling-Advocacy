@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Map as LeafletMap, TileLayer, Marker, Popup, Polyline} from 'react-leaflet';
 import Leaflet from 'leaflet/dist/leaflet.css'
-import './Home.css';
 
 export class Home extends Component {
 
@@ -28,6 +27,11 @@ export class Home extends Component {
     render() {
       return (
           <LeafletMap
+                style={{
+                    height: '600px',
+                    width: '100%',
+                    margin: '0 auto'
+                }}
                 center={[this.state.latitude, this.state.longitude]}
                 zoom={14}
                 maxZoom={20}

@@ -6,7 +6,7 @@ import {Home} from './components/Home';  // Home without {} does not work no def
 import {UserUUID} from "./components/UserUUID";
 import {PastTrips} from './components/PastTrips';  // PastTrips without {} does not work no default export
 import {ReportIssue} from './components/ReportIssue';  // ReportIssue without {} does not work no default export
-import {PastTrip} from './components/PastTrip';
+import {TripPreview} from './components/TripPreview';
 import history from './setupHistory'
 import './App.css';
 
@@ -22,7 +22,7 @@ const App = () => {
                             <Route exact path='/user' component={UserUUID}/>
                             <Route path='/trips/' component={PastTrips}/>
                             <Route exact path='/fms' component={ReportIssue}/>
-                            <Route exact path='/pasttrip' component={PastTrip}/>
+                            <Route exact path='/pasttrip' component={TripPreview}/>
                             <Redirect to="/"/>
                         </Switch>
                     </div>
