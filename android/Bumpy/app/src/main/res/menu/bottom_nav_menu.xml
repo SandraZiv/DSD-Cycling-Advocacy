@@ -2,11 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_reportIssue"
-        android:icon="@drawable/ic_report_issue"
-        android:title="@string/bottom_nav_title_report_issue" />
-
-    <item
         android:id="@+id/navigation_pastTrips"
         android:icon="@drawable/ic_past_trips"
         android:title="@string/bottom_nav_title_past_trips" />

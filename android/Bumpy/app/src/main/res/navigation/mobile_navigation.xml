@@ -6,12 +6,6 @@
     app:startDestination="@+id/navigation_map">
 
     <fragment
-        android:id="@+id/navigation_reportIssue"
-        android:name="com.cycling_advocacy.bumpy.ui.reportIssue.ReportIssueFragment"
-        android:label="@string/bottom_nav_title_report_issue"
-        tools:layout="@layout/fragment_report_issues" />
-
-    <fragment
         android:id="@+id/navigation_pastTrips"
         android:name="com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsFragment"
         android:label="@string/bottom_nav_title_past_trips"
