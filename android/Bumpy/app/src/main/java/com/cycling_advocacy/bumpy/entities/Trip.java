@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class Trip implements Serializable {
 
@@ -72,7 +73,7 @@ public class Trip implements Serializable {
     }
 
     public String getFormattedDistance(){
-        return String.format("%.2f", distance);
+        return String.format(Locale.getDefault(), "%.2f", distance);
     }
 
     public Date getStartTs() {
