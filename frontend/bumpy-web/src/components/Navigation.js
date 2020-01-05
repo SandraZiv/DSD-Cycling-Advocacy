@@ -7,10 +7,6 @@ import './Navigation.css';
 
 export const Navigation = () => {
     const [uuid] = useContext(UuidContext);
-    let tripPath = '/user';
-    if (uuid !== undefined && uuid !== '') {
-        tripPath = '/trips/' + uuid;
-    }
 
     return (
         <Navbar expand="lg">
@@ -28,10 +24,10 @@ export const Navigation = () => {
                         <NavLink className="nav-link" to="/" exact={true}>Home</NavLink>
                     </Nav.Item>
                     <Nav.Item>
-                        <NavLink className="nav-link" to={tripPath}>Trips</NavLink>
+                        <NavLink className="nav-link" to={`/user/${uuid}`}>Trips</NavLink>
                     </Nav.Item>
                     <Nav.Item>
-                        <NavLink className="nav-link" to="/fms">Report Issue</NavLink>
+                        <NavLink className="nav-link" to="/login">User</NavLink>
                     </Nav.Item>
                 </Nav>
             </Navbar.Collapse>
