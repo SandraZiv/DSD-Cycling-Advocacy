@@ -33,7 +33,7 @@
     <string name="duration">DURATION</string>
 
     <!--Data retriever-->
-    <string name="get_trips_not_successful">Get trips for device not successful!: %1$s</string>
+    <string name="get_trips_not_successful">Get past trips for this device not successful!</string>
 
     <!--Issue Reporting -->
     <string name="type_of_issue_title">Type of Issue</string>

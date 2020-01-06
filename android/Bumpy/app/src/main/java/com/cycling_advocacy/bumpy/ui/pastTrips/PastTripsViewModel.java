@@ -20,7 +20,7 @@ public class PastTripsViewModel extends AndroidViewModel {
         super(application);
         pastTripsLiveData = new MutableLiveData<>();
 
-        updatePastTrips(application.getApplicationContext());
+        getPastTrips(application.getApplicationContext());
     }
 
     public LiveData<List<PastTrip>> getPastTrips() {
@@ -31,7 +31,7 @@ public class PastTripsViewModel extends AndroidViewModel {
         pastTripsLiveData.setValue(pastTrips);
     }
 
-    public void updatePastTrips(Context context) {
-        DataRetriever.updatePastTripsList(context, this);
+    public void getPastTrips(Context context) {
+        DataRetriever.getPastTripsList(context, this);
     }
 }

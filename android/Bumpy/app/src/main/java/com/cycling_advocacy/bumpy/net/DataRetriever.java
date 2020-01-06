@@ -28,7 +28,7 @@ public class DataRetriever {
 
     // TODO: This implementation relies solely on trips being obtained from the web; To support trips obrained from the db as well I think we can just obtain
     //  them from the db in onSuccess and add them to the pastTrips list
-    public static void updatePastTripsList(final Context context, final PastTripsViewModel pastTripsViewModel) {
+    public static void getPastTripsList(final Context context, final PastTripsViewModel pastTripsViewModel) {
         final String deviceUUID = PreferenceUtil.getDeviceUUID(context);
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
         bumpyService.getTripsByDeviceUUID(deviceUUID)
@@ -44,7 +44,7 @@ public class DataRetriever {
                     public void onSuccess(Response<List<PastTripGeneralResponse>> response) {
                         Log.d("Get trips for device", "Get trips for device response: " + response.message());
                         if (!response.isSuccessful()) {
-                            Toast.makeText(context, context.getString(R.string.get_trips_not_successful, response.message()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, R.string.get_trips_not_successful, Toast.LENGTH_SHORT).show();
                         } else {
                             List<PastTripGeneralResponse> pastTripsGeneral = response.body();
                             List<PastTrip> pastTrips = new ArrayList<>();
