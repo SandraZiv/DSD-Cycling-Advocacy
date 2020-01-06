@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Card, CardGroup} from 'react-bootstrap';
-import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
+import {Map as LeafletMap, TileLayer, Polyline, Marker, Popup} from 'react-leaflet';
 import {formatDateDefault} from "../dateformat";
 import {buildDuration, formatFloat} from "../utils";
+import L from 'leaflet';
 
 export class TripPreview extends Component {
 
@@ -51,6 +52,8 @@ export class TripPreview extends Component {
 
             let points = tripData.gnssData.map(point => [point.lat, point.lon]);
             let center = points[0];
+            let start = points[0];
+            let end = points[points.length-1];
 
             card = <Card className="text-left">
                 <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
@@ -132,6 +135,16 @@ export class TripPreview extends Component {
                         easeLinearity={0.35}>
                         <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
                         <Polyline positions={points} color={'red'}/>
+                        <Marker position={start} icon={iconStart}>
+                            <Popup>
+                                <span>Trip Start<br/>{new Date(tripData.startTS).toLocaleTimeString()}</span>
+                            </Popup>
+                        </Marker>
+                        <Marker position={end} icon={iconEnd}>
+                            <Popup>
+                                <span>Trip End<br/>{new Date(tripData.endTS).toLocaleTimeString()}</span>
+                            </Popup>
+                        </Marker>
                     </LeafletMap>
                 </Card.Body>
             </Card>
@@ -142,3 +155,13 @@ export class TripPreview extends Component {
         )
     }
 }
+
+export const iconStart = new L.icon({
+    iconUrl: require('./../images/start-icon.svg'),
+    iconSize: [30,30]
+});
+
+export const iconEnd = new L.icon({
+    iconUrl: require('./../images/finish-icon.png'),
+    iconSize: [30,30]
+});
