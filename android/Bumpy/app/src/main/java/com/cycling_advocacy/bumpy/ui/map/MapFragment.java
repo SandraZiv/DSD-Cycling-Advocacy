@@ -41,7 +41,6 @@ public class MapFragment extends Fragment {
 
     private Button btnStart;
     private ImageButton btnCenterMap;
-    private Switch gpsButton;
     private Context ctx;
 
     private MapView map;
@@ -56,6 +55,10 @@ public class MapFragment extends Fragment {
         initMap(root);
         btnCenterMap = root.findViewById(R.id.ic_center_map);
         btnCenterMap.setOnClickListener(v -> {
+            if(!checkGpsStatus()){
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
             GeoPoint myPosition = mLocationOverlay.getMyLocation();
             if (myPosition != null) {
                 map.getController().animateTo(myPosition);
@@ -63,21 +66,18 @@ public class MapFragment extends Fragment {
             }
         });
 
-
-
         btnStart = root.findViewById(R.id.btn_start_trip);
         btnStart.setOnClickListener(v -> {
-            Intent intent = new Intent(ctx, TripInProgressActivity.class);
-            startActivityForResult(intent, REQ_CODE_TRIP_UPLOAD);
+            if(!checkGpsStatus()){
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(ctx, TripInProgressActivity.class);
+                startActivityForResult(intent, REQ_CODE_TRIP_UPLOAD);
+            }
         });
 
-        gpsButton = root.findViewById(R.id.switch_gps);
-        gpsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent);
-
-            gpsButton.setChecked(!gpsButton.isChecked());
-        });
         return root;
     }
 
@@ -91,8 +91,7 @@ public class MapFragment extends Fragment {
         } else {
             btnStart.setEnabled(false);
         }
-        checkGpsStatus();
-
+        //checkGpsStatus();
         mLocationOverlay.enableMyLocation();
     }
 
@@ -112,11 +111,12 @@ public class MapFragment extends Fragment {
         }
     }
 
-    private void checkGpsStatus() {
+    private boolean checkGpsStatus() {
         LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        gpsButton.setChecked(gpsStatus);
+        //gpsButton.setChecked(gpsStatus);
         btnCenterMap.setVisibility(gpsStatus? View.VISIBLE: View.GONE);
+        return gpsStatus;
     }
 
     private void initMap(View parent) {
