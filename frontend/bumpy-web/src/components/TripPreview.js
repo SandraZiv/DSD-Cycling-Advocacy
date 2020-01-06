@@ -33,7 +33,6 @@ export class TripPreview extends Component {
 
             let distance = (tripData.distance !== undefined)? formatFloat(tripData.distance) + ' km' : '';
             let duration = buildDuration(tripData.startTS, tripData.endTS);
-            // let duration = '';
             let avgSpeed = '', maxSpeed = '';
             if (tripData.speed !== undefined) {
                avgSpeed = formatFloat(tripData.speed.avgSpeed) + ' km/h';
@@ -123,7 +122,7 @@ export class TripPreview extends Component {
                             width: '100%',
                             margin: '10px auto'
                         }}
-                        center={center} //should be from points also
+                        center={center}
                         zoom={15}
                         maxZoom={20}
                         attributionControl={true}
