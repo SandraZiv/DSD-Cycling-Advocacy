@@ -2,11 +2,11 @@ import React, {useContext} from 'react';
 import {NavLink} from "react-router-dom";
 import {Navbar, Nav} from 'react-bootstrap';
 import logo from '../images/sindikat-logo.png';
-import {UuidContext} from "../Store";
+import {ShortUuidContext} from "../Store";
 import './Navigation.css';
 
 export const Navigation = () => {
-    const [uuid] = useContext(UuidContext);
+    const [shortUuid] = useContext(ShortUuidContext);
 
     return (
         <Navbar expand="lg">
@@ -24,7 +24,7 @@ export const Navigation = () => {
                         <NavLink className="nav-link" to="/" exact={true}>Home</NavLink>
                     </Nav.Item>
                     <Nav.Item>
-                        <NavLink className="nav-link" to={`/user/${uuid}`}>Trips</NavLink>
+                        <NavLink className="nav-link" to={`/user/${shortUuid}`}>Trips</NavLink>
                     </Nav.Item>
                     <Nav.Item>
                         <NavLink className="nav-link" to="/login">User</NavLink>

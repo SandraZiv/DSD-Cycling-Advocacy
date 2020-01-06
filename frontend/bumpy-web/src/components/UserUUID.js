@@ -1,10 +1,10 @@
 import React, {useContext, useEffect} from 'react';
 import {Button, Form} from "react-bootstrap";
-import {UuidContext} from "../Store";
+import {ShortUuidContext} from "../Store";
 import './UserUUID.css'
 
 export const UserUUID = (props) => {
-    const [uuid, setUuid] = useContext(UuidContext);
+    const [shortUuid, setShortUuid] = useContext(ShortUuidContext);
 
     useEffect(() => {
         document.title = "Bumpy - Trips"
@@ -12,16 +12,16 @@ export const UserUUID = (props) => {
 
     const showLogoutAlert = () => {
         if (window.confirm('Are you sure you wish to log out?')) {
-            setUuid('')
+            setShortUuid('');
         }
     };
 
 
     let formLabelText = '';
-    if (uuid !== undefined && uuid !== '') {
+    if (shortUuid !== undefined && shortUuid !== '') {
         formLabelText =
         <div>
-            <p>Current User Identifier is <b>{uuid}</b></p>
+            <p>Current User Identifier is <b>{shortUuid}</b></p>
             <Button className="btn padding-bottom-standard" type="submit" onClick={e => showLogoutAlert()}>
                 Log out
             </Button>
@@ -35,8 +35,9 @@ export const UserUUID = (props) => {
         <Form onSubmit={(e) => {
             e.preventDefault();
 
-            setUuid(e.target.deviceUUID.value);
-            props.history.push('/user/' + e.target.deviceUUID.value)
+            let deviceUuid = e.target.deviceUUID.value;
+            setShortUuid(deviceUuid);
+            props.history.push(`/user/${deviceUuid}`);
         }}>
             <Form.Group controlId="deviceUUID">
                 <Form.Label className="padding-bottom-standard" column="">

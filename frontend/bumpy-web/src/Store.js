@@ -1,14 +1,14 @@
 import React, {useState} from "react";
 
-export const UuidContext = React.createContext('');
+export const ShortUuidContext = React.createContext('');
 
 const Store = ({children}) => {
-    const [uuid, setUuid] = useState('');
+    const [shortUuid, setShortUuid] = useState('');
 
     return (
-        <UuidContext.Provider value={[uuid, setUuid]}>
-           {children}
-        </UuidContext.Provider>
+        <ShortUuidContext.Provider value={[shortUuid, setShortUuid]}>
+            {children}
+        </ShortUuidContext.Provider>
     );
 };
 
