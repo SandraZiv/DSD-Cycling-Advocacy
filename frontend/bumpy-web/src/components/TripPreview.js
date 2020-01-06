@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {Button, Card, CardGroup} from 'react-bootstrap';
-import {Map as LeafletMap, TileLayer} from 'react-leaflet';
+import {Map as LeafletMap, TileLayer, Polyline, Marker, Popup} from 'react-leaflet';
+import {formatDateDefault} from "../dateformat";
+import {buildDuration, formatFloat} from "../utils";
+import L from 'leaflet';
 
 export class TripPreview extends Component {
 
@@ -13,6 +16,7 @@ export class TripPreview extends Component {
         document.title = "Bumpy - Trip Preview";
 
         // const tripUUID = '700568e5-bfae-4908-91ec-54966c8cbb43';
+        // const tripUUID = 'db68af06-d350-4207-ac7b-52f6e6a37e0c';
         let tripUUID = this.props.location.pathname.split('/').pop();
 
         fetch(`/v1/trip/getTripByTripUUID?tripUUID=${tripUUID}`)
@@ -22,40 +26,17 @@ export class TripPreview extends Component {
             })
     }
 
-    formatFloat(value) {
-        return parseFloat(value).toFixed(2);
-    }
-
-    buildDuration(start, end) {
-        let seconds = (new Date(end) - new Date(start))/1000;
-        let hours =  this.zeroFill(Math.floor(seconds/3600), 2);
-        seconds = seconds % 3600;
-        let minutes = this.zeroFill(Math.floor(seconds/60), 2);
-        seconds = this.zeroFill(Math.round(seconds % 60), 2);
-
-        return `${hours}:${minutes}:${seconds}`
-    }
-
-    zeroFill(number, width) {
-        width -= number.toString().length;
-        if (width > 0) {
-            return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
-        }
-        return number + ""; // always return a string
-    }
-
     render() {
         let card = '';
         if (this.state.trip !== undefined) {
             let tripData = this.state.trip;
 
-            let distance = (tripData.distance !== undefined)? this.formatFloat(tripData.distance) + ' km' : '';
-            let duration = this.buildDuration(tripData.startTS, tripData.endTS);
-
+            let distance = (tripData.distance !== undefined)? formatFloat(tripData.distance) + ' km' : '';
+            let duration = buildDuration(tripData.startTS, tripData.endTS);
             let avgSpeed = '', maxSpeed = '';
             if (tripData.speed !== undefined) {
-               avgSpeed = this.formatFloat(tripData.speed.avgSpeed) + ' km/h';
-               maxSpeed = this.formatFloat(tripData.speed.maxSpeed) + ' km/h';
+               avgSpeed = formatFloat(tripData.speed.avgSpeed) + ' km/h';
+               maxSpeed = formatFloat(tripData.speed.maxSpeed) + ' km/h';
             }
 
             let avgVibration = '15%';
@@ -63,14 +44,20 @@ export class TripPreview extends Component {
 
             let avgElevation = '', maxElevation = '', minElevation = '';
             if (tripData.elevation !== undefined) {
-              avgElevation = this.formatFloat(tripData.elevation.avgElevation) + ' m';
-              maxElevation = this.formatFloat(tripData.elevation.maxElevation) + ' m';
-              minElevation = this.formatFloat(tripData.elevation.minElevation) + ' m';
+              avgElevation = formatFloat(tripData.elevation.avgElevation) + ' m';
+              maxElevation = formatFloat(tripData.elevation.maxElevation) + ' m';
+              minElevation = formatFloat(tripData.elevation.minElevation) + ' m';
             }
 
+            let points = tripData.gnssData.map(point => [point.lat, point.lon]);
+            let center = points[0];
+            let start = points[0];
+            let end = points[points.length-1];
+
             card = <Card className="text-left">
-                <Card.Header as="h5">{`Trip started: ${new Date(tripData.startTS).toLocaleString()}`}
+                <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
                     <Button className="btn float-right ">Export</Button>
+                    <Button className="btn bg-danger float-right"><i className="fa fa-trash"/></Button>
                 </Card.Header>
                 <Card.Body>
                     <CardGroup>
@@ -135,7 +122,7 @@ export class TripPreview extends Component {
                             width: '100%',
                             margin: '10px auto'
                         }}
-                        center={[45.807323, 15.967772]}
+                        center={center}
                         zoom={15}
                         maxZoom={20}
                         attributionControl={true}
@@ -145,16 +132,35 @@ export class TripPreview extends Component {
                         dragging={true}
                         animate={true}
                         easeLinearity={0.35}>
-                        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
+                        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
+                        <Polyline positions={points} color={'red'}/>
+                        <Marker position={start} icon={iconStart}>
+                            <Popup>
+                                <span>Trip Start<br/>{new Date(tripData.startTS).toLocaleTimeString()}</span>
+                            </Popup>
+                        </Marker>
+                        <Marker position={end} icon={iconEnd}>
+                            <Popup>
+                                <span>Trip End<br/>{new Date(tripData.endTS).toLocaleTimeString()}</span>
+                            </Popup>
+                        </Marker>
                     </LeafletMap>
                 </Card.Body>
             </Card>
         }
 
         return (
-            <div>
-                {card}
-            </div>
+            <div>{card}</div>
         )
     }
 }
+
+export const iconStart = new L.icon({
+    iconUrl: require('./../images/start-icon.svg'),
+    iconSize: [30,30]
+});
+
+export const iconEnd = new L.icon({
+    iconUrl: require('./../images/finish-icon.png'),
+    iconSize: [30,30]
+});

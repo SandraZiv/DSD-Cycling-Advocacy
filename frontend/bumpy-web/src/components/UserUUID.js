@@ -10,12 +10,21 @@ export const UserUUID = (props) => {
         document.title = "Bumpy - Trips"
     });
 
+    const showLogoutAlert = () => {
+        if (window.confirm('Are you sure you wish to log out?')) {
+            setUuid('')
+        }
+    };
+
 
     let formLabelText = '';
     if (uuid !== undefined && uuid !== '') {
         formLabelText =
         <div>
             <p>Current User Identifier is <b>{uuid}</b></p>
+            <Button className="btn padding-bottom-standard" type="submit" onClick={e => showLogoutAlert()}>
+                Log out
+            </Button>
             <p>Change User by entering new Identifier</p>
         </div>;
     } else {

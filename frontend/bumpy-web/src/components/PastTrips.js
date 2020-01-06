@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import {dateFormat} from "../dateformat";
+import {formatDateDefault} from "../dateformat";
 import {UuidContext} from "../Store";
 import {Link} from "react-router-dom";
+import {Button} from 'react-bootstrap';
+import {formatFloat} from "../utils";
 import './PastTrips.css'
 
 export const PastTrips = (props) => {
@@ -11,13 +13,14 @@ export const PastTrips = (props) => {
     const [trips, setTrips] = useState(undefined);
 
     const fetchData = async (urlUUID, signal) => {
-        // testing id: 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f
+        // let urlUUID = 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f;
         await fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`, {signal: signal})
             .then(response => response.json())
             .then(data => {
                 setTrips(data.map(function (trip) {
-                    trip.startTS = dateFormat(new Date(trip.startTS), "dddd, mmmm dS, yyyy, HH:MM");
-                    trip.endTS = dateFormat(new Date(trip.endTS), "dddd, mmmm dS, yyyy, HH:MM");
+                    trip.startTS = formatDateDefault(trip.startTS);
+                    trip.endTS = formatDateDefault(trip.endTS);
+                    trip.distance = formatFloat(trip.distance);
                     return trip
                 }));
             });
@@ -45,6 +48,7 @@ export const PastTrips = (props) => {
     }, [uuid, setUuid, props.history, props.location.pathname]);
 
     let detailsFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}>Details</Link>;
+    let buttonFormatter = (cell, row) => <Button className="btn bg-danger"><i className="fa fa-trash"/></Button>;
 
     let tripTable = "";
     if (trips !== undefined) {
@@ -71,7 +75,18 @@ export const PastTrips = (props) => {
             text: '',
             sort: false,
             isDummyField: true,
-            formatter: detailsFormatter
+            formatter: detailsFormatter,
+            headerStyle: () => {
+                  return { width: "10%" }}
+        }, {
+             dataField: 'delete',
+             text: '',
+             sort: false,
+             isDummyField: true,
+             formatter: buttonFormatter,
+             headerStyle: () => {
+                   return { width: "10%" }}
+
         }];
 
         const defaultSorted = [{

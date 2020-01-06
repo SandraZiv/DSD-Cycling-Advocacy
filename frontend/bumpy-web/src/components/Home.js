@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import {Map as LeafletMap, TileLayer, Marker, Popup, Polyline} from 'react-leaflet';
-import Leaflet from 'leaflet/dist/leaflet.css'
+import {Map as LeafletMap, TileLayer} from 'react-leaflet';
 
 export class Home extends Component {
 
