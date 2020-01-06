@@ -14,16 +14,20 @@ export const PastTrips = (props) => {
 
     const fetchData = async (urlUUID, signal) => {
         // let urlUUID = 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f;
-        await fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`, {signal: signal})
-            .then(response => response.json())
-            .then(data => {
-                setTrips(data.map(function (trip) {
-                    trip.startTS = formatDateDefault(trip.startTS);
-                    trip.endTS = formatDateDefault(trip.endTS);
-                    trip.distance = formatFloat(trip.distance);
-                    return trip
-                }));
-            });
+        try {
+            await fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`, {signal: signal})
+                .then(response => response.json())
+                .then(data => {
+                    setTrips(data.map(function (trip) {
+                        trip.startTS = formatDateDefault(trip.startTS);
+                        trip.endTS = formatDateDefault(trip.endTS);
+                        trip.distance = formatFloat(trip.distance);
+                        return trip
+                    }));
+                });
+        } catch (e) {
+            
+        }
     };
 
     useEffect(() => {
@@ -47,7 +51,12 @@ export const PastTrips = (props) => {
         };
     }, [uuid, setUuid, props.history, props.location.pathname]);
 
-    let buttonFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}><Button className="btn bg-success text-white border-white"><i className="fa fa-info"/></Button></Link>;
+    let buttonFormatter = (cell, row) =>
+        <Link to={`/trips/${row.tripUUID}`}>
+            <Button className="btn bg-success text-white border-white">
+                <i className="fa fa-info"/>
+            </Button>
+        </Link>;
 
     let tripTable = "";
     if (trips !== undefined) {
