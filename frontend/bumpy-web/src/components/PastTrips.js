@@ -4,6 +4,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import {dateFormat} from "../dateformat";
 import {UuidContext} from "../Store";
 import {Link} from "react-router-dom";
+import {Button} from 'react-bootstrap';
 import './PastTrips.css'
 
 export const PastTrips = (props) => {
@@ -45,6 +46,7 @@ export const PastTrips = (props) => {
     }, [uuid, setUuid, props.history, props.location.pathname]);
 
     let detailsFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}>Details</Link>;
+    let buttonFormatter = (cell, row) => <Button className="btn bg-danger"><i class="fa fa-trash"></i></Button>
 
     let tripTable = "";
     if (trips !== undefined) {
@@ -71,7 +73,18 @@ export const PastTrips = (props) => {
             text: '',
             sort: false,
             isDummyField: true,
-            formatter: detailsFormatter
+            formatter: detailsFormatter,
+            headerStyle: () => {
+                  return { width: "10%" }}
+        }, {
+             dataField: 'delete',
+             text: '',
+             sort: false,
+             isDummyField: true,
+             formatter: buttonFormatter,
+             headerStyle: () => {
+                   return { width: "10%" }}
+
         }];
 
         const defaultSorted = [{

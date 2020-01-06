@@ -16,6 +16,7 @@ export const UserUUID = (props) => {
         formLabelText =
         <div>
             <p>Current User Identifier is <b>{uuid}</b></p>
+            <Button className="btn" type="submit">Log out</Button>
             <p>Change User by entering new Identifier</p>
         </div>;
     } else {
