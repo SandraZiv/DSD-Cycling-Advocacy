@@ -79,4 +79,12 @@
     <string name="dur">Duration: </string>
     <string name="bumps">Bumps: </string>
 
+    <!-- Completed Achievement  -->
+    <string name="achievements_hurray">HURRAY!</string>
+    <plurals name="achievement_completed">
+        <item quantity="one">%d Achievement completed!</item>
+        <item quantity="other">%d Achievements completed!</item>
+    </plurals>
+    <string name="content_description_trophy">Completed Achievement Trophy</string>
+
 </resources>

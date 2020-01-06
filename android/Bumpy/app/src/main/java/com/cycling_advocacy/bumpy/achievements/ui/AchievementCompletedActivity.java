@@ -1,7 +1,5 @@
 package com.cycling_advocacy.bumpy.achievements.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
@@ -21,7 +19,6 @@ public class AchievementCompletedActivity extends AppCompatActivity {
 
     public static final String EXTRA_COMPLETED_ACHIEVEMENTS = "EXTRA_COMPLETED_ACHIEVEMENTS";
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,12 +27,11 @@ public class AchievementCompletedActivity extends AppCompatActivity {
         List<Achievement> completedAchievements =
                 (List<Achievement>) getIntent().getSerializableExtra(EXTRA_COMPLETED_ACHIEVEMENTS);
 
-        // todo change this to match original mockup
-        String achievementCompleted =
-                getResources().getQuantityString(R.plurals.achievement_completed,completedAchievements.size());
+        int numOfCompleted = completedAchievements.size();
+        String achievementCompletedTitle = getResources()
+                .getQuantityString(R.plurals.achievement_completed, numOfCompleted, numOfCompleted);
 
-            ((TextView)findViewById(R.id.tv_achievement_completed_title))
-                .setText(completedAchievements.size() + " " + achievementCompleted);
+        ((TextView) findViewById(R.id.tv_achievement_completed_title)).setText(achievementCompletedTitle);
 
         // update DB
         AchievementsViewModel achievementsViewModel = ViewModelProviders
