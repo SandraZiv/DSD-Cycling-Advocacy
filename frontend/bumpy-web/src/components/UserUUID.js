@@ -10,6 +10,21 @@ export const UserUUID = (props) => {
         document.title = "Bumpy - Trips"
     });
 
+    const validateUUID = async (uuid) => {
+        try {
+            await fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuid}`)
+                .then(response => {
+                    if (response.ok) {
+                        setShortUuid(uuid);
+                        props.history.push(`/user/${uuid}`);
+                    } else {
+                        alert("UUID not valid")
+                    }
+                })
+        } catch (e) {
+        }
+    };
+
     const showLogoutAlert = () => {
         if (window.confirm('Are you sure you wish to log out?')) {
             setShortUuid('');
@@ -22,7 +37,7 @@ export const UserUUID = (props) => {
         formLabelText =
         <div>
             <p>Current User Identifier is <b>{shortUuid}</b></p>
-            <Button className="btn padding-bottom-standard" type="submit" onClick={e => showLogoutAlert()}>
+            <Button className="btn padding-bottom-standard" onClick={e => showLogoutAlert()}>
                 Log out
             </Button>
             <p>Change User by entering new Identifier</p>
@@ -34,10 +49,7 @@ export const UserUUID = (props) => {
     return (
         <Form onSubmit={(e) => {
             e.preventDefault();
-
-            let deviceUuid = e.target.deviceUUID.value;
-            setShortUuid(deviceUuid);
-            props.history.push(`/user/${deviceUuid}`);
+            validateUUID(e.target.deviceUUID.value)
         }}>
             <Form.Group controlId="deviceUUID">
                 <Form.Label className="padding-bottom-standard" column="">
