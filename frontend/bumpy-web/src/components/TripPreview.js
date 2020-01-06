@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Button, Card, CardGroup} from 'react-bootstrap';
 import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
 import L from "leaflet";
+import {formatDateDefault} from "../dateformat";
 
 export class TripPreview extends Component {
 
@@ -21,28 +22,6 @@ export class TripPreview extends Component {
             .then(data => {
                 this.setState({trip: data});
             })
-    }
-
-    formatFloat(value) {
-        return parseFloat(value).toFixed(2);
-    }
-
-    buildDuration(start, end) {
-        let seconds = (new Date(end) - new Date(start))/1000;
-        let hours =  this.zeroFill(Math.floor(seconds/3600), 2);
-        seconds = seconds % 3600;
-        let minutes = this.zeroFill(Math.floor(seconds/60), 2);
-        seconds = this.zeroFill(Math.round(seconds % 60), 2);
-
-        return `${hours}:${minutes}:${seconds}`
-    }
-
-    zeroFill(number, width) {
-        width -= number.toString().length;
-        if (width > 0) {
-            return new Array(width + (/\./.test(number) ? 2 : 1)).join('0') + number;
-        }
-        return number + ""; // always return a string
     }
 
     render() {
@@ -74,7 +53,7 @@ export class TripPreview extends Component {
             );
 
             card = <Card className="text-left">
-                <Card.Header as="h5">{`Trip started: ${new Date(tripData.startTS).toLocaleString()}`}
+                <Card.Header as="h5">{`Trip started: ${formatDateDefault(tripData.startTS)}`}
                     <Button className="btn float-right ">Export</Button>
                     <Button className="btn bg-danger float-right"><i class="fa fa-trash"></i></Button>
                 </Card.Header>
