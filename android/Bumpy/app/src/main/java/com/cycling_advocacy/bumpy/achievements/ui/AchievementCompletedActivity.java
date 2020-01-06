@@ -27,9 +27,11 @@ public class AchievementCompletedActivity extends AppCompatActivity {
         List<Achievement> completedAchievements =
                 (List<Achievement>) getIntent().getSerializableExtra(EXTRA_COMPLETED_ACHIEVEMENTS);
 
-        // todo change this to match original mockup
-        ((TextView)findViewById(R.id.tv_achievement_completed_title))
-                .setText("You just completed " + completedAchievements.size() + " achievements");
+        int numOfCompleted = completedAchievements.size();
+        String achievementCompletedTitle = getResources()
+                .getQuantityString(R.plurals.achievement_completed, numOfCompleted, numOfCompleted);
+
+        ((TextView) findViewById(R.id.tv_achievement_completed_title)).setText(achievementCompletedTitle);
 
         // update DB
         AchievementsViewModel achievementsViewModel = ViewModelProviders

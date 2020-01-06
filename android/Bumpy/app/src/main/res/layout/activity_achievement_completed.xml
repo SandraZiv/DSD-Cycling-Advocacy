@@ -5,17 +5,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cyclingAdvocacyBlack"
-    android:gravity="center"
     android:orientation="vertical"
     tools:context=".achievements.ui.AchievementCompletedActivity">
+
+    <TextView
+        android:id="@+id/tv_achievement_hurray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center|bottom"
+        android:text="@string/achievements_hurray"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_big"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_achievement_completed_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:gravity="center"
         android:textColor="@color/cyclingAdvocacyYellow"
-        tools:text="You just completed 2 achievements" />
+        android:textSize="@dimen/text_size_large"
+        tools:text="2 Achievements Completed!" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="2"
+        android:contentDescription="@string/content_description_trophy"
+        app:srcCompat="@drawable/ic_trophy" />
 
 </LinearLayout>
