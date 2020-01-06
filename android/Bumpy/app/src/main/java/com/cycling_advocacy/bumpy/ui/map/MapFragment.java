@@ -91,7 +91,6 @@ public class MapFragment extends Fragment {
         } else {
             btnStart.setEnabled(false);
         }
-        //checkGpsStatus();
         mLocationOverlay.enableMyLocation();
     }
 
@@ -114,7 +113,6 @@ public class MapFragment extends Fragment {
     private boolean checkGpsStatus() {
         LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        //gpsButton.setChecked(gpsStatus);
         btnCenterMap.setVisibility(gpsStatus? View.VISIBLE: View.GONE);
         return gpsStatus;
     }
