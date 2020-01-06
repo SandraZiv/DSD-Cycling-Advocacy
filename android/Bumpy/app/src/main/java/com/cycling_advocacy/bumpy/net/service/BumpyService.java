@@ -27,4 +27,7 @@ public interface BumpyService {
 
     @GET("trip/getTripsByDeviceUUID")
     Single<Response<List<PastTripGeneralResponse>>> getTripsByDeviceUUID(@Query("deviceUUID") String deviceUUID);
+
+    @GET("device/getShortDeviceUUID")
+    Single<Response<String>> getShortDeviceUUID(@Query("deviceUUID") String deviceUUID);
 }

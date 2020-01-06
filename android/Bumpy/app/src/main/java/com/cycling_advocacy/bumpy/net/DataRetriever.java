@@ -10,11 +10,8 @@ import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
 import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsViewModel;
-import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +26,7 @@ public class DataRetriever {
     // TODO: This implementation relies solely on trips being obtained from the web; To support trips obrained from the db as well I think we can just obtain
     //  them from the db in onSuccess and add them to the pastTrips list
     public static void getPastTripsList(final Context context, final PastTripsViewModel pastTripsViewModel) {
-        final String deviceUUID = PreferenceUtil.getDeviceUUID(context);
+        final String deviceUUID = PreferenceUtil.getLongDeviceUUID(context);
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
         bumpyService.getTripsByDeviceUUID(deviceUUID)
                 .subscribeOn(Schedulers.io())
