@@ -48,7 +48,7 @@ public class DataSender {
 
             // check to display error message
             int message;
-            if (!(uploadType == TripUploadType.WIFI && NetworkUtil.isWifiAvailable(context))) {
+            if (uploadType == TripUploadType.WIFI && !NetworkUtil.isWifiAvailable(context)) {
                 message = R.string.trip_not_uploaded_wifi;
             } else {
                 message = R.string.trip_not_uploaded_mobile;

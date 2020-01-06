@@ -7,8 +7,6 @@ import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
 
-import java.net.InetAddress;
-
 public class NetworkUtil {
 
     public static boolean isWifiAvailable(Context context) {
@@ -65,19 +63,6 @@ public class NetworkUtil {
     }
 
     private static boolean isNetworkConnected(ConnectivityManager cm) {
-        return cm.getActiveNetworkInfo() != null
-                && cm.getActiveNetworkInfo().isConnected()
-                && isInternetAvailable();
-    }
-
-    // checks if device is connected to a network but there is no internet
-    private static boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            return !"".equals(ipAddr.toString());
-
-        } catch (Exception e) {
-            return false;
-        }
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
