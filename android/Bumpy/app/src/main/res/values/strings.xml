@@ -32,7 +32,12 @@
     <string name="vibration">VIBRATION</string>
     <string name="distance">DISTANCE</string>
     <string name="duration">DURATION</string>
+  
+    <!--Data retriever-->
+    <string name="get_trips_not_successful">Get past trips for this device not successful!</string>
 
+    <string name="current_location">Current Location</string>
+  
     <!-- Trip upload -->
     <string name="dialog_upload_trip_title">Upload trip data?</string>
     <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
@@ -40,6 +45,12 @@
     <string name="dialog_no">No</string>
     <string name="trip_not_uploaded_wifi">Trip data not uploaded due to WiFi not available</string>
     <string name="trip_not_uploaded_mobile">Trip data not uploaded due to no network</string>
+
+    <!--Past trips-->
+    <string name="upload_data_description">Upload cycling data</string>
+    <string name="trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
+    <string name="duration_display">Duration: %1$s  </string>
+    <string name="distance_display">Distance: %1$.2f km  </string>
 
     <!--Settings-->
     <string name="title_activity_settings">Settings</string>

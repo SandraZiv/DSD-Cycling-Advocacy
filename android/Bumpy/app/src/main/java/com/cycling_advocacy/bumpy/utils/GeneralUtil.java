@@ -6,6 +6,8 @@ import android.content.Context;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -27,7 +29,7 @@ public class GeneralUtil {
 
     public static long getDurationInSeconds(Date startTS, Date endTS) {
         long diff = endTS.getTime() - startTS.getTime();
-        return diff / 1000 % 60;
+        return diff / 1000;
     }
 
     public static String generateUUID() {
@@ -51,5 +53,4 @@ public class GeneralUtil {
 
         return true;
     }
-
 }

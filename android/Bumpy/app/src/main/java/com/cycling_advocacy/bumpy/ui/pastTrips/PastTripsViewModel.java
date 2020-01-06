@@ -1,19 +1,37 @@
 package com.cycling_advocacy.bumpy.ui.pastTrips;
 
+import android.app.Application;
+import android.content.Context;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-public class PastTripsViewModel extends ViewModel {
+import com.cycling_advocacy.bumpy.entities.PastTrip;
+import com.cycling_advocacy.bumpy.net.DataRetriever;
 
-    private MutableLiveData<String> mText;
+import java.util.List;
 
-    public PastTripsViewModel() {
-        mText = new MutableLiveData<>();
-        //mText.setValue("This is past trips fragment");
+public class PastTripsViewModel extends AndroidViewModel {
+
+    public MutableLiveData<List<PastTrip>> pastTripsLiveData;
+
+    public PastTripsViewModel(Application application) {
+        super(application);
+        pastTripsLiveData = new MutableLiveData<>();
+
+        getPastTrips(application.getApplicationContext());
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public LiveData<List<PastTrip>> getPastTrips() {
+        return pastTripsLiveData;
+    }
+
+    public void setPastTripsLiveData(List<PastTrip> pastTrips) {
+        pastTripsLiveData.setValue(pastTrips);
+    }
+
+    public void getPastTrips(Context context) {
+        DataRetriever.getPastTripsList(context, this);
     }
 }

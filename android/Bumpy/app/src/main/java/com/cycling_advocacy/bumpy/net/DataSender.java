@@ -12,6 +12,7 @@ import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripUploadType;
 import com.cycling_advocacy.bumpy.pending_trips.PendingTripsViewModel;
 import com.cycling_advocacy.bumpy.entities.Trip;
+import com.cycling_advocacy.bumpy.net.model.ApiResponse;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
 import com.cycling_advocacy.bumpy.utils.CsvMotionUtil;
