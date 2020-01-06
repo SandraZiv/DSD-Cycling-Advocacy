@@ -42,8 +42,8 @@ export const UserUUID = (props) => {
                 <Form.Label className="padding-bottom-standard" column="">
                     {formLabelText}
                 </Form.Label>
-                <Form.Control className="enterUUID col-md-3 mx-auto"
-                              placeholder="1f577249-04f7-4d10-9e51-78bca31773e7"
+                <Form.Control className="enterUUID col-md-2 mx-auto"
+                              placeholder="Y4IKLY"
                               type="text" name="deviceUUID" required/>
                 <Form.Text className="text-muted padding-bottom-standard">
                     User Identifier can be found in mobile app under Settings.

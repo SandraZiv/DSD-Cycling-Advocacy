@@ -57,7 +57,7 @@ export class TripPreview extends Component {
             card = <Card className="text-left">
                 <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
                     <Button className="btn float-right ">Export</Button>
-                    <Button className="btn bg-danger float-right"><i className="fa fa-trash"/></Button>
+                    <Button className="btn bg-danger text-white border-white float-right"><i className="fa fa-trash"/></Button>
                 </Card.Header>
                 <Card.Body>
                     <CardGroup>

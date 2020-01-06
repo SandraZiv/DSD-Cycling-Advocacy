@@ -47,8 +47,7 @@ export const PastTrips = (props) => {
         };
     }, [uuid, setUuid, props.history, props.location.pathname]);
 
-    let detailsFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}>Details</Link>;
-    let buttonFormatter = (cell, row) => <Button className="btn bg-danger"><i className="fa fa-trash"/></Button>;
+    let buttonFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}><Button className="btn bg-success text-white border-white"><i className="fa fa-info"/></Button></Link>;
 
     let tripTable = "";
     if (trips !== undefined) {
@@ -70,16 +69,8 @@ export const PastTrips = (props) => {
             //     dataField: 'vibration',
             //     text: 'Average vibration(%)',
             //     sort: true
-        }, {
-            dataField: 'details',
-            text: '',
-            sort: false,
-            isDummyField: true,
-            formatter: detailsFormatter,
-            headerStyle: () => {
-                  return { width: "10%" }}
-        }, {
-             dataField: 'delete',
+        },  {
+             dataField: 'details',
              text: '',
              sort: false,
              isDummyField: true,
