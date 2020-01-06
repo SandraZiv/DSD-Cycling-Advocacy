@@ -31,7 +31,7 @@ public class Trip implements Serializable {
     private List<GnssData> gnssDataList;
 
     public Trip(Context context) {
-        this.deviceUUID = PreferenceUtil.getDeviceUUID(context);
+        this.deviceUUID = PreferenceUtil.getLongDeviceUUID(context);
         this.tripUUID = GeneralUtil.generateUUID();
         this.gnssDataList = new LinkedList<>();
     }
