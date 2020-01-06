@@ -9,11 +9,12 @@
     <string name="next">NEXT</string>
 
     <!--Bottom navigation names -->
-    <string name="bottom_nav_title_report_issue">Report Issue</string>
     <string name="bottom_nav_title_past_trips">Past Trips</string>
     <string name="bottom_nav_title_map">Map</string>
     <string name="bottom_nav_title_achievements">Achievements</string>
     <string name="bottom_nav_title_settings">Settings</string>
+
+    <string name="mandatory_permissions">These permissions are mandatory to get your location. You need to allow them.</string>
 
     <!--Map and buttons -->
     <string name="gps">GPS</string>
@@ -31,23 +32,19 @@
     <string name="vibration">VIBRATION</string>
     <string name="distance">DISTANCE</string>
     <string name="duration">DURATION</string>
-
+  
     <!--Data retriever-->
     <string name="get_trips_not_successful">Get past trips for this device not successful!</string>
 
-    <!--Issue Reporting -->
-    <string name="type_of_issue_title">Type of Issue</string>
-    <string name="choose_issue">Choose an issue</string>
-    <string name="take_photo">Take a Picture</string>
-    <string name="choose_photo">Gallery</string>
-    <string-array name="type_of_issue">
-        <item>Surface</item>
-        <item>Lighting</item>
-        <item>Obstacle</item>
-        <item>Signalization</item>
-    </string-array>
-
     <string name="current_location">Current Location</string>
+  
+    <!-- Trip upload -->
+    <string name="dialog_upload_trip_title">Upload trip data?</string>
+    <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="trip_not_uploaded_wifi">Trip data not uploaded due to WiFi not available</string>
+    <string name="trip_not_uploaded_mobile">Trip data not uploaded due to no network</string>
 
     <!--Past trips-->
     <string name="upload_data_description">Upload cycling data</string>
@@ -58,19 +55,47 @@
     <!--Settings-->
     <string name="title_activity_settings">Settings</string>
     <string name="settings_uid_title">User Identifier</string>
-    <string name="settings_mob_data_title">Use Mobile data</string>
-    <string name="settings_mob_data_summary_on">Now sending collected data automatically using mobile data or WiFi</string>
-    <string name="settings_mob_data_summary_off">Now sending collected data automatically using only Wifi</string>
-    <string name="settings_display_stat_title">Show statistics</string>
-    <string name="settings_display_stat_summary_off">Statistics is hidden during all trips</string>
-    <string name="settings_display_stat_summary_on">Statistics is shown during all trips</string>
+    <string name="settings_upload_trip_data_title">Upload trip data</string>
+
+    <!-- make sure to update TripUploadType !!! -->
+    <string name="settings_upload_trip_data_default">WIFI</string>
+    <string-array name="settings_upload_trip_data_values">
+        <item>@string/settings_upload_trip_data_default</item>
+        <item>MOBILE_DATA</item>
+        <item>MANUAL</item>
+    </string-array>
+    <string-array name="settings_upload_trip_data_entries">
+        <item>Automatically using WiFi</item>
+        <item>Automatically using WiFi or Mobile data</item>
+        <item>Manual upload</item>
+    </string-array>
+    <string name="settings_keep_awake_title">Keep screen awake</string>
+    <string name="settings_keep_awake_summary">While trip is in progress</string>
 
     <!-- preferences keys -->
     <string name="pref_uid_key">pref_uid_key</string>
-    <string name="pref_mob_data_key">pref_mob_data_key</string>
-    <string name="pref_display_stat_key">pref_display_stat_key</string>
+    <string name="pref_upload_trip_data_key">pref_upload_trip_data_key</string>
+    <string name="pref_keep_awake_key">pref_display_stat_key</string>
 
     <!-- notification -->
     <string name="channel_name">Background location channel</string>
+
+    <!-- Trip statistics -->
+    <string name="title_past_trip_statistics">Trip statistics</string>
+    <string name="time_interval">%s - %s</string>
+    <string name="accumulated_vibration">Accumulated Vibrations: </string>
+    <string name="avg_speed">Average Speed: </string>
+    <string name="max_speed">Maximum Speed: </string>
+    <string name="dist">Distance: </string>
+    <string name="dur">Duration: </string>
+    <string name="bumps">Bumps: </string>
+
+    <!-- Completed Achievement  -->
+    <string name="achievements_hurray">HURRAY!</string>
+    <plurals name="achievement_completed">
+        <item quantity="one">%d Achievement completed!</item>
+        <item quantity="other">%d Achievements completed!</item>
+    </plurals>
+    <string name="content_description_trophy">Completed Achievement Trophy</string>
 
 </resources>

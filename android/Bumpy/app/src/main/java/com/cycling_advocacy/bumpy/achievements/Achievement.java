@@ -1,53 +1,46 @@
 package com.cycling_advocacy.bumpy.achievements;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
-@Entity(tableName = "achievements")
-public class Achievement {
+import java.io.Serializable;
 
-    @PrimaryKey(autoGenerate = true)
+public class Achievement implements Serializable {
+
     private int id;
 
     @StringRes
-    @ColumnInfo(name = "title_id")
     private int titleId;
 
     @StringRes
-    @ColumnInfo(name = "detail_id")
     private int detailId;
 
-    @ColumnInfo(name = "is_completed")
     private boolean isCompleted;
 
+    private AchievementCondition condition;
+
     // using id so it can support internationalization
-    public Achievement(@StringRes int titleId, @StringRes int detailId, boolean isCompleted) {
+    public Achievement(
+            int id,
+            @StringRes int titleId,
+            @StringRes int detailId,
+            boolean isCompleted,
+            AchievementCondition condition
+    ) {
+        this.id = id;
         this.titleId = titleId;
         this.detailId = detailId;
         this.isCompleted = isCompleted;
+        this.condition = condition;
     }
 
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getId() {
         return id;
     }
 
-    public void setTitleId(int titleId) {
-        this.titleId = titleId;
-    }
-
     public int getTitleId() {
         return titleId;
-    }
-
-    public void setDetailId(int detailId) {
-        this.detailId = detailId;
     }
 
     public int getDetailId() {
@@ -60,5 +53,22 @@ public class Achievement {
 
     public boolean isCompleted() {
         return isCompleted;
+    }
+
+    public AchievementCondition getCondition() {
+        return condition;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Achievement)) {
+            return false;
+        }
+        return this.getId() == ((Achievement)obj).getId();
     }
 }

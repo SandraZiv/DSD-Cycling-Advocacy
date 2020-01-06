@@ -1,6 +1,7 @@
 package com.cycling_advocacy.bumpy;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
@@ -20,19 +21,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.cycling_advocacy.bumpy.achievements.Achievement;
+import com.cycling_advocacy.bumpy.achievements.AchievementsViewModel;
+import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
+import com.cycling_advocacy.bumpy.achievements.ui.AchievementCompletedActivity;
+import com.cycling_advocacy.bumpy.achievements.util.AchievementManager;
 import com.cycling_advocacy.bumpy.entities.GnssData;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.location.LocationChangedListener;
 import com.cycling_advocacy.bumpy.location.LocationService;
 import com.cycling_advocacy.bumpy.motion.MotionManager;
 import com.cycling_advocacy.bumpy.motion.VibrationChangedListener;
-import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.ui.map.MapFragment;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
+import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.ntt.customgaugeview.library.GaugeView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 public class TripInProgressActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -43,36 +56,55 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     private Chronometer chronometerDuration;
     private GaugeView speedometer;
     private GaugeView vibrationmeter;
-    private Button btnEndTrip;
 
     private GoogleApiClient googleApiClient;
 
     private LocationService locationService;
     private MotionManager motionManager;
 
+    private Intent serviceIntent;
+
     private Trip trip;
+
+    private Set<Achievement> achievements = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (PreferenceUtil.shouldKeepScreenAwake(this)) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+
         setContentView(R.layout.activity_trip_in_progress);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         tvDistance = findViewById(R.id.tv_distance);
+        tvDistance.setText(String.format(Locale.getDefault(), "%.2f", 0.00));
         chronometerDuration = findViewById(R.id.chronometer_duration);
 
         speedometer = findViewById(R.id.gauge_view_speed);
+        speedometer.setTargetValue(0);
         vibrationmeter = findViewById(R.id.gauge_view_vibration);
 
-        btnEndTrip = findViewById(R.id.button_trip_end);
-        btnEndTrip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopTracking();
-                finish();
+        Button btnEndTrip = findViewById(R.id.button_trip_end);
+        btnEndTrip.setOnClickListener(view -> {
+            stopTracking();
+
+            ArrayList<Achievement> completedAchievements =
+                    AchievementManager.manageAchievements(TripInProgressActivity.this, trip, achievements);
+            if (!completedAchievements.isEmpty()) {
+                Intent intent = new Intent(TripInProgressActivity.this, AchievementCompletedActivity.class);
+                intent.putExtra(AchievementCompletedActivity.EXTRA_COMPLETED_ACHIEVEMENTS, completedAchievements);
+                startActivity(intent);
             }
+
+            Intent data = new Intent();
+            data.putExtra(MapFragment.EXTRA_TRIP, trip);
+            setResult(Activity.RESULT_OK, data);
+            finish();
         });
 
         googleApiClient = new GoogleApiClient.Builder(this).
@@ -82,6 +114,15 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
                 .build();
 
         motionManager = new MotionManager(this, this);
+
+        // gather achievements for later usage when trip is ended
+        AchievementsViewModel achievementsViewModel = ViewModelProviders
+                .of(this).get(AchievementsViewModel.class);
+        achievementsViewModel.achievementsLiveData.observe(this, achievementEntities -> {
+            for (AchievementEntity entity : achievementEntities) {
+                achievements.add(AchievementManager.convertToAchievement(entity));
+            }
+        });
     }
 
     @Override
@@ -104,6 +145,13 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     @Override
     protected void onDestroy() {
         locationService.stopTracking();
+
+        if (serviceIntent != null) {
+            stopService(serviceIntent);
+        }
+        if (serviceConnection != null) {
+            unbindService(serviceConnection);
+        }
         super.onDestroy();
     }
 
@@ -118,9 +166,9 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
             return;
         }
 
-        Intent intent = new Intent(this, LocationService.class);
-        startService(intent);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        serviceIntent = new Intent(this, LocationService.class);
+        startService(serviceIntent);
+        bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -150,8 +198,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
         locationService.stopTracking();
         motionManager.stopSensorUpdates();
-
-        DataSender.sendData(this, trip);
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

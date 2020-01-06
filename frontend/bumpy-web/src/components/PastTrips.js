@@ -1,106 +1,99 @@
-import React, {Component} from 'react';
-import {Button} from "react-bootstrap";
+import React, {useContext, useEffect, useState} from 'react';
 import BootstrapTable from 'react-bootstrap-table-next'
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import {UserModal} from "./UserModal";
+import {dateFormat} from "../dateformat";
+import {UuidContext} from "../Store";
+import {Link} from "react-router-dom";
 import './PastTrips.css'
 
-export class PastTrips extends Component {
+export const PastTrips = (props) => {
+    const [uuid, setUuid] = useContext(UuidContext);
+    const [trips, setTrips] = useState(undefined);
 
-    componentDidMount() {
-        document.title = "Bumpy - Trips"
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            trips: undefined,
-            shouldShowModal: false
-        };
-    }
-
-    // called when all components are rendered
-    // componentDidMount() {
-    //     this.getTrips()
-    // }
-
-    onModalClose(deviceUUID) {
-        this.setState({shouldShowModal: false});
-        this.getTrips(deviceUUID);
-    }
-
-    getTrips(deviceUUID) {
+    const fetchData = async (urlUUID, signal) => {
         // testing id: 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f
-        fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${deviceUUID}`)
+        await fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${urlUUID}`, {signal: signal})
             .then(response => response.json())
             .then(data => {
-                let parsedTrips = JSON.parse(data).map(t => {
-                        // console.log(t)
-                        return {
-                            "trip_uuid": t.trip_uuid,
-                            "distance": t.distance.toFixed(2),
-                            "start_ts": new Date(t.start_ts.$date).toLocaleString(),
-                            "end_ts": new Date(t.end_ts.$date).toLocaleString(),
-                            "vibration": Math.floor(Math.random() * Math.floor(80))
-                        };
-                    }
-                );
-
-                this.setState({trips: parsedTrips})
+                setTrips(data.map(function (trip) {
+                    trip.startTS = dateFormat(new Date(trip.startTS), "dddd, mmmm dS, yyyy, HH:MM");
+                    trip.endTS = dateFormat(new Date(trip.endTS), "dddd, mmmm dS, yyyy, HH:MM");
+                    return trip
+                }));
             });
     };
 
-    render() {
-        const {trips} = this.state;
-        let tripTable = "";
-        if (trips !== undefined) {
-            // console.log(trips)
+    useEffect(() => {
+        let urlUUID = props.location.pathname.split('/').pop();
 
-            const columns = [{
-                dataField: 'start_ts',
-                text: 'Start time',
-                sort: true
-            }, {
-                dataField: 'end_ts',
-                text: 'End time',
-                sort: true
-            }, {
-                dataField: 'distance',
-                text: 'Distance(km)',
-                sort: true
-            }, {
-                dataField: 'vibration',
-                text: 'Average vibration(%)',
-                sort: true
-            }];
-
-            const defaultSorted = [{
-                dataField: 'start_ts',
-                order: 'desc'
-            }];
-
-            tripTable =
-                <BootstrapTable
-                    bootstrap4
-                    keyField="trip_uuid"
-                    data={trips}
-                    columns={columns}
-                    defaultSorted={defaultSorted}
-                    noDataIndication="There is no data for given User"
-                    pagination={paginationFactory()}
-                />
+        if (urlUUID === '' && (uuid === undefined || uuid === '')) {
+            props.history.push('/login');
+            return;
         }
 
-        return (
-            <div>
-                <Button className="btn"
-                        onClick={() => this.setState({shouldShowModal: true})}>
-                    Enter User Identifier
-                </Button>
-                <UserModal show={this.state.shouldShowModal} onHide={this.onModalClose.bind(this)}/>
+        document.title = "Bumpy - Trips";
 
-                {tripTable}
-            </div>
-        )
+        setUuid(urlUUID);
+
+        const abortController = new AbortController();
+        fetchData(urlUUID, abortController.signal);
+
+        return () => {
+            // clean up
+            abortController.abort();
+        };
+    }, [uuid, setUuid, props.history, props.location.pathname]);
+
+    let detailsFormatter = (cell, row) => <Link to={`/trips/${row.tripUUID}`}>Details</Link>;
+
+    let tripTable = "";
+    if (trips !== undefined) {
+        // console.log(trips)
+
+        const columns = [{
+            dataField: 'startTS',
+            text: 'Start time',
+            sort: true
+        }, {
+            dataField: 'endTS',
+            text: 'End time',
+            sort: true
+        }, {
+            dataField: 'distance',
+            text: 'Distance(km)',
+            sort: true
+            // }, {
+            //     dataField: 'vibration',
+            //     text: 'Average vibration(%)',
+            //     sort: true
+        }, {
+            dataField: 'details',
+            text: '',
+            sort: false,
+            isDummyField: true,
+            formatter: detailsFormatter
+        }];
+
+        const defaultSorted = [{
+            dataField: 'startTS',
+            order: 'desc'
+        }];
+
+        tripTable =
+            <BootstrapTable
+                bootstrap4
+                keyField="tripUUID"
+                data={trips}
+                columns={columns}
+                defaultSorted={defaultSorted}
+                noDataIndication="There is no data for given User"
+                pagination={paginationFactory()}
+            />
     }
-}
+
+    return (
+        <div>
+            {tripTable}
+        </div>
+    )
+};

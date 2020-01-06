@@ -46,12 +46,21 @@
             android:label="@string/trip_in_progress"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".PastTripStatisticsActivity"
+            android:label="@string/title_past_trip_statistics"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceCompatStyle" />
 
+        <activity
+            android:name=".achievements.ui.AchievementCompletedActivity"
+            android:screenOrientation="portrait"/>
+
         <service android:name=".location.LocationService"/>
 
     </application>
+    
 </manifest>

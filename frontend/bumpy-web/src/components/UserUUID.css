@@ -1,0 +1,23 @@
+.form-control:focus {
+    border-color: #ffd200;
+    box-shadow: inset 0 0 0 #ffd200, 0 0 8px #ffd200;
+}
+
+.btn {
+    color: #ffd200;
+    background: #ffffff;
+    border-color: #ffd200;
+}
+
+.btn:hover, .btn:focus, .btn:active {
+    background-color: #ffd200 !important;
+    border-color: #ffd200 !important;
+}
+
+.enterUUID {
+    width: 50%;
+}
+
+.padding-bottom-standard {
+    margin-bottom: 20px;
+}

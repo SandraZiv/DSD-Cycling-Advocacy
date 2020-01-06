@@ -8,14 +8,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.cycling_advocacy.bumpy.achievements.db.AchievementsInitial;
 import com.cycling_advocacy.bumpy.achievements.db.AchievementDao;
-import com.cycling_advocacy.bumpy.achievements.Achievement;
+import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;
+import com.cycling_advocacy.bumpy.achievements.db.AchievementsInitial;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTrip;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTripsDao;
 
 import java.util.concurrent.Executors;
 
-// todo add waiting trip entity
-@Database(entities = {Achievement.class}, exportSchema = false, version = 1)
+@Database(entities = {AchievementEntity.class, PendingTrip.class}, exportSchema = false, version = 2)
 public abstract class BumpyDB extends RoomDatabase {
 
     private static final String dbName = "bumpy_db";
@@ -28,14 +29,9 @@ public abstract class BumpyDB extends RoomDatabase {
                         @Override
                         public void onCreate(@NonNull SupportSQLiteDatabase db) {
                             super.onCreate(db);
-                            Executors.newSingleThreadExecutor().execute(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getInstance(context)
-                                            .achievementDao()
-                                            .insertAll(AchievementsInitial.getAchievements());
-                                }
-                            });
+                            Executors.newSingleThreadExecutor().execute(() -> getInstance(context)
+                                    .achievementDao()
+                                    .insertAll(AchievementsInitial.getDbEntities()));
                         }
                     })
                     .fallbackToDestructiveMigration()
@@ -47,5 +43,5 @@ public abstract class BumpyDB extends RoomDatabase {
 
     public abstract AchievementDao achievementDao();
 
-    public abstract WaitingTripsDao waitingTripsDao();
+    public abstract PendingTripsDao pendingTripsDao();
 }
