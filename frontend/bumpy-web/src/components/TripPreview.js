@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Card, CardGroup} from 'react-bootstrap';
 import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
-import L from "leaflet";
 import {formatDateDefault} from "../dateformat";
+import {buildDuration, formatFloat} from "../utils";
 
 export class TripPreview extends Component {
 
@@ -15,6 +15,7 @@ export class TripPreview extends Component {
         document.title = "Bumpy - Trip Preview";
 
         // const tripUUID = '700568e5-bfae-4908-91ec-54966c8cbb43';
+        // const tripUUID = 'db68af06-d350-4207-ac7b-52f6e6a37e0c';
         let tripUUID = this.props.location.pathname.split('/').pop();
 
         fetch(`/v1/trip/getTripByTripUUID?tripUUID=${tripUUID}`)
@@ -29,12 +30,13 @@ export class TripPreview extends Component {
         if (this.state.trip !== undefined) {
             let tripData = this.state.trip;
 
-            let distance = (tripData.distance !== undefined)? this.formatFloat(tripData.distance) + ' km' : '';
-            let duration = this.buildDuration(tripData.startTS, tripData.endTS);
+            let distance = (tripData.distance !== undefined)? formatFloat(tripData.distance) + ' km' : '';
+            let duration = buildDuration(tripData.startTS, tripData.endTS);
+            // let duration = '';
             let avgSpeed = '', maxSpeed = '';
             if (tripData.speed !== undefined) {
-               avgSpeed = this.formatFloat(tripData.speed.avgSpeed) + ' km/h';
-               maxSpeed = this.formatFloat(tripData.speed.maxSpeed) + ' km/h';
+               avgSpeed = formatFloat(tripData.speed.avgSpeed) + ' km/h';
+               maxSpeed = formatFloat(tripData.speed.maxSpeed) + ' km/h';
             }
 
             let avgVibration = '15%';
@@ -42,23 +44,20 @@ export class TripPreview extends Component {
 
             let avgElevation = '', maxElevation = '', minElevation = '';
             if (tripData.elevation !== undefined) {
-              avgElevation = this.formatFloat(tripData.elevation.avgElevation) + ' m';
-              maxElevation = this.formatFloat(tripData.elevation.maxElevation) + ' m';
-              minElevation = this.formatFloat(tripData.elevation.minElevation) + ' m';
+              avgElevation = formatFloat(tripData.elevation.avgElevation) + ' m';
+              maxElevation = formatFloat(tripData.elevation.maxElevation) + ' m';
+              minElevation = formatFloat(tripData.elevation.minElevation) + ' m';
             }
 
-            let points = tripData.gnssData.map((lat,lon) => {
-                return <li>{lat.lat}, {lat.lon}</li> //manage to display them, I can't pass them correctly to polyline
-            }
-            );
+            let points = tripData.gnssData.map(point => [point.lat, point.lon]);
+            let center = points[0];
 
             card = <Card className="text-left">
-                <Card.Header as="h5">{`Trip started: ${formatDateDefault(tripData.startTS)}`}
+                <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
                     <Button className="btn float-right ">Export</Button>
-                    <Button className="btn bg-danger float-right"><i class="fa fa-trash"></i></Button>
+                    <Button className="btn bg-danger float-right"><i className="fa fa-trash"/></Button>
                 </Card.Header>
                 <Card.Body>
-                    <p> {points} </p> //Displaying if points are ok
                     <CardGroup>
                         <Card className="text-center">
                             <Card.Body>
@@ -121,7 +120,7 @@ export class TripPreview extends Component {
                             width: '100%',
                             margin: '10px auto'
                         }}
-                        center={[45.8002408, 15.9809588]} //should be from points also
+                        center={center} //should be from points also
                         zoom={15}
                         maxZoom={20}
                         attributionControl={true}
@@ -131,21 +130,15 @@ export class TripPreview extends Component {
                         dragging={true}
                         animate={true}
                         easeLinearity={0.35}>
-                        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png' />
-                        <Polyline  positions={[
-                                  [45.8002351, 15.9709695], [45.8002408, 15.9809588],  [45.80023, 15.999663] //hardcoded position are displayed
-                                  //points
-                                ]} color={'red'} />
-
+                        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
+                        <Polyline positions={points} color={'red'}/>
                     </LeafletMap>
                 </Card.Body>
             </Card>
         }
 
         return (
-            <div>
-                {card}
-            </div>
+            <div>{card}</div>
         )
     }
 }
