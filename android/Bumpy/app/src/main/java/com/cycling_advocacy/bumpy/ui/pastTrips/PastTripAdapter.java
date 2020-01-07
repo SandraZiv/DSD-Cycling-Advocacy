@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +63,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             } else {
                 holder.imageUpload.setVisibility(View.INVISIBLE);
             }
+            holder.itemView.setOnClickListener(new PastTripOnClickListener(position));
         }
 
         @Override
@@ -72,5 +74,20 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         public void setPastTripList(List<PastTrip> pastTripList) {
             this.pastTripList = pastTripList;
             notifyDataSetChanged();
+        }
+
+        public class PastTripOnClickListener implements View.OnClickListener {
+
+            private int position;
+
+            public PastTripOnClickListener(int position) {
+                this.position = position;
+            }
+
+            @Override
+            public void onClick(View v) {
+                PastTrip clickedTrip = pastTripList.get(position);
+                Toast.makeText(context, clickedTrip.getStartTime().toString(), Toast.LENGTH_SHORT).show(); //TODO: Start trip detail activity with tripUUID
+            }
         }
 }
