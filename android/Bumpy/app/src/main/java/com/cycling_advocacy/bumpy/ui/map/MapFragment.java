@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,7 +22,6 @@ import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripInProgressActivity;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.DataSender;
-import com.cycling_advocacy.bumpy.utils.PermissionUtil;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -39,8 +37,6 @@ public class MapFragment extends Fragment {
     private static final int REQ_CODE_TRIP_UPLOAD = 21021;
     public static final String EXTRA_TRIP = "EXTRA_TRIP";
 
-    private Button btnStart;
-    private ImageButton btnCenterMap;
     private Context ctx;
 
     private MapView map;
@@ -53,28 +49,28 @@ public class MapFragment extends Fragment {
         ctx = getContext();
 
         initMap(root);
-        btnCenterMap = root.findViewById(R.id.ic_center_map);
+        ImageButton btnCenterMap = root.findViewById(R.id.ic_center_map);
         btnCenterMap.setOnClickListener(v -> {
-            if(!checkGpsStatus()){
+            if (checkGpsStatus()) {
+                GeoPoint myPosition = mLocationOverlay.getMyLocation();
+                if (myPosition != null) {
+                    map.getController().animateTo(myPosition);
+                    map.invalidate();
+                }
+            } else {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
-            }
-            GeoPoint myPosition = mLocationOverlay.getMyLocation();
-            if (myPosition != null) {
-                map.getController().animateTo(myPosition);
-                map.invalidate();
             }
         });
 
-        btnStart = root.findViewById(R.id.btn_start_trip);
+        Button btnStart = root.findViewById(R.id.btn_start_trip);
         btnStart.setOnClickListener(v -> {
-            if(!checkGpsStatus()){
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-            }
-            else {
+            if (checkGpsStatus()) {
                 Intent intent = new Intent(ctx, TripInProgressActivity.class);
                 startActivityForResult(intent, REQ_CODE_TRIP_UPLOAD);
+            } else {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
             }
         });
 
@@ -85,12 +81,6 @@ public class MapFragment extends Fragment {
     public void onResume() {
         map.onResume();
         super.onResume();
-        // todo don't disable the btn, rather take user to permission screen
-        if (PermissionUtil.isLocationPermissionGranted(getContext())) {
-            btnStart.setEnabled(true);
-        } else {
-            btnStart.setEnabled(false);
-        }
         mLocationOverlay.enableMyLocation();
     }
 
@@ -112,9 +102,7 @@ public class MapFragment extends Fragment {
 
     private boolean checkGpsStatus() {
         LocationManager locationManager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        btnCenterMap.setVisibility(gpsStatus? View.VISIBLE: View.GONE);
-        return gpsStatus;
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     private void initMap(View parent) {
