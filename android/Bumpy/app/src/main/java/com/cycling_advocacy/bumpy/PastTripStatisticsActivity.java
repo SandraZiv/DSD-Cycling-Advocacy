@@ -12,6 +12,8 @@ import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsFragment;
 
 public class PastTripStatisticsActivity extends AppCompatActivity {
 
+    public static final String TRIP_UUID_BUNDLE_KEY = "tripUUID";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

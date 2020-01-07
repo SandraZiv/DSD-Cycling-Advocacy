@@ -1,6 +1,8 @@
 package com.cycling_advocacy.bumpy.ui.pastTrips;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cycling_advocacy.bumpy.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 
@@ -87,7 +90,14 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 PastTrip clickedTrip = pastTripList.get(position);
-                Toast.makeText(context, clickedTrip.getStartTime().toString(), Toast.LENGTH_SHORT).show(); //TODO: Start trip detail activity with tripUUID
+
+                Intent tripStatisticsIntent = new Intent(context, PastTripStatisticsActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putString(PastTripStatisticsActivity.TRIP_UUID_BUNDLE_KEY, clickedTrip.getTripUUID());
+                tripStatisticsIntent.putExtras(bundle);
+
+                context.startActivity(tripStatisticsIntent);
             }
         }
 }

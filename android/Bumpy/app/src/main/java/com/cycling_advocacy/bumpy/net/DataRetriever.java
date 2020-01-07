@@ -47,7 +47,7 @@ public class DataRetriever {
                             List<PastTrip> pastTrips = new ArrayList<>();
                             for (PastTripGeneralResponse pastTripGeneral : pastTripsGeneral) {
                                 // isUploaded is true since these trips are retrieved from the server
-                                pastTrips.add(new PastTrip(pastTripGeneral.getStartTS(), pastTripGeneral.getEndTS(), pastTripGeneral.getDistance(),true));
+                                pastTrips.add(new PastTrip(pastTripGeneral.getTripUUID(), pastTripGeneral.getStartTS(), pastTripGeneral.getEndTS(), pastTripGeneral.getDistance(),true));
                             }
 
                             pastTripsViewModel.setPastTripsLiveData(pastTrips);
