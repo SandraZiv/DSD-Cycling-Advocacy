@@ -8,3 +8,4 @@ pymongo
 jsonschema
 dnspython
 pika >= 1.1.0
+pyproj

@@ -64,12 +64,12 @@ def get_tracks_by_intersect_geometry(geometry):
     return main_db.tracks.find({'loc': {'$geoIntersects': geometry}})
 
 
-def insert_new_track(track):
-    main_db.tracks.insert_one(track)
+def insert_new_tracks(tracks):
+    main_db.tracks.insert_many(tracks)
 
 
-def delete_track(track_id):
-    main_db.tracks.remove_one({'_id': ObjectId(track_id)})
+def delete_tracks(tracks_id):
+    main_db.tracks.delete_many({'_id': {'$in': list(map(ObjectId, tracks_id))}})
 
 
 #

@@ -1,7 +1,7 @@
 import math
 import json
 import matplotlib.pyplot as plt
-from shapely.geometry import LineString
+from shapely.geometry import LineString, Polygon
 from descartes import PolygonPatch
 from pyproj import Proj, Transformer
 
@@ -10,14 +10,8 @@ from swagger_server.road_analysis.label_centerlines import get_centerline
 from swagger_server.road_analysis.label_centerlines.exceptions import CenterlineError
 
 
-inProj = Proj(init='epsg:3857')  # pseudo-Mercator
-outProj = Proj(init='epsg:4326')  # geographical
-transformer_3857_to_4326 = Transformer.from_proj(inProj, outProj)
-
-
-inProj = Proj(init='epsg:4326')  # geographical
-outProj = Proj(init='epsg:3857')  # pseudo-Mercator
-transformer_4326_to_3857 = Transformer.from_proj(inProj, outProj)
+transformer_3857_to_4326 = Transformer.from_crs("EPSG:3857", "EPSG:4326") # pseudo-Mercator to geographical
+transformer_4326_to_3857 = Transformer.from_crs("EPSG:4326", "EPSG:3857") # geographical to pseudo-Mercator
 
 
 # take a track and iterate over all other tracks (find a way to exclude unreasonable ones)
@@ -31,7 +25,8 @@ def merge(old_track, new_track):
     old_buffer = old_track.buffer(10).intersection(old_track).buffer(10)
     new_buffer = new_track.buffer(10).intersection(new_track).buffer(10)
     overlap = old_buffer.intersection(new_buffer)
-
+    if isinstance(overlap, Polygon):
+        overlap = [overlap]
     centerlines = []
     skipped = 0
     for poly in overlap:
@@ -61,7 +56,7 @@ def line_to_track(line):
     track = []
     for point in line.coords:
         x, y = point
-        lon, lat = transformer_3857_to_4326.transform(x, y)
+        lat, lon = transformer_3857_to_4326.transform(y, x)
         track.append([lon, lat])
     return track
 
