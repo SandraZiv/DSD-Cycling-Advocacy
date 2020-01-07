@@ -17,7 +17,6 @@
     <string name="mandatory_permissions">These permissions are mandatory to get your location. You need to allow them.</string>
 
     <!--Map and buttons -->
-    <string name="gps">GPS</string>
     <string name="start_trip">Start Trip</string>
     <string name="end_trip">End Trip</string>
     <string name="submit">SUBMIT</string>
