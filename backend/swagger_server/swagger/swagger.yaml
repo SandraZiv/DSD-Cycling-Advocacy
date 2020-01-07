@@ -520,23 +520,22 @@ components:
     Track:
       type: object
       properties:
-        loc:
-          $ref: '#/components/schemas/Track_loc'
-        qualityScores:
+        segments:
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Track_segments'
       example:
-        loc:
-          coordinates:
-          - - 0.80082819046101150206595775671303272247314453125
-            - 0.80082819046101150206595775671303272247314453125
-          - - 0.80082819046101150206595775671303272247314453125
-            - 0.80082819046101150206595775671303272247314453125
-          type: LineString
-        qualityScores:
-        - 6.02745618307040320615897144307382404804229736328125
-        - 6.02745618307040320615897144307382404804229736328125
+        segments:
+        - startLat: 7.20745371414910351859361981041729450225830078125
+          endLat: 13.19231682452650744608035893179476261138916015625
+          startLon: 108.494211295267263039932004176080226898193359375
+          endLon: 107.3184105002972756892631878145039081573486328125
+          qualityScore: 5.63737665663332876420099637471139430999755859375
+        - startLat: 7.20745371414910351859361981041729450225830078125
+          endLat: 13.19231682452650744608035893179476261138916015625
+          startLon: 108.494211295267263039932004176080226898193359375
+          endLon: 107.3184105002972756892631878145039081573486328125
+          qualityScore: 5.63737665663332876420099637471139430999755859375
     BumpyPoint:
       type: object
       properties:
@@ -662,26 +661,31 @@ components:
         minElevation: 5.63737665663332876420099637471139430999755859375
         maxElevation: 5.962133916683182377482808078639209270477294921875
         avgElevation: 2.3021358869347654518833223846741020679473876953125
-    Track_loc:
+    Track_segments:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-          - LineString
-        coordinates:
-          type: array
-          items:
-            maxItems: 2
-            minItems: 2
-            type: array
-            items:
-              type: number
+        startLat:
+          maximum: 90
+          minimum: 0
+          type: number
+        startLon:
+          maximum: 180
+          minimum: 0
+          type: number
+        endLat:
+          maximum: 90
+          minimum: 0
+          type: number
+        endLon:
+          maximum: 180
+          minimum: 0
+          type: number
+        qualityScore:
+          type: number
       example:
-        coordinates:
-        - - 0.80082819046101150206595775671303272247314453125
-          - 0.80082819046101150206595775671303272247314453125
-        - - 0.80082819046101150206595775671303272247314453125
-          - 0.80082819046101150206595775671303272247314453125
-        type: LineString
+        startLat: 7.20745371414910351859361981041729450225830078125
+        endLat: 13.19231682452650744608035893179476261138916015625
+        startLon: 108.494211295267263039932004176080226898193359375
+        endLon: 107.3184105002972756892631878145039081573486328125
+        qualityScore: 5.63737665663332876420099637471139430999755859375
 

@@ -71,7 +71,7 @@ def run_map_update(new_track):
         if len(centerlines) > 0:
             new_paths, new_quality_scores_paths = merge_overlapping(line, track['quality_scores'], centerlines, global_centerlines_quality_scores)
             # delete previous track
-
+            mongodb_interface.delete_track(track['_id'])
             # insert new tracks
             for i, new_path in enumerate(new_paths):
                 track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(new_path)}, 'quality_scores': new_quality_scores_paths[i]}

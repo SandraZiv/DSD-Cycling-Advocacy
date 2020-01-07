@@ -68,6 +68,10 @@ def insert_new_track(track):
     main_db.tracks.insert_one(track)
 
 
+def delete_track(track_id):
+    main_db.tracks.remove_one({'_id': ObjectId(track_id)})
+
+
 #
 # GRIDFS
 #

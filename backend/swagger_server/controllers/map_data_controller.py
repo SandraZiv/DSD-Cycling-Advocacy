@@ -70,5 +70,16 @@ def get_road_quality_segments():  # noqa: E501
         [top_right_lon, bottom_left_lat],
         [bottom_left_lon, bottom_left_lat]
     ]]}}
-    tracks = mongodb_interface.get_tracks_by_intersect_geometry(geometry)
-    return list(map(Track.from_dict, tracks)), 200
+    raw_tracks = mongodb_interface.get_tracks_by_intersect_geometry(geometry)
+    output_tracks = []
+    for raw_track in raw_tracks:
+        segments_coords = zip(raw_track['loc']['coordinates'][:-1], raw_track['loc']['coordinates'][1:])
+        quality_scores = iter(raw_track['quality_scores'])
+        output_tracks.append({'segments': [
+            {'start_lat': sc[0][1],
+             'start_lon': sc[0][0],
+             'end_lat': sc[1][1],
+             'end_lon': sc[1][0],
+             'quality_score': next(quality_scores)
+             } for sc in segments_coords]})
+    return list(map(Track.from_dict, output_tracks)), 200

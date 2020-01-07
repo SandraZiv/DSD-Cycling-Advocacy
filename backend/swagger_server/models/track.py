@@ -6,7 +6,7 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
-from swagger_server.models.track_loc import TrackLoc  # noqa: F401,E501
+from swagger_server.models.track_segments import TrackSegments  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -15,25 +15,20 @@ class Track(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, loc: TrackLoc=None, quality_scores: List[float]=None):  # noqa: E501
+    def __init__(self, segments: List[TrackSegments]=None):  # noqa: E501
         """Track - a model defined in Swagger
 
-        :param loc: The loc of this Track.  # noqa: E501
-        :type loc: TrackLoc
-        :param quality_scores: The quality_scores of this Track.  # noqa: E501
-        :type quality_scores: List[float]
+        :param segments: The segments of this Track.  # noqa: E501
+        :type segments: List[TrackSegments]
         """
         self.swagger_types = {
-            'loc': TrackLoc,
-            'quality_scores': List[float]
+            'segments': List[TrackSegments]
         }
 
         self.attribute_map = {
-            'loc': 'loc',
-            'quality_scores': 'qualityScores'
+            'segments': 'segments'
         }
-        self._loc = loc
-        self._quality_scores = quality_scores
+        self._segments = segments
 
     @classmethod
     def from_dict(cls, dikt) -> 'Track':
@@ -47,43 +42,22 @@ class Track(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def loc(self) -> TrackLoc:
-        """Gets the loc of this Track.
+    def segments(self) -> List[TrackSegments]:
+        """Gets the segments of this Track.
 
 
-        :return: The loc of this Track.
-        :rtype: TrackLoc
+        :return: The segments of this Track.
+        :rtype: List[TrackSegments]
         """
-        return self._loc
+        return self._segments
 
-    @loc.setter
-    def loc(self, loc: TrackLoc):
-        """Sets the loc of this Track.
-
-
-        :param loc: The loc of this Track.
-        :type loc: TrackLoc
-        """
-
-        self._loc = loc
-
-    @property
-    def quality_scores(self) -> List[float]:
-        """Gets the quality_scores of this Track.
+    @segments.setter
+    def segments(self, segments: List[TrackSegments]):
+        """Sets the segments of this Track.
 
 
-        :return: The quality_scores of this Track.
-        :rtype: List[float]
-        """
-        return self._quality_scores
-
-    @quality_scores.setter
-    def quality_scores(self, quality_scores: List[float]):
-        """Sets the quality_scores of this Track.
-
-
-        :param quality_scores: The quality_scores of this Track.
-        :type quality_scores: List[float]
+        :param segments: The segments of this Track.
+        :type segments: List[TrackSegments]
         """
 
-        self._quality_scores = quality_scores
+        self._segments = segments
