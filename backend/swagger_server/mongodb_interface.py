@@ -38,6 +38,10 @@ def update_trip_road_quality(trip_uuid, gnss_index, road_quality):
                              {"$set": {'gnss_data.'+str(gnss_index)+'.road_quality': road_quality}})
 
 
+def delete_trip_by_trip_uuid(trip_uuid):
+    main_db.trips.delete_one({'trip_uuid': trip_uuid})
+
+
 #
 # DEVICES UUID
 #
@@ -70,6 +74,19 @@ def insert_new_tracks(tracks):
 
 def delete_tracks(tracks_id):
     main_db.tracks.delete_many({'_id': {'$in': list(map(ObjectId, tracks_id))}})
+
+
+#
+# POINTS
+#
+
+
+def get_points_by_intersect_geometry(geometry):
+    return main_db.points.find({'loc': {'$geoIntersects': geometry}})
+
+
+def insert_new_points(points):
+    main_db.points.insert_many(points)
 
 
 #

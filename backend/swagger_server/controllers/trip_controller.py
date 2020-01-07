@@ -16,6 +16,21 @@ from swagger_server import mongodb_interface
 # queue.new_trip_analysis_job(trip_id)
 
 
+def delete_trip():  # noqa: E501
+    """Deletes a trip.
+
+     # noqa: E501
+
+    :param trip_uuid:
+    :type trip_uuid:
+
+    :rtype: ApiResponse
+    """
+    trip_uuid = connexion.request.args.get('tripUUID', None)
+    mongodb_interface.delete_trip_by_trip_uuid(trip_uuid)
+    return ApiResponse(code=200, message="ok"), 200
+
+
 def get_trip_by_trip_uuid():  # noqa: E501
     """Gets a trip given a tripUUID
 

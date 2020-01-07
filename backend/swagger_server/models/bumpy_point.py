@@ -14,11 +14,9 @@ class BumpyPoint(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, point_uuid: str=None, lat: float=None, lon: float=None, bump_score: float=None):  # noqa: E501
+    def __init__(self, lat: float=None, lon: float=None, bump_score: float=None):  # noqa: E501
         """BumpyPoint - a model defined in Swagger
 
-        :param point_uuid: The point_uuid of this BumpyPoint.  # noqa: E501
-        :type point_uuid: str
         :param lat: The lat of this BumpyPoint.  # noqa: E501
         :type lat: float
         :param lon: The lon of this BumpyPoint.  # noqa: E501
@@ -27,19 +25,16 @@ class BumpyPoint(Model):
         :type bump_score: float
         """
         self.swagger_types = {
-            'point_uuid': str,
             'lat': float,
             'lon': float,
             'bump_score': float
         }
 
         self.attribute_map = {
-            'point_uuid': 'pointUUID',
             'lat': 'lat',
             'lon': 'lon',
             'bump_score': 'bumpScore'
         }
-        self._point_uuid = point_uuid
         self._lat = lat
         self._lon = lon
         self._bump_score = bump_score
@@ -54,27 +49,6 @@ class BumpyPoint(Model):
         :rtype: BumpyPoint
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def point_uuid(self) -> str:
-        """Gets the point_uuid of this BumpyPoint.
-
-
-        :return: The point_uuid of this BumpyPoint.
-        :rtype: str
-        """
-        return self._point_uuid
-
-    @point_uuid.setter
-    def point_uuid(self, point_uuid: str):
-        """Sets the point_uuid of this BumpyPoint.
-
-
-        :param point_uuid: The point_uuid of this BumpyPoint.
-        :type point_uuid: str
-        """
-
-        self._point_uuid = point_uuid
 
     @property
     def lat(self) -> float:

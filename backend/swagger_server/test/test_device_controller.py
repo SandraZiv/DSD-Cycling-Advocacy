@@ -17,26 +17,24 @@ class TestDeviceController(BaseTestCase):
 
         Get the long device UUID from the short device UUID
         """
-        query_string = [('short_device_uuid', 'short_device_uuid_example')]
+        query_string = [('shortDeviceUUID', 'A0B5DB')]
         response = self.client.open(
             '/v1/device/getLongDeviceUUID',
             method='GET',
             query_string=query_string)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        self.assert404(response, 'Response body is : ' + response.data.decode('utf-8'))
 
     def test_get_short_device_uuid(self):
         """Test case for get_short_device_uuid
 
         Get the short device UUID from the long device UUID
         """
-        query_string = [('device_uuid', '38400000-8cf0-11bd-b23e-10b96e4ef00d')]
+        query_string = [('deviceUUID', '38400000-8cf0-11bd-b23e-10b96e4ef00d')]
         response = self.client.open(
             '/v1/device/getShortDeviceUUID',
             method='GET',
             query_string=query_string)
-        self.assert200(response,
-                       'Response body is : ' + response.data.decode('utf-8'))
+        self.assert200(response, 'Response body is : ' + response.data.decode('utf-8'))
 
 
 if __name__ == '__main__':

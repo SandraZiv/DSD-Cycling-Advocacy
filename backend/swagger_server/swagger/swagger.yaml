@@ -3,7 +3,7 @@ info:
   title: Bumpy API
   description: This is the amazing Bumpy API that powers both our web interface and
     the Android app.
-  version: 1.0.0
+  version: 1.2.0
 servers:
 - url: http://localhost/v1
 tags:
@@ -67,6 +67,35 @@ paths:
                 $ref: '#/components/schemas/ApiResponse'
         "405":
           description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Unexpected exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-openapi-router-controller: swagger_server.controllers.trip_controller
+  /trip/deleteTrip:
+    delete:
+      tags:
+      - trip
+      summary: Deletes a trip.
+      operationId: delete_trip
+      parameters:
+      - name: tripUUID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Deletion successful
           content:
             application/json:
               schema:
@@ -265,70 +294,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BumpyPoint'
-                x-content-type: application/json
-        "500":
-          description: Unexpected exception
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      x-openapi-router-controller: swagger_server.controllers.map_data_controller
-  /mapData/getFixMyStreetIssuePoints:
-    get:
-      tags:
-      - mapData
-      summary: Get the FixMyStreet points
-      operationId: get_fix_my_street_issue_points
-      parameters:
-      - name: bottomLeftLat
-        in: query
-        description: The bottom left coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 90
-          minimum: 0
-          type: number
-      - name: bottomLeftLon
-        in: query
-        description: The bottom left coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 180
-          minimum: 0
-          type: number
-      - name: topRightLat
-        in: query
-        description: The top right coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 90
-          minimum: 0
-          type: number
-      - name: topRightLon
-        in: query
-        description: The top right coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 180
-          minimum: 0
-          type: number
-      responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FixMyStreetPoint'
                 x-content-type: application/json
         "500":
           description: Unexpected exception
@@ -539,9 +504,6 @@ components:
     BumpyPoint:
       type: object
       properties:
-        pointUUID:
-          type: string
-          format: uuid
         lat:
           maximum: 90
           minimum: 0
@@ -554,31 +516,8 @@ components:
           type: number
       example:
         lon: 108.49421129526726
-        pointUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         lat: 7.2074537141491035
         bumpScore: 1.4658129805029452
-    FixMyStreetPoint:
-      type: object
-      properties:
-        pointUUID:
-          type: string
-          format: uuid
-        lat:
-          maximum: 90
-          minimum: 0
-          type: number
-        lon:
-          maximum: 180
-          minimum: 0
-          type: number
-        fixMyStreetUrl:
-          type: string
-          format: url
-      example:
-        fixMyStreetUrl: http://example.com/aeiou
-        lon: 108.49421129526726
-        pointUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        lat: 7.2074537141491035
     ApiResponse:
       type: object
       properties:
