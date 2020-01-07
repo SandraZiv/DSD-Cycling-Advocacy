@@ -84,12 +84,14 @@ public class PreferenceUtil {
         return getSharedPreference(context).getString(DEVICE_LONG_UUID_KEY, DEVICE_LONG_UUID_DEFAULT);
     }
 
-    // if short device is not set, return long uuid
+    // if shortUUID is not set, return error message and try generate shortUUID
     public static String getShortDeviceUUID(Context context) {
         String uuid = getSharedPreference(context).getString(DEVICE_SHORT_UUID_KEY, DEVICE_SHORT_UUID_DEFAULT);
         if (DEVICE_SHORT_UUID_DEFAULT.equals(uuid)) {
-            uuid = getLongDeviceUUID(context);
+            setShortUUID(getLongDeviceUUID(context), getSharedPreference(context));
+            uuid = context.getString(R.string.settings_uid_summary_error);
         }
+
         return uuid;
     }
 
