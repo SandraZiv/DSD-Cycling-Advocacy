@@ -1,13 +1,23 @@
 import math
 import json
 import matplotlib.pyplot as plt
-from shapely.geometry import LineString, MultiLineString, Point
+from shapely.geometry import LineString
 from descartes import PolygonPatch
 from pyproj import Proj, Transformer
-import gpxpy
 
-from label_centerlines import get_centerline
-from label_centerlines.exceptions import CenterlineError
+
+from swagger_server.road_analysis.label_centerlines import get_centerline
+from swagger_server.road_analysis.label_centerlines.exceptions import CenterlineError
+
+
+inProj = Proj(init='epsg:3857')  # pseudo-Mercator
+outProj = Proj(init='epsg:4326')  # geographical
+transformer_3857_to_4326 = Transformer.from_proj(inProj, outProj)
+
+
+inProj = Proj(init='epsg:4326')  # geographical
+outProj = Proj(init='epsg:3857')  # pseudo-Mercator
+transformer_4326_to_3857 = Transformer.from_proj(inProj, outProj)
 
 
 # take a track and iterate over all other tracks (find a way to exclude unreasonable ones)
@@ -38,38 +48,22 @@ def merge(old_track, new_track):
     return centerlines
 
 
-def gpx_to_track(filename):
-    with open(filename) as f:
-        gpx = gpxpy.parse(f)
-        for track in gpx.tracks:
-            for segment in track.segments:
-                for point in segment.points:
-                    yield point.latitude, point.longitude, point.elevation
-
-
 def track_to_line(track):
-    inProj = Proj(init='epsg:4326')  # geographical
-    outProj = Proj(init='epsg:3857')  # pseudo-Mercator
-    transformer = Transformer.from_proj(inProj, outProj)
     line = []
-    for point in track:
-        lat, lon, ele = point
-        x, y = transformer.transform(lat, lon)
+    for point in track['loc']['coordinates']:
+        lon, lat = point
+        x, y = transformer_4326_to_3857.transform(lat, lon)
         line.append((x, y))
     return LineString([[p[1], p[0]] for p in line])
 
 
-def line_to_json(line):
-    transformer = Transformer.from_proj('epsg:3857', 'epsg:4326')
+def line_to_track(line):
     track = []
-    for point in list(line.coords):
+    for point in line.coords:
         x, y = point
-        lon, lat = transformer.transform(x, y)
-        track.append({
-            "lon": lon,
-            "lat": lat
-        })
-    return json.dumps(track)
+        lon, lat = transformer_3857_to_4326.transform(x, y)
+        track.append([lon, lat])
+    return track
 
 
 def plot(centerlines):

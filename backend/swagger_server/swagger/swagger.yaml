@@ -200,7 +200,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Path'
+                  $ref: '#/components/schemas/Track'
                 x-content-type: application/json
         "500":
           description: Unexpected exception
@@ -453,17 +453,17 @@ components:
           $ref: '#/components/schemas/ProcessedTrip_elevation'
       example:
         elevation:
-          minElevation: 5.637376656633329
-          maxElevation: 5.962133916683182
-          avgElevation: 2.3021358869347655
-        distance: 0.08008281904610115
+          minElevation: 5.63737665663332876420099637471139430999755859375
+          maxElevation: 5.962133916683182377482808078639209270477294921875
+          avgElevation: 2.3021358869347654518833223846741020679473876953125
+        distance: 0.080082819046101150206595775671303272247314453125
         endTS: 2000-01-23T04:56:07.000+00:00
         startTS: 2000-01-23T04:56:07.000+00:00
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         speed:
-          maxSpeed: 0.6027456183070403
-          avgSpeed: 0.14658129805029452
+          maxSpeed: 0.602745618307040320615897144307382404804229736328125
+          avgSpeed: 0.146581298050294517310021547018550336360931396484375
     FullProcessedTrip:
       type: object
       properties:
@@ -493,55 +493,50 @@ components:
             $ref: '#/components/schemas/Trip_gnssData'
       example:
         elevation:
-          minElevation: 5.637376656633329
-          maxElevation: 5.962133916683182
-          avgElevation: 2.3021358869347655
-        distance: 0.08008281904610115
+          minElevation: 5.63737665663332876420099637471139430999755859375
+          maxElevation: 5.962133916683182377482808078639209270477294921875
+          avgElevation: 2.3021358869347654518833223846741020679473876953125
+        distance: 0.080082819046101150206595775671303272247314453125
         endTS: 2000-01-23T04:56:07.000+00:00
         gnssData:
         - timeTS: 2000-01-23T04:56:07.000+00:00
-          precision: 5.962133916683182
-          lon: 26.384633649053015
-          lat: 54.24710564763363
-          speed: 2.3021358869347655
-          ele: 5.637376656633329
+          precision: 5.962133916683182377482808078639209270477294921875
+          lon: 26.3846336490530148921607178635895252227783203125
+          lat: 54.2471056476336315199660020880401134490966796875
+          speed: 2.3021358869347654518833223846741020679473876953125
+          ele: 5.63737665663332876420099637471139430999755859375
         - timeTS: 2000-01-23T04:56:07.000+00:00
-          precision: 5.962133916683182
-          lon: 26.384633649053015
-          lat: 54.24710564763363
-          speed: 2.3021358869347655
-          ele: 5.637376656633329
+          precision: 5.962133916683182377482808078639209270477294921875
+          lon: 26.3846336490530148921607178635895252227783203125
+          lat: 54.2471056476336315199660020880401134490966796875
+          speed: 2.3021358869347654518833223846741020679473876953125
+          ele: 5.63737665663332876420099637471139430999755859375
         startTS: 2000-01-23T04:56:07.000+00:00
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         speed:
-          maxSpeed: 0.6027456183070403
-          avgSpeed: 0.14658129805029452
-    Path:
+          maxSpeed: 0.602745618307040320615897144307382404804229736328125
+          avgSpeed: 0.146581298050294517310021547018550336360931396484375
+    Track:
       type: object
       properties:
-        pathUUID:
-          type: string
-          format: uuid
-        segments:
+        loc:
+          $ref: '#/components/schemas/Track_loc'
+        qualityScores:
           type: array
           items:
-            $ref: '#/components/schemas/Path_segments'
+            type: number
       example:
-        pathUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        segments:
-        - startLat: 7.2074537141491035
-          endLat: 13.192316824526507
-          startLon: 108.49421129526726
-          endLon: 107.31841050029728
-          qualityScore: 5.637376656633329
-          segmentUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        - startLat: 7.2074537141491035
-          endLat: 13.192316824526507
-          startLon: 108.49421129526726
-          endLon: 107.31841050029728
-          qualityScore: 5.637376656633329
-          segmentUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        loc:
+          coordinates:
+          - - 0.80082819046101150206595775671303272247314453125
+            - 0.80082819046101150206595775671303272247314453125
+          - - 0.80082819046101150206595775671303272247314453125
+            - 0.80082819046101150206595775671303272247314453125
+          type: LineString
+        qualityScores:
+        - 6.02745618307040320615897144307382404804229736328125
+        - 6.02745618307040320615897144307382404804229736328125
     BumpyPoint:
       type: object
       properties:
@@ -632,42 +627,11 @@ components:
           description: Expressed in meters per second
       example:
         timeTS: 2000-01-23T04:56:07.000+00:00
-        precision: 5.962133916683182
-        lon: 26.384633649053015
-        lat: 54.24710564763363
-        speed: 2.3021358869347655
-        ele: 5.637376656633329
-    Path_segments:
-      type: object
-      properties:
-        segmentUUID:
-          type: string
-          format: uuid
-        startLat:
-          maximum: 90
-          minimum: 0
-          type: number
-        startLon:
-          maximum: 180
-          minimum: 0
-          type: number
-        endLat:
-          maximum: 90
-          minimum: 0
-          type: number
-        endLon:
-          maximum: 180
-          minimum: 0
-          type: number
-        qualityScore:
-          type: number
-      example:
-        startLat: 7.2074537141491035
-        endLat: 13.192316824526507
-        startLon: 108.49421129526726
-        endLon: 107.31841050029728
-        qualityScore: 5.637376656633329
-        segmentUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        precision: 5.962133916683182377482808078639209270477294921875
+        lon: 26.3846336490530148921607178635895252227783203125
+        lat: 54.2471056476336315199660020880401134490966796875
+        speed: 2.3021358869347654518833223846741020679473876953125
+        ele: 5.63737665663332876420099637471139430999755859375
     ProcessedTrip_speed:
       type: object
       properties:
@@ -680,8 +644,8 @@ components:
           type: number
           description: Expressed in meters per second
       example:
-        maxSpeed: 0.6027456183070403
-        avgSpeed: 0.14658129805029452
+        maxSpeed: 0.602745618307040320615897144307382404804229736328125
+        avgSpeed: 0.146581298050294517310021547018550336360931396484375
     ProcessedTrip_elevation:
       type: object
       properties:
@@ -695,7 +659,29 @@ components:
           type: number
           description: Expressed in meters
       example:
-        minElevation: 5.637376656633329
-        maxElevation: 5.962133916683182
-        avgElevation: 2.3021358869347655
+        minElevation: 5.63737665663332876420099637471139430999755859375
+        maxElevation: 5.962133916683182377482808078639209270477294921875
+        avgElevation: 2.3021358869347654518833223846741020679473876953125
+    Track_loc:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - LineString
+        coordinates:
+          type: array
+          items:
+            maxItems: 2
+            minItems: 2
+            type: array
+            items:
+              type: number
+      example:
+        coordinates:
+        - - 0.80082819046101150206595775671303272247314453125
+          - 0.80082819046101150206595775671303272247314453125
+        - - 0.80082819046101150206595775671303272247314453125
+          - 0.80082819046101150206595775671303272247314453125
+        type: LineString
 

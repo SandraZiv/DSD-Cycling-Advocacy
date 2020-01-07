@@ -50,6 +50,19 @@ def insert_new_device_uuid_map(device_uuid_map):
 
 
 #
+# TRACKS
+#
+
+
+def get_tracks_by_intersect_geometry(geometry):
+    return main_db.tracks.find({'loc': {'$geoIntersects': geometry}})
+
+
+def insert_new_track(track):
+    main_db.tracks.insert_one(track)
+
+
+#
 # GRIDFS
 #
 

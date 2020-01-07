@@ -8,7 +8,7 @@ from scipy.spatial import Voronoi
 from scipy.ndimage import filters
 from shapely.geometry import LineString, MultiLineString, Point, MultiPoint
 
-from label_centerlines.exceptions import CenterlineError
+from swagger_server.road_analysis.label_centerlines.exceptions import CenterlineError
 import time
 
 

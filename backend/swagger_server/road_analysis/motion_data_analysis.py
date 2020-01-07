@@ -1,4 +1,4 @@
-from swagger_server import constants as const, mongodb_interface as db
+from swagger_server import constants as const, mongodb_interface
 import pandas as pd
 import os
 import datetime
@@ -6,6 +6,7 @@ import logging
 import tkinter
 import matplotlib.pyplot as plt
 from math import radians, cos, sin, asin, sqrt
+import random
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -26,8 +27,8 @@ def haversine(lon1, lat1, lon2, lat2):
 
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
-    trip_data = db.get_trip_by_trip_uuid(trip_uuid)
-    motion_file = db.get_file_by_filename("\"" + trip_uuid + "\"")
+    trip_data = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
+    motion_file = mongodb_interface.get_file_by_filename("\"" + trip_uuid + "\"")
     trip_df = pd.DataFrame(trip_data['gnss_data'])
     log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
     log += 'TRIP %s\n' % trip_data
@@ -93,6 +94,11 @@ def calculate_trip_statistics(trip_df):
 
 
 def run_motion_data_analysis(trip_uuid):
+    trip = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
+    coords = [[gp['lon'], gp['lat']] for gp in trip['gnss_data']]
+    fake_const_quality_score = random.random()
+    return {'loc': {'type': 'LineString', 'coordinates': coords}, 'quality_scores': [fake_const_quality_score] * (len(coords) - 1)}
+
     trip_df, motion_df, log = retrieve_data(trip_uuid)
     # plot(trip_df, motion_df)
     distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation = calculate_trip_statistics(trip_df)
@@ -111,3 +117,6 @@ def run_motion_data_analysis(trip_uuid):
                      'Max road quality: %s, min road quality: %s, avg road quality: %s'
                      % (trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation,
                         max_road_quality, min_road_quality, avg_road_quality))
+    # example data output:
+    # {}
+    return None
