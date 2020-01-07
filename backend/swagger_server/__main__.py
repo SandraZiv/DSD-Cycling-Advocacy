@@ -9,12 +9,9 @@ import logging
 
 def main():
 
-    logging.basicConfig(filename='swagger_server/logs/default_log.log', level=logging.INFO)
-    logging.info('Attempting to start a queue for road analysis...')
-    try:
-        queue.start_consuming(const.TRIP_ANALYSIS_QUEUE)
-    except Exception:
-        logging.info('Failed to instantiate a queue for road analysis')
+    logging.basicConfig(filename='swagger_server/logs/default_log.log', level=logging.INFO,
+                        format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+    queue.start_consuming(const.TRIP_ANALYSIS_QUEUE)
 
     app = connexion.App(__name__, specification_dir='./swagger/')
     app.app.json_encoder = encoder.JSONEncoder
