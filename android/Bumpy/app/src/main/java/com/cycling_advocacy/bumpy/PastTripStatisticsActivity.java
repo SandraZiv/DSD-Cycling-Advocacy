@@ -52,10 +52,9 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
         tvTripStatMaxElevation = findViewById(R.id.tv_trip_stat_max_elevation);
         tvTripStatAvgElevation = findViewById(R.id.tv_trip_stat_avg_elevation);
 
-        DataRetriever.getPastTripStatistics(this, this, getIntent().getExtras().getString(EXTRA_TRIP_UUID));
+        DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
     }
 
-    // Do we need a model for this data so that we do not link this with 'response' logic? It would be the same as the response model though.
     public void setStatistics (PastTripDetailedResponse statistics) {
         tvTripStatUUID.setText(getString(R.string.trip_stat_uuid, statistics.getTripUUID()));
 
