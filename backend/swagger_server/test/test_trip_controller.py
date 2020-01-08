@@ -15,6 +15,18 @@ from swagger_server.test import BaseTestCase
 class TestTripController(BaseTestCase):
     """TripController integration test stubs"""
 
+    def test_get_motion_file(self):
+        """Test case for get_motion_file
+
+        Gets a csv motion file.
+        """
+        query_string = [('trip_uuid', '38400000-8cf0-11bd-b23e-10b96e4ef00d')]
+        response = self.client.open(
+            '/v1/trip/getMotionFile',
+            method='GET',
+            query_string=query_string)
+        self.assert400(response, 'Response body is : ' + response.data.decode('utf-8'))
+
     def test_delete_trip(self):
         """Test case for delete_trip
 

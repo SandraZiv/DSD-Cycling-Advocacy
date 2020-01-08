@@ -8,7 +8,7 @@ from swagger_server.models.trip import Trip  # noqa: E501
 from swagger_server.road_analysis import queue
 from swagger_server import constants as const
 from swagger_server import mongodb_interface
-
+from flask import make_response
 
 # TODO new trip road_analysis jobs can't be put in the queue until trip data and all motion files aren't fully uploaded
 # when you're ready:
@@ -29,6 +29,26 @@ def delete_trip():  # noqa: E501
     trip_uuid = connexion.request.args.get('tripUUID', None)
     mongodb_interface.delete_trip_by_trip_uuid(trip_uuid)
     return ApiResponse(code=200, message="ok"), 200
+
+
+def get_motion_file():  # noqa: E501
+    """Gets a csv motion file.
+
+     # noqa: E501
+
+    :param trip_uuid:
+    :type trip_uuid:
+
+    :rtype: str
+    """
+    trip_uuid = connexion.request.args.get('tripUUID', None)
+    file = mongodb_interface.get_file_by_filename(trip_uuid)
+    if not file:
+        return ApiResponse(code=400, message='trip not found'), 400
+    output = make_response(file.read())
+    output.headers['Content-Disposition'] = 'attachment; filename={}.csv'.format(trip_uuid)
+    output.headers['Content-type'] = 'text/csv'
+    return output
 
 
 def get_trip_by_trip_uuid():  # noqa: E501

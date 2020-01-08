@@ -46,6 +46,42 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       x-openapi-router-controller: swagger_server.controllers.trip_controller
+  /trip/getMotionFile:
+    get:
+      tags:
+      - trip
+      summary: Gets a csv motion file.
+      operationId: get_motion_file
+      parameters:
+      - name: tripUUID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Upload successful
+          content:
+            text/csv:
+              schema:
+                type: string
+                x-content-type: text/csv
+        "404":
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Unexpected exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-openapi-router-controller: swagger_server.controllers.trip_controller
   /trip/insertNewTrip:
     post:
       tags:

@@ -99,7 +99,8 @@ fs = gridfs.GridFS(file_db)
 
 def get_file_by_filename(filename):
     file = fs.find_one({'filename': filename})
-    return fs.get(file._id)
+    if file:
+        return fs.get(file._id)
 
 
 def insert_new_file(filename, data, **kwargs):
