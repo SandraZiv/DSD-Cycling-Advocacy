@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cycling_advocacy.bumpy.PastTripStatisticsActivity;
+import com.cycling_advocacy.bumpy.ui.trip_stats.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;

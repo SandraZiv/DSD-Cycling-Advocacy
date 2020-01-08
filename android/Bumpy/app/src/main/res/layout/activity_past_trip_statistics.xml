@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/cyclingAdvocacyBlack"
     android:orientation="vertical"
-    tools:context=".PastTripStatisticsActivity">
+    tools:context=".ui.trip_stats.PastTripStatisticsActivity">
 
     <include layout="@layout/toolbar" />
 

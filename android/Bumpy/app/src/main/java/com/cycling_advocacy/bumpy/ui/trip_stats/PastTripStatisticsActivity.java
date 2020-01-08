@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy;
+package com.cycling_advocacy.bumpy.ui.trip_stats;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -7,11 +7,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
-public class PastTripStatisticsActivity extends AppCompatActivity {
+public class PastTripStatisticsActivity extends AppCompatActivity implements StatisticListener {
 
     public static final String EXTRA_TRIP_UUID = "tripUUID";
 
@@ -55,7 +56,8 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
         DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
     }
 
-    public void setStatistics (PastTripDetailedResponse statistics) {
+    @Override
+    public void onStatisticDone(PastTripDetailedResponse statistics) {
         tvTripStatUUID.setText(getString(R.string.trip_stat_uuid, statistics.getTripUUID()));
 
         if (statistics.getStartTS() != null) {
@@ -86,4 +88,5 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
             tvTripStatAvgElevation.setText(getString(R.string.trip_stat_avg_elevation, elevation.getAvgElevation()));
         }
     }
+
 }

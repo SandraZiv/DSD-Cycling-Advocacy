@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.cycling_advocacy.bumpy.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
@@ -63,7 +63,7 @@ public class DataRetriever {
                 });
     }
 
-    public static void getPastTripStatistics(final Context context, final PastTripStatisticsActivity pastTripStatisticsActivity, String tripUUID) {
+    public static void getPastTripStatistics(final Context context, final StatisticListener listener, String tripUUID) {
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
         bumpyService.getTripByTripUUID(tripUUID)
                 .subscribeOn(Schedulers.io())
@@ -80,8 +80,7 @@ public class DataRetriever {
                         if (!response.isSuccessful()) {
                             Toast.makeText(context, R.string.get_trip_stats_not_successful, Toast.LENGTH_SHORT).show();
                         } else {
-                            PastTripDetailedResponse tripStatistics = response.body();
-                            pastTripStatisticsActivity.setStatistics(tripStatistics);
+                            listener.onStatisticDone(response.body());
                         }
                     }
 
