@@ -36,6 +36,7 @@
   
     <!--Data retriever-->
     <string name="get_trips_not_successful">Get past trips for this device not successful!</string>
+    <string name="get_trip_stats_not_successful">Get past trip statistics not successful!</string>
 
     <!-- Trip upload -->
     <string name="dialog_upload_trip_title">Upload trip data?</string>

@@ -2,6 +2,7 @@ package com.cycling_advocacy.bumpy.net.service;
 
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.model.ApiResponse;
+import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public interface BumpyService {
 
     @GET("trip/getTripsByDeviceUUID")
     Single<Response<List<PastTripGeneralResponse>>> getTripsByDeviceUUID(@Query("deviceUUID") String deviceUUID);
+
+    @GET("trip/getTripByTripUUID")
+    Single<Response<PastTripDetailedResponse>> getTripByTripUUID(@Query("tripUUID") String tripUUID);
 
     @GET("device/getShortDeviceUUID")
     Single<Response<String>> getShortDeviceUUID(@Query("deviceUUID") String deviceUUID);
