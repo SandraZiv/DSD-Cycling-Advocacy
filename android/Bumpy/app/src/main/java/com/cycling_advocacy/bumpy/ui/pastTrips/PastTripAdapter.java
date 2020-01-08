@@ -2,19 +2,18 @@ package com.cycling_advocacy.bumpy.ui.pastTrips;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cycling_advocacy.bumpy.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
+import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +23,15 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         private List<PastTrip> pastTripList = new ArrayList<>();
         private Context context;
 
-        public PastTripAdapter(Context context) {
+        PastTripAdapter(Context context) {
             this.context = context;
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView title, detail;
-            public ImageButton imageUpload;
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView title, detail;
+            ImageButton imageUpload;
 
-            public ViewHolder(View view) {
+            ViewHolder(View view) {
                 super(view);
                 title = view.findViewById(R.id.tv_past_trips_title);
                 detail = view.findViewById(R.id.tv_past_trips_details);
@@ -55,18 +54,25 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             String startTime = pastTrip.getStartTime().toString();
             holder.title.setText(startTime);
 
-            long duration = pastTrip.getDuration();
-            // TODO: This should either be handled by an util or extracted to some class
-            String durationString = String.format("%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
-
-            holder.detail.setText(context.getString(R.string.trip_description_display, durationString, pastTrip.getDistance()));
+            String duration = GeneralUtil.formatDuration(pastTrip.getStartTime(), pastTrip.getEndTime());
+            holder.detail.setText(
+                    context.getString(R.string.trip_description_display, duration, pastTrip.getDistance())
+            );
 
             if (!pastTrip.isUploaded()) {
                 holder.imageUpload.setVisibility(View.VISIBLE);
             } else {
                 holder.imageUpload.setVisibility(View.INVISIBLE);
             }
-            holder.itemView.setOnClickListener(new PastTripOnClickListener(position));
+
+            holder.itemView.setOnClickListener(view -> {
+                PastTrip selectedTrip = pastTripList.get(position);
+
+                Intent tripStatisticsIntent = new Intent(context, PastTripStatisticsActivity.class);
+                tripStatisticsIntent.putExtra(PastTripStatisticsActivity.EXTRA_TRIP_UUID, selectedTrip.getTripUUID());
+
+                context.startActivity(tripStatisticsIntent);
+            });
         }
 
         @Override
@@ -74,30 +80,8 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             return pastTripList.size();
         }
 
-        public void setPastTripList(List<PastTrip> pastTripList) {
+        void setPastTripList(List<PastTrip> pastTripList) {
             this.pastTripList = pastTripList;
             notifyDataSetChanged();
-        }
-
-        public class PastTripOnClickListener implements View.OnClickListener {
-
-            private int position;
-
-            public PastTripOnClickListener(int position) {
-                this.position = position;
-            }
-
-            @Override
-            public void onClick(View v) {
-                PastTrip clickedTrip = pastTripList.get(position);
-
-                Intent tripStatisticsIntent = new Intent(context, PastTripStatisticsActivity.class);
-
-                Bundle bundle = new Bundle();
-                bundle.putString(PastTripStatisticsActivity.TRIP_UUID_BUNDLE_KEY, clickedTrip.getTripUUID());
-                tripStatisticsIntent.putExtras(bundle);
-
-                context.startActivity(tripStatisticsIntent);
-            }
         }
 }

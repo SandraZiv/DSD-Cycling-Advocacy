@@ -1,10 +1,6 @@
 package com.cycling_advocacy.bumpy;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -13,12 +9,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
-import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsFragment;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 public class PastTripStatisticsActivity extends AppCompatActivity {
 
-    public static final String TRIP_UUID_BUNDLE_KEY = "tripUUID";
+    public static final String EXTRA_TRIP_UUID = "tripUUID";
 
     private TextView tvTripStatUUID;
     private TextView tvTripStatStartTS;
@@ -44,12 +39,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         tvTripStatUUID = findViewById(R.id.tv_trip_stat_uuid);
         tvTripStatStartTS = findViewById(R.id.tv_trip_stat_start_ts);
@@ -62,7 +52,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
         tvTripStatMaxElevation = findViewById(R.id.tv_trip_stat_max_elevation);
         tvTripStatAvgElevation = findViewById(R.id.tv_trip_stat_avg_elevation);
 
-        DataRetriever.getPastTripStatistics(this, this, getIntent().getExtras().getString(TRIP_UUID_BUNDLE_KEY));
+        DataRetriever.getPastTripStatistics(this, this, getIntent().getExtras().getString(EXTRA_TRIP_UUID));
     }
 
     // Do we need a model for this data so that we do not link this with 'response' logic? It would be the same as the response model though.
@@ -78,10 +68,8 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
         }
 
         if (statistics.getStartTS() != null && statistics.getEndTS() != null) {
-            long duration = GeneralUtil.getDurationInSeconds(statistics.getStartTS(), statistics.getEndTS());
-            String durationString = String.format("%d:%02d:%02d", duration / 3600, (duration % 3600) / 60, (duration % 60));
-
-            tvTripStatDuration.setText(getString(R.string.trip_stat_duration, durationString));
+            String duration = GeneralUtil.formatDuration(statistics.getStartTS(), statistics.getEndTS());
+            tvTripStatDuration.setText(getString(R.string.trip_stat_duration, duration));
         }
 
         tvTripStatDistance.setText(getString(R.string.trip_stat_distance, statistics.getDistance()));

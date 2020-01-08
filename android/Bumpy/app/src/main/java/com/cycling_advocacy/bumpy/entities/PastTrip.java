@@ -1,10 +1,10 @@
 package com.cycling_advocacy.bumpy.entities;
 
+import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import java.util.Date;
 
-// TODO: Is this for the database (locally stored data)? It will probably need to be reworked.
 public class PastTrip {
 
     private String tripUUID;
@@ -14,6 +14,16 @@ public class PastTrip {
     // in seconds
     private long duration;
     private boolean isUploaded;
+
+    public PastTrip(PastTripGeneralResponse pastTrip) {
+        this(
+                pastTrip.getTripUUID(),
+                pastTrip.getStartTS(),
+                pastTrip.getEndTS(),
+                pastTrip.getDistance(),
+                true
+        );
+    }
 
     public PastTrip(String tripUUID, Date startTime, Date endTime, double distance, boolean isUploaded) {
         this.tripUUID = tripUUID;
