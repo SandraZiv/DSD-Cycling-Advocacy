@@ -47,7 +47,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PastTripsFragment.class)); //TODO: This might be the 'return button issue', use finish()?
+                finish();
             }
         });
 
@@ -62,7 +62,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity {
         tvTripStatMaxElevation = findViewById(R.id.tv_trip_stat_max_elevation);
         tvTripStatAvgElevation = findViewById(R.id.tv_trip_stat_avg_elevation);
 
-        tvTripStatUUID.setText("PLACEHOLDER");
         DataRetriever.getPastTripStatistics(this, this, getIntent().getExtras().getString(TRIP_UUID_BUNDLE_KEY));
     }
 
