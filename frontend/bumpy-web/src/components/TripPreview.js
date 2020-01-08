@@ -20,9 +20,18 @@ export class TripPreview extends Component {
         let tripUUID = this.props.location.pathname.split('/').pop();
 
         fetch(`/v1/trip/getTripByTripUUID?tripUUID=${tripUUID}`)
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert('Trip does not exist');
+                    this.props.history.push('');
+                }
+            })
             .then(data => {
-                this.setState({trip: data});
+                if (data !== undefined) {
+                    this.setState({trip: data});
+                }
             })
     }
 
