@@ -28,12 +28,10 @@ export const PastTrips = (props) => {
                     setShortUuid(urlUUID);
                     return response.text()
                 } else {
-                    throw new Error("UUID not valid")
+                    alert('UUID not valid');
+                    props.history.push('/login');
                 }
-            }).catch(e => {
-            alert(e.message);
-            props.history.push('/login');
-        })
+            })
             .then(text => {
                 if (text === undefined) {
                     return
