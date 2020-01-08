@@ -89,4 +89,9 @@
         android:textColor="@color/cyclingAdvocacyYellow"
         tools:text="@string/trip_stat_avg_elevation" />
 
+    <org.osmdroid.views.MapView
+        android:id="@+id/mv_route_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

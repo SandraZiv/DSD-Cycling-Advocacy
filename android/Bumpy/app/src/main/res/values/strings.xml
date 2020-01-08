@@ -92,6 +92,8 @@
     <string name="trip_stat_min_elevation">Min elevation: %1$.2f m</string>
     <string name="trip_stat_max_elevation">Max elevation: %1$.2f m</string>
     <string name="trip_stat_avg_elevation">Avg elevation: %1$.2f m</string>
+    <string name="trip_stat_gnss_null_message">Cannot raw route: GNSS data not obtained</string>
+    <string name="trip_stat_gnss_empty_message">Cannot raw route: GNSS data has no points</string>
 
 
     <!-- Completed Achievement  -->
