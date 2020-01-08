@@ -35,6 +35,7 @@
   
     <!--Data retriever-->
     <string name="get_trips_not_successful">Get past trips for this device not successful!</string>
+    <string name="get_trip_stats_not_successful">Get past trip statistics not successful!</string>
 
     <!-- Trip upload -->
     <string name="dialog_upload_trip_title">Upload trip data?</string>
@@ -81,13 +82,17 @@
 
     <!-- Trip statistics -->
     <string name="title_past_trip_statistics">Trip statistics</string>
-    <string name="time_interval">%s - %s</string>
-    <string name="accumulated_vibration">Accumulated Vibrations: </string>
-    <string name="avg_speed">Average Speed: </string>
-    <string name="max_speed">Maximum Speed: </string>
-    <string name="dist">Distance: </string>
-    <string name="dur">Duration: </string>
-    <string name="bumps">Bumps: </string>
+    <string name="trip_stat_uuid">Trip UUID: %1s</string>
+    <string name="trip_stat_start_ts">Start time: %1s</string>
+    <string name="trip_stat_end_ts">End time: %1s</string>
+    <string name="trip_stat_duration">Duration: %1$s</string>
+    <string name="trip_stat_distance">Distance: %1$.2f km</string>
+    <string name="trip_stat_max_speed">Max speed: %1$.2f km/h</string>
+    <string name="trip_stat_avg_speed">Avg speed: %1$.2f km</string>h/string>
+    <string name="trip_stat_min_elevation">Min elevation: %1$.2f m</string>
+    <string name="trip_stat_max_elevation">Max elevation: %1$.2f m</string>
+    <string name="trip_stat_avg_elevation">Avg elevation: %1$.2f m</string>
+
 
     <!-- Completed Achievement  -->
     <string name="achievements_hurray">HURRAY!</string>

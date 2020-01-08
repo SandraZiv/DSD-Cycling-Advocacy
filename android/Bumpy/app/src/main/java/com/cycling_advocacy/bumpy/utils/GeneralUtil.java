@@ -6,8 +6,6 @@ import android.content.Context;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -16,6 +14,7 @@ import java.util.UUID;
 public class GeneralUtil {
 
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final String DURATION_FORMAT = "%d:%02d:%02d";
 
     public static String formatTimestamp(Date timestamp) {
         return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(timestamp);
@@ -31,6 +30,15 @@ public class GeneralUtil {
         long diff = endTS.getTime() - startTS.getTime();
         return diff / 1000;
     }
+
+    public static String formatDuration(Date start, Date end) {
+        long duration = GeneralUtil.getDurationInSeconds(start, end);
+        return String.format(Locale.getDefault(), DURATION_FORMAT,
+                duration / 3600,
+                (duration % 3600) / 60,
+                (duration % 60));
+    }
+
 
     public static String generateUUID() {
         return UUID.randomUUID().toString();
