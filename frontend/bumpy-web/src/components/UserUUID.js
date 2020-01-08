@@ -10,9 +10,9 @@ export const UserUUID = (props) => {
         document.title = "Bumpy - Trips"
     });
 
-    const validateUUID = async (uuid) => {
+    const validateUUID = (uuid) => {
         try {
-            await fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuid}`)
+            fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuid}`)
                 .then(response => {
                     if (response.ok) {
                         setShortUuid(uuid);

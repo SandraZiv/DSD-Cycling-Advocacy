@@ -12,41 +12,6 @@ export const PastTrips = (props) => {
     const [shortUuid, setShortUuid] = useContext(ShortUuidContext);
     const [trips, setTrips] = useState(undefined);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const fetchData = async (uuid, signal) => {
-        // let longUUID = 5efa0f9f-ee0a-45c9-ac20-ac4bb76dc83f;
-        try {
-            await fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuid}`)
-                .then(response => {
-                    if (response.ok) {
-                        setShortUuid(uuid);
-                        return response.text()
-                    } else {
-                        throw new Error("UUID not valid")
-                    }
-                })
-                .then(text => {
-                    let clearText = text.split("\"");
-                    let longUuid = (clearText.length > 1)? clearText[1]: clearText[0];
-
-                    fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${longUuid}`, {signal: signal})
-                        .then(response => response.json())
-                        .then(data => {
-                            setTrips(data.map(function (trip) {
-                                trip.startTS = formatDateDefault(trip.startTS);
-                                trip.endTS = formatDateDefault(trip.endTS);
-                                trip.distance = formatFloat(trip.distance);
-                                return trip
-                            }));
-                        });
-                })
-
-        } catch (e) {
-            alert(e.message);
-            props.history.push('/login');
-        }
-    };
-
     useEffect(() => {
         let urlUUID = props.location.pathname.split('/').pop();
 
@@ -57,14 +22,39 @@ export const PastTrips = (props) => {
 
         document.title = "Bumpy - Trips";
 
-        const abortController = new AbortController();
-        fetchData(urlUUID, abortController.signal);
+        fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${urlUUID}`)
+            .then(response => {
+                if (response.ok) {
+                    setShortUuid(urlUUID);
+                    return response.text()
+                } else {
+                    throw new Error("UUID not valid")
+                }
+            }).catch(e => {
+            alert(e.message);
+            props.history.push('/login');
+        })
+            .then(text => {
+                if (text === undefined) {
+                    return
+                }
 
-        return () => {
-            // clean up
-            abortController.abort();
-        };
-    }, [shortUuid, setShortUuid, fetchData, props.history, props.location.pathname]);
+                let clearText = text.split("\"");
+                let longUuid = (clearText.length > 1) ? clearText[1] : clearText[0];
+
+                fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${longUuid}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        setTrips(data.map(function (trip) {
+                            trip.startTS = formatDateDefault(trip.startTS);
+                            trip.endTS = formatDateDefault(trip.endTS);
+                            trip.distance = formatFloat(trip.distance);
+                            return trip
+                        }));
+                    });
+            })
+
+    }, [shortUuid, setShortUuid, props.history, props.location.pathname]);
 
     let buttonFormatter = (cell, row) =>
         <Link to={`/trips/${row.tripUUID}`}>
