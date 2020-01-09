@@ -104,7 +104,8 @@ def get_file_by_filename(filename):
 
 
 def insert_new_file(filename, data, **kwargs):
-    fs.put(data, filename=filename, **kwargs)
+    # strip removes double-double quotes from filename. should be handled in the frontend, but doesn't matter
+    fs.put(data, filename=filename.strip('"'), **kwargs)
 
 
 def delete_file_by_filename(filename, **kwargs):

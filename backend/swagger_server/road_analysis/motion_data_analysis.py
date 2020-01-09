@@ -7,6 +7,7 @@ import logging
 import matplotlib.pyplot as plt
 from math import radians, cos, sin, asin, sqrt
 import random
+import time
 
 
 def haversine(lon1, lat1, lon2, lat2):
@@ -28,8 +29,12 @@ def haversine(lon1, lat1, lon2, lat2):
 # retrieve trip and motion file and return them as a list and a pandas dataframe respectively
 def retrieve_data(trip_uuid):
     trip_data = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
-    motion_file = mongodb_interface.get_file_by_filename("\"" + trip_uuid + "\"")
-    # motion_file = db.get_file_by_filename(trip_uuid)
+    motion_file = None
+    while motion_file is None:
+        try:
+            motion_file = mongodb_interface.get_file_by_filename(trip_uuid)
+        except Exception as ex:
+            time.sleep(1)
     trip_df = pd.DataFrame(trip_data['gnss_data'])
     log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
     log += 'First timestamp of trip is: %s\n' % trip_df.head(1)['time_ts']
