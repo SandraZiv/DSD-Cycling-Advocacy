@@ -14,7 +14,7 @@
     <dimen name="text_size_small">15sp</dimen>
     <dimen name="text_size_mini">12sp</dimen>
 
-    <dimen name="gauge_size">180dp</dimen>
+    <dimen name="gauge_size">160dp</dimen>
     <dimen name="speed_width">25dp</dimen>
 
 </resources>

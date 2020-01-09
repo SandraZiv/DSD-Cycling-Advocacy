@@ -11,14 +11,14 @@
     tools:context=".TripInProgressActivity">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:layout_marginTop="@dimen/margin_standard"
-        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_large"
         android:text="@string/speed"
         android:textColor="@color/cyclingAdvocacyYellow"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_mini" />
 
     <com.github.anastr.speedviewlib.RaySpeedometer
         android:id="@+id/gauge_view_speed"
@@ -27,13 +27,13 @@
         android:layout_height="@dimen/gauge_size"
         android:layout_weight="4"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_standard"
+        android:layout_margin="@dimen/margin_small"
         app:maxSpeed="50"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="2"
+        android:layout_weight="2.5"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -47,15 +47,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/distance"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_mini" />
 
             <TextView
                 android:id="@+id/tv_distance"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:textColor="@color/cyclingAdvocacyYellow"
                 android:textSize="@dimen/text_size_large"
                 tools:text="25.12" />
@@ -74,7 +75,7 @@
                 android:layout_gravity="center"
                 android:text="@string/duration"
                 android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_small" />
+                android:textSize="@dimen/text_size_mini" />
 
             <Chronometer
                 android:id="@+id/chronometer_duration"
@@ -95,7 +96,7 @@
         android:layout_marginTop="@dimen/margin_large"
         android:text="@string/vibration"
         android:textColor="@color/cyclingAdvocacyYellow"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_mini" />
 
     <com.github.anastr.speedviewlib.RaySpeedometer
         android:id="@+id/gauge_view_vibration"
@@ -104,7 +105,7 @@
         android:layout_height="@dimen/gauge_size"
         android:layout_weight="4"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_standard"
+        android:layout_margin="@dimen/margin_small"
         app:unit="%"/>
 
     <Button
