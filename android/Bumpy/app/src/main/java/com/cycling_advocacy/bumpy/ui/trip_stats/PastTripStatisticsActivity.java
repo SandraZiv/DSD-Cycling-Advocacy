@@ -24,8 +24,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +32,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
     public static final String EXTRA_TRIP_UUID = "tripUUID";
 
-    private TextView tvTripStatUUID;
     private TextView tvTripStatStartTS;
     private TextView tvTripStatEndTS;
     private TextView tvTripStatDuration;
@@ -62,7 +59,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        tvTripStatUUID = findViewById(R.id.tv_trip_stat_uuid);
         tvTripStatStartTS = findViewById(R.id.tv_trip_stat_start_ts);
         tvTripStatEndTS = findViewById(R.id.tv_trip_stat_end_ts);
         tvTripStatDuration = findViewById(R.id.tv_trip_stat_duration);
@@ -80,8 +76,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
     @Override
     public void onStatisticDone(PastTripDetailedResponse statistics) {
-        tvTripStatUUID.setText(getString(R.string.trip_stat_uuid, statistics.getTripUUID()));
-
         if (statistics.getStartTS() != null) {
             tvTripStatStartTS.setText(getString(R.string.trip_stat_start_ts, statistics.getStartTS().toString()));
         }
@@ -122,7 +116,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
                 route.setPoints(routePoints);
 
                 route.getOutlinePaint().setColor(Color.RED);
-                // How to set this. This value is simply one that seemed to initially look fine.
                 route.getOutlinePaint().setStrokeWidth(20);
 
                 routeMap.getOverlayManager().add(route);
@@ -146,7 +139,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
         routeMap = findViewById(R.id.mv_route_map);
 
-        // Config set up like MapFragment. Should it be different?
         routeMap.getTileProvider().clearTileCache();
         Configuration.getInstance().setCacheMapTileCount((short)16);
         Configuration.getInstance().setCacheMapTileOvershoot((short)16);
@@ -156,7 +148,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         routeMap.setMultiTouchControls(true);
 
         IMapController mapController = routeMap.getController();
-        // How to set this. This value is simply one that seemed to initially look fine.
         mapController.setZoom(17.5);
         routeMap.invalidate();
     }
