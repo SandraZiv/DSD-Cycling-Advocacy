@@ -5,13 +5,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsReceivedListener;
 import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
-import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsViewModel;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class DataRetriever {
 
-    public static void getPastTripsList(final Context context, final PastTripsViewModel pastTripsViewModel) {
+    public static void getPastTripsList(final Context context, PastTripsReceivedListener listener) {
         final String deviceUUID = PreferenceUtil.getLongDeviceUUID(context);
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
         bumpyService.getTripsByDeviceUUID(deviceUUID)
@@ -49,7 +49,7 @@ public class DataRetriever {
                                 pastTrips.add(new PastTrip(pastTripGeneral));
                             }
 
-                            pastTripsViewModel.pastTripsLiveData.postValue(pastTrips);
+                            listener.onReceived(pastTrips);
                         }
                     }
 
