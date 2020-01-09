@@ -114,13 +114,11 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
                 Polyline route = new Polyline();
                 route.setPoints(routePoints);
-
                 route.getOutlinePaint().setColor(Color.RED);
                 route.getOutlinePaint().setStrokeWidth(20);
 
                 routeMap.getOverlayManager().add(route);
-                GeoPoint startPoint = new GeoPoint(gnssPoints.get(0).getLat(), gnssPoints.get(0).getLon());
-                routeMap.getController().setCenter(startPoint);
+                routeMap.getController().setCenter(routePoints.get(0));
                 routeMap.invalidate();
             } else {
                 Toast.makeText(this, R.string.trip_stat_gnss_empty_message, Toast.LENGTH_SHORT).show();
