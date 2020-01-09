@@ -11,7 +11,7 @@ public class NetworkUtil {
 
     public static boolean isWifiAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (!isNetworkConnected(cm)) {
+        if (!isNetworkConnected(context)) {
             return false;
         }
 
@@ -34,7 +34,7 @@ public class NetworkUtil {
 
     public static boolean isWifiOrMobileDataAvailable(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (!isNetworkConnected(cm)) {
+        if (!isNetworkConnected(context)) {
             return false;
         }
 
@@ -62,7 +62,8 @@ public class NetworkUtil {
         }
     }
 
-    private static boolean isNetworkConnected(ConnectivityManager cm) {
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }

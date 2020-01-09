@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripUploadType;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTrip;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTripsManager;
 import com.cycling_advocacy.bumpy.pending_trips.PendingTripsViewModel;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.model.ApiResponse;
@@ -51,10 +53,27 @@ public class DataSender {
             if (uploadType == TripUploadType.WIFI && !NetworkUtil.isWifiAvailable(context)) {
                 message = R.string.trip_not_uploaded_wifi;
             } else {
-                message = R.string.trip_not_uploaded_mobile;
+                message = R.string.trip_not_uploaded_network;
             }
 
             Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static void sendPendingData(Context context, Fragment fragment, PendingTrip pendingTrip) {
+        if (!NetworkUtil.isNetworkConnected(context)) {
+            Toast.makeText(context, R.string.trip_not_uploaded_network, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Trip trip = PendingTripsManager.convertToTrip(pendingTrip);
+        if (trip != null) {
+            sendLocationData(context, trip);
+            sendMotionData(context, trip);
+
+            deletePendingTrip(fragment, pendingTrip);
+        } else {
+            Toast.makeText(context, R.string.trip_not_uploaded_trip, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -120,6 +139,24 @@ public class DataSender {
                 });
     }
 
+    private static AlertDialog.Builder buildUploadDialog(Context context, Fragment fragment, Trip trip) {
+        return new AlertDialog.Builder(context)
+                .setTitle(R.string.dialog_upload_trip_title)
+                .setMessage(R.string.dialog_upload_trip_message)
+                .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
+                    if (NetworkUtil.isNetworkConnected(context)) {
+                        sendLocationData(context, trip);
+                        sendMotionData(context, trip);
+                    } else {
+                        Toast.makeText(context, R.string.trip_not_uploaded_network, Toast.LENGTH_LONG).show();
+                        savePendingTripToDB(fragment, trip);
+                    }
+                })
+                .setNegativeButton(R.string.dialog_no, (dialogInterface, i) -> {
+                    savePendingTripToDB(fragment, trip);
+                });
+    }
+
     private static void savePendingTripToDB(Fragment fragment, Trip trip) {
         PendingTripsViewModel viewModel = ViewModelProviders
                 .of(fragment).get(PendingTripsViewModel.class);
@@ -127,16 +164,10 @@ public class DataSender {
         viewModel.insert(trip);
     }
 
-    private static AlertDialog.Builder buildUploadDialog(Context context, Fragment fragment, Trip trip) {
-        return new AlertDialog.Builder(context)
-                .setTitle(R.string.dialog_upload_trip_title)
-                .setMessage(R.string.dialog_upload_trip_message)
-                .setPositiveButton(R.string.dialog_yes, (dialogInterface, i) -> {
-                    sendLocationData(context, trip);
-                    sendMotionData(context, trip);
-                })
-                .setNegativeButton(R.string.dialog_no, (dialogInterface, i) -> {
-                    savePendingTripToDB(fragment, trip);
-                });
+    private static void deletePendingTrip(Fragment fragment, PendingTrip pendingTrip){
+        PendingTripsViewModel viewModel = ViewModelProviders
+                .of(fragment).get(PendingTripsViewModel.class);
+
+        viewModel.delete(pendingTrip);
     }
 }

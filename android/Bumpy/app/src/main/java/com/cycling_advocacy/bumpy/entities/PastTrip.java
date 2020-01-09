@@ -1,37 +1,40 @@
 package com.cycling_advocacy.bumpy.entities;
 
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTrip;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTripsManager;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import java.util.Date;
 
-public class PastTrip {
+public class PastTrip implements Comparable{
 
     private String tripUUID;
     private Date startTime;
     private Date endTime;
-    private double distance;
-    // in seconds
-    private long duration;
+    private double distance;// in km
+    private long duration;  // in seconds
     private boolean isUploaded;
 
     public PastTrip(PastTripGeneralResponse pastTrip) {
-        this(
-                pastTrip.getTripUUID(),
-                pastTrip.getStartTS(),
-                pastTrip.getEndTS(),
-                pastTrip.getDistance(),
-                true
-        );
+        this.tripUUID = pastTrip.getTripUUID();
+        this.startTime = pastTrip.getStartTS();
+        this.endTime = pastTrip.getEndTS();
+        this.distance = pastTrip.getDistance();
+        this.duration = GeneralUtil.getDurationInSeconds(this.startTime, this.endTime);
+        this.isUploaded = true;
     }
 
-    public PastTrip(String tripUUID, Date startTime, Date endTime, double distance, boolean isUploaded) {
-        this.tripUUID = tripUUID;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.distance = distance;
-        this.duration = GeneralUtil.getDurationInSeconds(startTime, endTime);
-        this.isUploaded = isUploaded;
+    public PastTrip(PendingTrip pendingTrip) {
+        Trip trip = PendingTripsManager.convertToTrip(pendingTrip);
+        if (trip != null) {
+            this.tripUUID = trip.getTripUUID();
+            this.startTime = trip.getStartTs();
+            this.endTime = trip.getStopTs();
+            this.distance = trip.getDistance();
+            this.duration = GeneralUtil.getDurationInSeconds(this.startTime, this.endTime);
+            this.isUploaded = false;
+        }
     }
 
     public String getTripUUID() { return tripUUID; }
@@ -68,5 +71,26 @@ public class PastTrip {
 
     public void setIsUploaded(boolean isUploaded) {
         this.isUploaded = isUploaded;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof PastTrip) {
+            PastTrip pastTrip = (PastTrip)o;
+            if (!this.isUploaded() && !pastTrip.isUploaded()){
+                return pastTrip.getStartTime().compareTo(this.getStartTime());
+            }
+
+            if (!this.isUploaded()) {
+                return 1;
+            }
+
+            if (!pastTrip.isUploaded()) {
+                return -1;
+            }
+
+            return pastTrip.getStartTime().compareTo(this.getStartTime());
+        }
+        return 0;
     }
 }

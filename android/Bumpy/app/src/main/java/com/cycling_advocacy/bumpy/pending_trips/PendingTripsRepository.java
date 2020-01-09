@@ -30,4 +30,8 @@ public class PendingTripsRepository {
     public LiveData<List<PendingTrip>> getPendingTrips() {
         return this.pendingTrips;
     }
+
+    public LiveData<PendingTrip> getPendingTripByTripUUID(String tripUUID) {
+        return this.pendingTripsDao.getPendingTripByTripUUID(tripUUID);
+    }
 }

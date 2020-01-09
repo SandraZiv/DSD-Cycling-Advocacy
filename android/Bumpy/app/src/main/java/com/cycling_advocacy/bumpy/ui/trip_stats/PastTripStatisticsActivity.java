@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.cycling_advocacy.bumpy.BuildConfig;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.GnssData;
+import com.cycling_advocacy.bumpy.net.DataManager;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
@@ -26,6 +30,7 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PastTripStatisticsActivity extends AppCompatActivity implements StatisticListener {
@@ -43,6 +48,9 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     private TextView tvTripStatAvgElevation;
 
     private MapView routeMap;
+
+    private String tripUUID = "";
+    private Date tripStartTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +83,31 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.trip_stats_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionDelete:
+                deleteTrip();
+                return true;
+            case R.id.actionExportMotion:
+                exportMotionFile();
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public void onStatisticDone(PastTripDetailedResponse statistics) {
+        this.tripUUID = statistics.getTripUUID();
+        this.tripStartTime = statistics.getStartTS();
+
         if (statistics.getStartTS() != null) {
             tvTripStatStartTS.setText(getString(R.string.trip_stat_start_ts, statistics.getStartTS().toString()));
         }
@@ -128,7 +160,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         }
     }
 
-    public void initRouteMap() {
+    private void initRouteMap() {
         Context ctx = this;
 
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
@@ -148,5 +180,14 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         IMapController mapController = routeMap.getController();
         mapController.setZoom(17.5);
         routeMap.invalidate();
+    }
+
+    private void deleteTrip() {
+        DataManager.deleteTrip(this, this.tripUUID, this.tripStartTime);
+        finish();
+    }
+
+    private void exportMotionFile() {
+
     }
 }

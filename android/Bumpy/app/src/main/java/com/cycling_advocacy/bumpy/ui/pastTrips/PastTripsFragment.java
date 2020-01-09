@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,26 +14,39 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
+import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTrip;
+import com.cycling_advocacy.bumpy.pending_trips.PendingTripsViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PastTripsFragment extends Fragment {
+public class PastTripsFragment extends Fragment
+        implements PastTripsUploadListener, PastTripsReceivedListener {
+
+    private PendingTripsViewModel pendingTripsViewModel;
+    private PastTripAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        PastTripsViewModel pastTripsViewModel = ViewModelProviders.of(this).get(PastTripsViewModel.class);
+        pendingTripsViewModel = ViewModelProviders.of(this).get(PendingTripsViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_past_trips, container, false);
         RecyclerView rv = root.findViewById(R.id.rv_past_trips);
 
-        final PastTripAdapter adapter = new PastTripAdapter(getContext());
+        adapter = new PastTripAdapter(getContext(), this);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
-        pastTripsViewModel.pastTripsLiveData.observe(this, new Observer<List<PastTrip>>() {
-            @Override
-            public void onChanged(List<PastTrip> pastTripList) {
-                adapter.setPastTripList(pastTripList);
+        pendingTripsViewModel.pendingTripsLiveData.observe(this, pendingTrips -> {
+            List<PastTrip> pastTrips = new ArrayList<>();
+            for (PendingTrip pendingTrip : pendingTrips) {
+                PastTrip pastTrip = new PastTrip(pendingTrip);
+                if (pastTrip.getTripUUID() != null) {
+                    pastTrips.add(pastTrip);
+                }
             }
+
+            adapter.addDbData(pastTrips);
         });
 
         return root;
@@ -43,7 +55,21 @@ public class PastTripsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        PastTripsViewModel pastTripsViewModel = ViewModelProviders.of(this).get(PastTripsViewModel.class);
-        DataRetriever.getPastTripsList(getContext(), pastTripsViewModel);
+        DataRetriever.getPastTripsList(getContext(), this);
+    }
+
+    @Override
+    public void onReceived(List<PastTrip> pastTrips) {
+        adapter.addApiData(pastTrips);
+    }
+
+    @Override
+    public void upload(String tripUUID) {
+        pendingTripsViewModel.getPendingTripByTripUUID(tripUUID).observe(this, pendingTrip -> {
+            if (pendingTrip != null) {
+                DataSender.sendPendingData(getContext(), PastTripsFragment.this, pendingTrip);
+                DataRetriever.getPastTripsList(getContext(), this);
+            }
+        });
     }
 }

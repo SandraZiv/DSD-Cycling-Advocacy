@@ -5,13 +5,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsReceivedListener;
 import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 import com.cycling_advocacy.bumpy.net.service.BumpyService;
 import com.cycling_advocacy.bumpy.net.service.BumpyServiceBuilder;
-import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsViewModel;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -25,9 +25,7 @@ import retrofit2.Response;
 
 public class DataRetriever {
 
-    // TODO: This implementation relies solely on trips being obtained from the web; To support trips obrained from the db as well I think we can just obtain
-    //  them from the db in onSuccess and add them to the pastTrips list
-    public static void getPastTripsList(final Context context, final PastTripsViewModel pastTripsViewModel) {
+    public static void getPastTripsList(final Context context, PastTripsReceivedListener listener) {
         final String deviceUUID = PreferenceUtil.getLongDeviceUUID(context);
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
         bumpyService.getTripsByDeviceUUID(deviceUUID)
@@ -48,11 +46,10 @@ public class DataRetriever {
                             List<PastTripGeneralResponse> pastTripsGeneral = response.body();
                             List<PastTrip> pastTrips = new ArrayList<>();
                             for (PastTripGeneralResponse pastTripGeneral : pastTripsGeneral) {
-                                // isUploaded is true since these trips are retrieved from the server
                                 pastTrips.add(new PastTrip(pastTripGeneral));
                             }
 
-                            pastTripsViewModel.setPastTripsLiveData(pastTrips);
+                            listener.onReceived(pastTrips);
                         }
                     }
 

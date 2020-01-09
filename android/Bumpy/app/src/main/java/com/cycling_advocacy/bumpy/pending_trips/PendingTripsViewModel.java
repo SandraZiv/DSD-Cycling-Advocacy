@@ -21,6 +21,10 @@ public class PendingTripsViewModel extends AndroidViewModel {
         this.pendingTripsLiveData = this.repository.getPendingTrips();
     }
 
+    public LiveData<PendingTrip> getPendingTripByTripUUID(String tripUUID){
+        return this.repository.getPendingTripByTripUUID(tripUUID);
+    }
+
     public boolean insert(Trip trip) {
         PendingTrip pendingTrip = PendingTripsManager.convertToPendingTrip(trip);
         if (pendingTrip != null) {
@@ -31,13 +35,7 @@ public class PendingTripsViewModel extends AndroidViewModel {
         }
     }
 
-    public boolean delete(Trip trip) {
-        PendingTrip pendingTrip = PendingTripsManager.convertToPendingTrip(trip);
-        if (pendingTrip != null) {
-            this.repository.deleteAsync(pendingTrip);
-            return true;
-        } else {
-            return false;
-        }
+    public void delete(PendingTrip pendingTrip) {
+        this.repository.deleteAsync(pendingTrip);
     }
 }
