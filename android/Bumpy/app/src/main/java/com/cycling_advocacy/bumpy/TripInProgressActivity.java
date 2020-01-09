@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -42,7 +41,6 @@ import com.github.anastr.speedviewlib.RaySpeedometer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,7 +88,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         speedometer = findViewById(R.id.gauge_view_speed);
         speedometer.speedTo(0);
         vibrationMeter = findViewById(R.id.gauge_view_vibration);
-        vibrationMeter.speedTo(50);
 
         Button btnEndTrip = findViewById(R.id.button_trip_end);
         btnEndTrip.setOnClickListener(view -> {
@@ -240,6 +237,5 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
         vibrationMeter.speedTo(vibrationPercentage);
-        Log.d("vibration stat","value= "+vibrationPercentage);
     }
 }
