@@ -36,16 +36,13 @@
     </style>
 
     <style name="GaugeViewStyle">
-        <item name="showInnerRim">false</item>
-        <item name="showNeedle">true</item>
-        <item name="showOuterBorder">false</item>
-        <item name="showOuterRim">true</item>
-        <item name="showOuterShadow">false</item>
-        <item name="showRangeText">true</item>
-        <item name="showRanges">true</item>
-        <item name="showScale">true</item>
-        <item name="textUnitSize">0.1</item>
-        <item name="textValueSize">0.2</item>
+        <item name="lowSpeedColor">@color/cyclingAdvocacyYellow</item>
+        <item name="mediumSpeedColor">@color/mediumOrange</item>
+        <item name="highSpeedColor">@color/highRed</item>
+        <item name="speedBackgroundColor">@color/cyclingAdvocacyYellow</item>
+        <item name="textColor">@color/cyclingAdvocacyYellow</item>
+        <item name="rayColor">@color/transparentYellow</item>
+        <item name="speedometerWidth">@dimen/speed_width</item>
     </style>
 
 </resources>

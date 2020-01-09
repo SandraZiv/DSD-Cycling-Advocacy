@@ -37,10 +37,10 @@ import com.cycling_advocacy.bumpy.motion.VibrationChangedListener;
 import com.cycling_advocacy.bumpy.ui.map.MapFragment;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
+import com.github.anastr.speedviewlib.RaySpeedometer;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.ntt.customgaugeview.library.GaugeView;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -54,8 +54,8 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
     private TextView tvDistance;
     private Chronometer chronometerDuration;
-    private GaugeView speedometer;
-    private GaugeView vibrationmeter;
+    private RaySpeedometer speedometer;
+    private RaySpeedometer vibrationMeter;
 
     private GoogleApiClient googleApiClient;
 
@@ -86,8 +86,8 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         chronometerDuration = findViewById(R.id.chronometer_duration);
 
         speedometer = findViewById(R.id.gauge_view_speed);
-        speedometer.setTargetValue(0);
-        vibrationmeter = findViewById(R.id.gauge_view_vibration);
+        speedometer.speedTo(0);
+        vibrationMeter = findViewById(R.id.gauge_view_vibration);
 
         Button btnEndTrip = findViewById(R.id.button_trip_end);
         btnEndTrip.setOnClickListener(view -> {
@@ -229,13 +229,13 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         GnssData gnssData = new GnssData(location);
         trip.addGpsData(gnssData);
 
-        speedometer.setTargetValue(gnssData.getSpeed());
+        speedometer.speedTo((int)gnssData.getSpeed());
         tvDistance.setText(trip.getFormattedDistance());
 
     }
 
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
-        vibrationmeter.setTargetValue(vibrationPercentage);
+        vibrationMeter.speedTo(vibrationPercentage);
     }
 }

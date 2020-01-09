@@ -30,7 +30,9 @@ dependencies {
     implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
-    implementation 'com.github.thuat26:CustomGaugeView:1.0'
+
+    //Gauge View
+    implementation 'com.github.anastr:speedviewlib:1.0.8'
 
     implementation 'androidx.preference:preference:1.1.0'
 
