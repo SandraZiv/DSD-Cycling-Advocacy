@@ -15,6 +15,9 @@ public interface PendingTripsDao {
     @Query("Select * from pending_trips order by tripUUID")
     LiveData<List<PendingTrip>> getPendingTrips();
 
+    @Query("Select * from pending_trips where tripUUID = :tripUUID")
+    LiveData<PendingTrip> getPendingTripByTripUUID(String tripUUID);
+
     @Insert
     void insert(PendingTrip pendingTrip);
 

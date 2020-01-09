@@ -43,7 +43,8 @@
     <string name="dialog_yes">Yes</string>
     <string name="dialog_no">No</string>
     <string name="trip_not_uploaded_wifi">Trip data not uploaded due to WiFi not available</string>
-    <string name="trip_not_uploaded_mobile">Trip data not uploaded due to no network</string>
+    <string name="trip_not_uploaded_network">Trip data not uploaded due to no network</string>
+    <string name="trip_not_uploaded_trip">Trip data not uploaded due to trip error</string>
 
     <!--Past trips-->
     <string name="upload_data_description">Upload cycling data</string>

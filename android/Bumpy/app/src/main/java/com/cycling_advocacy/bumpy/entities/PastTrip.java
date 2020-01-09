@@ -7,7 +7,7 @@ import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import java.util.Date;
 
-public class PastTrip {
+public class PastTrip implements Comparable{
 
     private String tripUUID;
     private Date startTime;
@@ -71,5 +71,26 @@ public class PastTrip {
 
     public void setIsUploaded(boolean isUploaded) {
         this.isUploaded = isUploaded;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof PastTrip) {
+            PastTrip pastTrip = (PastTrip)o;
+            if (!this.isUploaded() && !pastTrip.isUploaded()){
+                return pastTrip.getStartTime().compareTo(this.getStartTime());
+            }
+
+            if (!this.isUploaded()) {
+                return 1;
+            }
+
+            if (!pastTrip.isUploaded()) {
+                return -1;
+            }
+
+            return pastTrip.getStartTime().compareTo(this.getStartTime());
+        }
+        return 0;
     }
 }
