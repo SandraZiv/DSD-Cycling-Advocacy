@@ -50,6 +50,7 @@
     <string name="trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
     <string name="duration_display">Duration: %1$s  </string>
     <string name="distance_display">Distance: %1$.2f km  </string>
+    <string name="upload_trip_for_stats">Please upload trip to see statistics</string>
 
     <!--Settings-->
     <string name="title_activity_settings">Settings</string>

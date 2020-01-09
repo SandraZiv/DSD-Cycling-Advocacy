@@ -7,12 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cycling_advocacy.bumpy.ui.trip_stats.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
+import com.cycling_advocacy.bumpy.ui.trip_stats.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import java.util.ArrayList;
@@ -68,10 +69,14 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             holder.itemView.setOnClickListener(view -> {
                 PastTrip selectedTrip = pastTripList.get(position);
 
-                Intent tripStatisticsIntent = new Intent(context, PastTripStatisticsActivity.class);
-                tripStatisticsIntent.putExtra(PastTripStatisticsActivity.EXTRA_TRIP_UUID, selectedTrip.getTripUUID());
+                if (selectedTrip.isUploaded()) {
+                    Intent tripStatisticsIntent = new Intent(context, PastTripStatisticsActivity.class);
+                    tripStatisticsIntent.putExtra(PastTripStatisticsActivity.EXTRA_TRIP_UUID, selectedTrip.getTripUUID());
 
-                context.startActivity(tripStatisticsIntent);
+                    context.startActivity(tripStatisticsIntent);
+                } else {
+                    Toast.makeText(context, R.string.upload_trip_for_stats, Toast.LENGTH_LONG).show();
+                }
             });
         }
 
