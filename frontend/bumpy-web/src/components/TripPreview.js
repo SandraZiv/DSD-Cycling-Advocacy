@@ -35,6 +35,16 @@ export class TripPreview extends Component {
             })
     }
 
+    deleteTrip() {
+        if (this.state.trip !== undefined && window.confirm('Are you sure you wish to delete this trip?')) {
+            fetch(`/v1/trip/deleteTrip?tripUUID=${this.state.trip.tripUUID}`, {
+                method: 'DELETE'
+            }).then(response => {
+                this.props.history.goBack()
+            })
+        }
+    }
+
     render() {
         let card = '';
         if (this.state.trip !== undefined) {
@@ -65,8 +75,8 @@ export class TripPreview extends Component {
 
             card = <Card className="text-left">
                 <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
-                    <Button className="btn float-right ">Export</Button>
-                    <Button className="btn bg-danger text-white border-white float-right"><i className="fa fa-trash"/></Button>
+                    <Button className="btn float-right">Export</Button>
+                    <Button className="btn bg-danger text-white border-white float-right" onClick={() => this.deleteTrip()}><i className="fa fa-trash"/></Button>
                 </Card.Header>
                 <Card.Body>
                     <CardGroup>
