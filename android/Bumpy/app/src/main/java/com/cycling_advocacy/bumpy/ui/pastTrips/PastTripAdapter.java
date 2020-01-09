@@ -100,8 +100,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
     void addApiData(List<PastTrip> pastTripList) {
         this.apiData = pastTripList;
-        // TODO remove if backend will do that
-        Collections.sort(this.apiData);
         updateList();
     }
 

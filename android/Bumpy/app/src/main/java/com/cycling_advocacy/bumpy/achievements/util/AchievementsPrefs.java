@@ -38,6 +38,17 @@ public class AchievementsPrefs {
         }
     }
 
+    public static void decreaseDailyTripCount(Context context, long tripStartMillis) {
+        SharedPreferences preferences = PreferenceUtil.getSharedPreference(context);
+        long currentTimestamp = System.currentTimeMillis();
+
+        if (isSameDay(currentTimestamp, tripStartMillis)) {
+            // it there is trip from 'today' then there is timestamp for today
+            // if trip is not from 'today' we don't care since it its daily count finished
+            decreasePrefsCount(preferences, COUNT_DAILY_TRIPS_COUNT, 1);
+        }
+    }
+
     public static int getDailyTripCount(Context context) {
         SharedPreferences preferences = PreferenceUtil.getSharedPreference(context);
 
@@ -53,12 +64,16 @@ public class AchievementsPrefs {
 
 
     // total trips
-    // todo should this be from backend?
-    // todo should delete trip affect this?
     public static void increaseTotalTripCount(Context context) {
         SharedPreferences preferences = PreferenceUtil.getSharedPreference(context);
         // zero is passed as default value since when increased it will be 1
         increasePrefsCount(preferences, COUNT_TOTAL_TRIPS, 0);
+    }
+
+    public static void decreaseTotalTripCount(Context context) {
+        SharedPreferences preferences = PreferenceUtil.getSharedPreference(context);
+        // one is passed as default value since when decreased it will be 0
+        decreasePrefsCount(preferences, COUNT_TOTAL_TRIPS, 1);
     }
 
     public static int getTotalTripCount(Context context) {
@@ -71,6 +86,12 @@ public class AchievementsPrefs {
     private static void increasePrefsCount(SharedPreferences preferences, String key, int defaultValue) {
         int prefCount = preferences.getInt(key, defaultValue);
         prefCount++;
+        preferences.edit().putInt(key, prefCount).apply();
+    }
+
+    private static void decreasePrefsCount(SharedPreferences preferences, String key, int defaultValue) {
+        int prefCount = preferences.getInt(key, defaultValue);
+        prefCount--;
         preferences.edit().putInt(key, prefCount).apply();
     }
 
