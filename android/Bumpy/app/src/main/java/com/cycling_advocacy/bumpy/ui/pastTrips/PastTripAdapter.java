@@ -80,8 +80,8 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             return pastTripList.size();
         }
 
-        void setPastTripList(List<PastTrip> pastTripList) {
-            this.pastTripList = pastTripList;
+        void addPastTrips(List<PastTrip> pastTripList) {
+            this.pastTripList.addAll(pastTripList);
             notifyDataSetChanged();
         }
 }

@@ -25,8 +25,6 @@ import retrofit2.Response;
 
 public class DataRetriever {
 
-    // TODO: This implementation relies solely on trips being obtained from the web; To support trips obrained from the db as well I think we can just obtain
-    //  them from the db in onSuccess and add them to the pastTrips list
     public static void getPastTripsList(final Context context, final PastTripsViewModel pastTripsViewModel) {
         final String deviceUUID = PreferenceUtil.getLongDeviceUUID(context);
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
@@ -48,11 +46,10 @@ public class DataRetriever {
                             List<PastTripGeneralResponse> pastTripsGeneral = response.body();
                             List<PastTrip> pastTrips = new ArrayList<>();
                             for (PastTripGeneralResponse pastTripGeneral : pastTripsGeneral) {
-                                // isUploaded is true since these trips are retrieved from the server
                                 pastTrips.add(new PastTrip(pastTripGeneral));
                             }
 
-                            pastTripsViewModel.setPastTripsLiveData(pastTrips);
+                            pastTripsViewModel.pastTripsLiveData.postValue(pastTrips);
                         }
                     }
 
