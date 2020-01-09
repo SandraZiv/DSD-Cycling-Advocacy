@@ -14,6 +14,11 @@ export class Home extends Component {
 
     componentDidMount() {
         document.title = "Bumpy - Home";
+        let topRightLat = this._map.leafletElement.getBounds()._northEast.lat
+        let topRightLon = this._map.leafletElement.getBounds()._northEast.lng
+        let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat
+        let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng
+        console.log(topRightLat)
 
         navigator.geolocation.getCurrentPosition(
             position => this.setState({
@@ -21,14 +26,23 @@ export class Home extends Component {
                 // longitude: position.coords.longitude
             })
         );
-
-        fetch(`/v1/mapData/getRoadQualitySegments?bottomLeftLat=40.58541598932073&bottomLeftLon=8.524859477435248&topRightLat=45.59234634754337&topRightLon=10.540044381476141`)
+        fetch('/v1/mapData/getRoadQualitySegments?bottomLeftLat='+bottomLeftLat+'&bottomLeftLon='+bottomLeftLon+'&topRightLat='+topRightLat+'&topRightLon='+topRightLon+'')
             .then(response => response.json())
             .then(data => {
                 this.setState({map: data});
             })
     }
-
+    onViewportChanged = (viewport: Viewport) => {
+        let topRightLat = this._map.leafletElement.getBounds()._northEast.lat
+        let topRightLon = this._map.leafletElement.getBounds()._northEast.lng
+        let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat
+        let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng
+        fetch('/v1/mapData/getRoadQualitySegments?bottomLeftLat='+bottomLeftLat+'&bottomLeftLon='+bottomLeftLon+'&topRightLat='+topRightLat+'&topRightLon='+topRightLon+'')
+            .then(response => response.json())
+            .then(data => {
+            this.setState({map: data});
+            })
+      }
 
     render() {
         let roadQualityPolys = "";
@@ -52,7 +66,7 @@ export class Home extends Component {
         return (
             <div>
                 <h5>Road Quality Map</h5>
-                <LeafletMap
+                <LeafletMap ref={map => (this._map = map)}
                     style={{
                         height: '600px',
                         width: '100%',
@@ -67,6 +81,7 @@ export class Home extends Component {
                     scrollWheelZoom={true}
                     dragging={true}
                     animate={true}
+                    onViewportChanged={this.onViewportChanged}
                     easeLinearity={0.35}>
                     <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
                     {roadQualityPolys}
