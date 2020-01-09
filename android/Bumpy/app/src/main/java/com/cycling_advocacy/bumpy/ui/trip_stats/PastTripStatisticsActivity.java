@@ -1,22 +1,37 @@
 package com.cycling_advocacy.bumpy.ui.trip_stats;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.cycling_advocacy.bumpy.BuildConfig;
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.entities.GnssData;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
+
+import org.osmdroid.api.IMapController;
+import org.osmdroid.config.Configuration;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Polyline;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PastTripStatisticsActivity extends AppCompatActivity implements StatisticListener {
 
     public static final String EXTRA_TRIP_UUID = "tripUUID";
 
-    private TextView tvTripStatUUID;
     private TextView tvTripStatStartTS;
     private TextView tvTripStatEndTS;
     private TextView tvTripStatDuration;
@@ -26,6 +41,8 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     private TextView tvTripStatMinElevation;
     private TextView tvTripStatMaxElevation;
     private TextView tvTripStatAvgElevation;
+
+    private MapView routeMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +59,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        tvTripStatUUID = findViewById(R.id.tv_trip_stat_uuid);
         tvTripStatStartTS = findViewById(R.id.tv_trip_stat_start_ts);
         tvTripStatEndTS = findViewById(R.id.tv_trip_stat_end_ts);
         tvTripStatDuration = findViewById(R.id.tv_trip_stat_duration);
@@ -54,12 +70,12 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         tvTripStatAvgElevation = findViewById(R.id.tv_trip_stat_avg_elevation);
 
         DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
+
+        initRouteMap();
     }
 
     @Override
     public void onStatisticDone(PastTripDetailedResponse statistics) {
-        tvTripStatUUID.setText(getString(R.string.trip_stat_uuid, statistics.getTripUUID()));
-
         if (statistics.getStartTS() != null) {
             tvTripStatStartTS.setText(getString(R.string.trip_stat_start_ts, statistics.getStartTS().toString()));
         }
@@ -87,6 +103,50 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
             tvTripStatMaxElevation.setText(getString(R.string.trip_stat_max_elevation, elevation.getMaxElevation()));
             tvTripStatAvgElevation.setText(getString(R.string.trip_stat_avg_elevation, elevation.getAvgElevation()));
         }
+
+        if (statistics.getGnssData() != null) {
+            if (!statistics.getGnssData().isEmpty()) {
+                List<GnssData> gnssPoints = statistics.getGnssData();
+                List<GeoPoint> routePoints = new ArrayList<>();
+                for (GnssData point : gnssPoints) {
+                    routePoints.add(new GeoPoint(point.getLat(), point.getLon()));
+                }
+
+                Polyline route = new Polyline();
+                route.setPoints(routePoints);
+                route.getOutlinePaint().setColor(Color.RED);
+                route.getOutlinePaint().setStrokeWidth(20);
+
+                routeMap.getOverlayManager().add(route);
+                routeMap.getController().setCenter(routePoints.get(0));
+                routeMap.invalidate();
+            } else {
+                Toast.makeText(this, R.string.trip_stat_gnss_empty_message, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, R.string.trip_stat_gnss_null_message, Toast.LENGTH_SHORT).show();
+        }
     }
 
+    public void initRouteMap() {
+        Context ctx = this;
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
+        Configuration.getInstance()
+                .load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
+
+        routeMap = findViewById(R.id.mv_route_map);
+
+        routeMap.getTileProvider().clearTileCache();
+        Configuration.getInstance().setCacheMapTileCount((short)16);
+        Configuration.getInstance().setCacheMapTileOvershoot((short)16);
+        Configuration.getInstance().setTileDownloadThreads((short)16);
+        routeMap.setTileSource(TileSourceFactory.MAPNIK);
+
+        routeMap.setMultiTouchControls(true);
+
+        IMapController mapController = routeMap.getController();
+        mapController.setZoom(17.5);
+        routeMap.invalidate();
+    }
 }
