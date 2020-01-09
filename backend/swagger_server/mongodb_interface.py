@@ -24,7 +24,7 @@ def insert_new_trip(trip):
 
 
 def get_trips_by_device_uuid(device_uuid):
-    return main_db.trips.find({'device_uuid': device_uuid}).sort([('end_ts'), pymongo.DESCENDING])
+    return main_db.trips.find({'device_uuid': device_uuid}).sort([('end_ts', pymongo.DESCENDING)])
 
 
 def update_trip_statistics(trip_uuid, new_values):
