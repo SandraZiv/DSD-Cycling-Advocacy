@@ -7,4 +7,9 @@
 
     <color name="grey">#DA8D8989</color>
     <color name="white">#ffffff</color>
+
+    //Gauge View
+    <color name="mediumOrange">#FF5722</color>
+    <color name="highRed">#EC2F33</color>
+    <color name="transparentYellow">#2AFFDD00</color>
 </resources>
