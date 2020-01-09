@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,19 +27,25 @@ public class PastTripsFragment extends Fragment
 
     private PendingTripsViewModel pendingTripsViewModel;
     private PastTripAdapter adapter;
+    private RecyclerView rv;
+    private TextView emptyView;
+    private List<PastTrip> pastTrips;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         pendingTripsViewModel = ViewModelProviders.of(this).get(PendingTripsViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_past_trips, container, false);
-        RecyclerView rv = root.findViewById(R.id.rv_past_trips);
+        rv = root.findViewById(R.id.rv_past_trips);
+        emptyView = root.findViewById(R.id.tv_empty_view);
+
+        rv.setVisibility(View.GONE);
 
         adapter = new PastTripAdapter(getContext(), this);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
         pendingTripsViewModel.pendingTripsLiveData.observe(this, pendingTrips -> {
-            List<PastTrip> pastTrips = new ArrayList<>();
+            pastTrips = new ArrayList<>();
             for (PendingTrip pendingTrip : pendingTrips) {
                 PastTrip pastTrip = new PastTrip(pendingTrip);
                 if (pastTrip.getTripUUID() != null) {
@@ -49,12 +56,24 @@ public class PastTripsFragment extends Fragment
             adapter.addDbData(pastTrips);
         });
 
+
+
+        if (adapter.getItemCount()==0) {
+
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+
+            emptyView.setVisibility(View.GONE);
+        }
+
         return root;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         DataRetriever.getPastTripsList(getContext(), this);
     }
 
