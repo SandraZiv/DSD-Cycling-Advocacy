@@ -6,48 +6,49 @@ export class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            latitude: 44.48773940093815,
-            longitude: 9.489166159182783,
-            map: undefined
+            // for testing
+            // latitude: 44.48773940093815,
+            // longitude: 9.489166159182783,
+            latitude: 45.815,
+            longitude: 15.982,
+            roadQualityHeatMap: undefined
         }
     };
 
     componentDidMount() {
         document.title = "Bumpy - Home";
-        let topRightLat = this._map.leafletElement.getBounds()._northEast.lat
-        let topRightLon = this._map.leafletElement.getBounds()._northEast.lng
-        let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat
-        let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng
-        console.log(topRightLat)
 
         navigator.geolocation.getCurrentPosition(
             position => this.setState({
-                // latitude: position.coords.latitude,
-                // longitude: position.coords.longitude
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
             })
         );
-        fetch('/v1/mapData/getRoadQualitySegments?bottomLeftLat='+bottomLeftLat+'&bottomLeftLon='+bottomLeftLon+'&topRightLat='+topRightLat+'&topRightLon='+topRightLon+'')
+
+        this.fetchRoadQualityData()
+    }
+
+    onViewportChanged = () => {
+        this.fetchRoadQualityData()
+      };
+
+    fetchRoadQualityData() {
+        let topRightLat = this._map.leafletElement.getBounds()._northEast.lat;
+        let topRightLon = this._map.leafletElement.getBounds()._northEast.lng;
+        let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat;
+        let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng;
+
+        fetch(`/v1/mapData/getRoadQualitySegments?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
             .then(response => response.json())
             .then(data => {
-                this.setState({map: data});
+                this.setState({roadQualityHeatMap: data});
             })
     }
-    onViewportChanged = (viewport: Viewport) => {
-        let topRightLat = this._map.leafletElement.getBounds()._northEast.lat
-        let topRightLon = this._map.leafletElement.getBounds()._northEast.lng
-        let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat
-        let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng
-        fetch('/v1/mapData/getRoadQualitySegments?bottomLeftLat='+bottomLeftLat+'&bottomLeftLon='+bottomLeftLon+'&topRightLat='+topRightLat+'&topRightLon='+topRightLon+'')
-            .then(response => response.json())
-            .then(data => {
-            this.setState({map: data});
-            })
-      }
 
     render() {
         let roadQualityPolys = "";
-        if (this.state.map !== undefined) {
-            let mapData = this.state.map;
+        if (this.state.roadQualityHeatMap !== undefined) {
+            let mapData = this.state.roadQualityHeatMap;
 
             let i = 0; // used for keys
             roadQualityPolys = mapData.map(track => {
