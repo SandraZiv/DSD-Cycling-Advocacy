@@ -109,14 +109,19 @@
         android:layout_margin="@dimen/margin_small"
         app:unit="%"/>
 
-    <Button
-        android:id="@+id/button_trip_end"
-        style="@style/StandardButton"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
+        android:layout_weight="1"
         android:layout_margin="@dimen/margin_large"
-        android:text="@string/end_trip" />
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/button_trip_end"
+            style="@style/StandardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/end_trip" />
+    </LinearLayout>
 
 </LinearLayout>
