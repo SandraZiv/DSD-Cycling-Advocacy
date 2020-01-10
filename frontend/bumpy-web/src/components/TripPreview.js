@@ -45,6 +45,16 @@ export class TripPreview extends Component {
         }
     }
 
+     exportData() {
+         if (this.state.trip !== undefined) {
+             let url = `/v1/trip/getMotionFile?tripUUID=${this.state.trip.tripUUID}`
+             fetch(url)
+             .then(response => {
+                window.open(url, '_blank');
+             })
+         }
+      }
+
     render() {
         let card = '';
         if (this.state.trip !== undefined) {
@@ -75,7 +85,7 @@ export class TripPreview extends Component {
 
             card = <Card className="text-left">
                 <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
-                    <Button className="btn float-right">Export</Button>
+                    <Button className="btn float-right" onClick={() => this.exportData()}>Export</Button>
                     <Button className="btn bg-danger text-white border-white float-right" onClick={() => this.deleteTrip()}><i className="fa fa-trash"/></Button>
                 </Card.Header>
                 <Card.Body>

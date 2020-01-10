@@ -12,11 +12,12 @@ export const UserUUID = (props) => {
 
     const validateUUID = (uuid) => {
         try {
-            fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuid}`)
+            let uuidUpperCase = uuid.toUpperCase();
+            fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuidUpperCase}`)
                 .then(response => {
                     if (response.ok) {
-                        setShortUuid(uuid);
-                        props.history.push(`/user/${uuid}`);
+                        setShortUuid(uuidUpperCase);
+                        props.history.push(`/user/${uuidUpperCase}`);
                     } else {
                         alert("UUID not valid")
                     }
@@ -56,7 +57,7 @@ export const UserUUID = (props) => {
                     {formLabelText}
                 </Form.Label>
                 <Form.Control className="enterUUID col-md-2 mx-auto"
-                              placeholder="Y4IKLY"
+                              placeholder="Identifier"
                               type="text" name="deviceUUID" required/>
                 <Form.Text className="text-muted padding-bottom-standard">
                     User Identifier can be found in mobile app under Settings.

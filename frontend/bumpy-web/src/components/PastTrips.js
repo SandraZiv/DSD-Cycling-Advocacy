@@ -92,10 +92,6 @@ export const PastTrips = (props) => {
 
         }];
 
-        const defaultSorted = [{
-            dataField: 'startTS',
-            order: 'desc'
-        }];
 
         tripTable =
             <BootstrapTable
@@ -103,8 +99,7 @@ export const PastTrips = (props) => {
                 keyField="tripUUID"
                 data={trips}
                 columns={columns}
-                defaultSorted={defaultSorted}
-                noDataIndication="There is no data for given User"
+                noDataIndication="No performed trips yet"
                 pagination={paginationFactory()}
             />
     }
