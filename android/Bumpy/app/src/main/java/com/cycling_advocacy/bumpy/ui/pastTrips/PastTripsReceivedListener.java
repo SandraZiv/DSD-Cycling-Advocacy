@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PastTripsReceivedListener {
     void onReceived(List<PastTrip> pastTrips);
+    void onError();
 }

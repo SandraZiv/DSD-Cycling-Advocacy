@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,19 +28,26 @@ public class PastTripsFragment extends Fragment
 
     private PendingTripsViewModel pendingTripsViewModel;
     private PastTripAdapter adapter;
+    private RecyclerView rv;
+    private TextView emptyView;
+    private ProgressBar pbLoading;
+
+    private List<PastTrip> pastTrips;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         pendingTripsViewModel = ViewModelProviders.of(this).get(PendingTripsViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_past_trips, container, false);
-        RecyclerView rv = root.findViewById(R.id.rv_past_trips);
+        rv = root.findViewById(R.id.rv_past_trips);
+        emptyView = root.findViewById(R.id.tv_empty_view);
+        pbLoading = root.findViewById(R.id.pb_loading);
 
         adapter = new PastTripAdapter(getContext(), this);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
         pendingTripsViewModel.pendingTripsLiveData.observe(this, pendingTrips -> {
-            List<PastTrip> pastTrips = new ArrayList<>();
+            pastTrips = new ArrayList<>();
             for (PendingTrip pendingTrip : pendingTrips) {
                 PastTrip pastTrip = new PastTrip(pendingTrip);
                 if (pastTrip.getTripUUID() != null) {
@@ -55,12 +64,44 @@ public class PastTripsFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
+        startLoading();
         DataRetriever.getPastTripsList(getContext(), this);
+    }
+
+    private void startLoading() {
+        rv.setVisibility(View.GONE);
+        emptyView.setVisibility(View.GONE);
+        pbLoading.setVisibility(View.VISIBLE);
+    }
+
+
+    private void stopLoading(){
+        pbLoading.setVisibility(View.GONE);
+        rv.setVisibility(View.VISIBLE);
+    }
+
+    private void manageEmptyView() {
+        if (adapter.getItemCount()==0) {
+            rv.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else {
+            rv.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onReceived(List<PastTrip> pastTrips) {
         adapter.addApiData(pastTrips);
+        stopLoading();
+        manageEmptyView();
+    }
+
+    @Override
+    public void onError() {
+        stopLoading();
+        manageEmptyView();
     }
 
     @Override
