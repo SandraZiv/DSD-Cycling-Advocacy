@@ -22,12 +22,18 @@ import com.cycling_advocacy.bumpy.BuildConfig;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripInProgressActivity;
 import com.cycling_advocacy.bumpy.entities.Trip;
+import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.DataSender;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.DelayedMapListener;
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
@@ -138,10 +144,31 @@ public class MapFragment extends Fragment implements RoadQualityListener {
         }
         mapController.setCenter(startPoint);
         map.invalidate();
+
+        map.addMapListener(new DelayedMapListener(new MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                getRoadQualitySegments();
+                return true;
+            }
+
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                getRoadQualitySegments();
+                return true;
+            }
+        }));
     }
 
     private void getRoadQualitySegments() {
-        // TODO: Using the map, determine necessary geo points and make API call
+        BoundingBox boundingBox = map.getBoundingBox();
+
+        double latNorth = boundingBox.getLatNorth();
+        double latSouth = boundingBox.getLatSouth();
+        double lonEast = boundingBox.getLonEast();
+        double lonWest = boundingBox.getLonWest();
+
+        DataRetriever.getRoadQualitySegments(ctx, this, latSouth, lonWest, latNorth, lonEast);
     }
 
     @Override
