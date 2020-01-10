@@ -111,5 +111,6 @@ def listen(queue_name, rabbitmq_host):
         log += 'Queue verbosity is set to: %s' % const.VERBOSITY
         logging.info(log)
         channel.start_consuming()
-    except AMQPConnectionError:
+    except AMQPConnectionError as ex:
         logging.info('Could not run the queue. Maybe there is not RabbitMQ server running on this machine?')
+        logging.info(ex)

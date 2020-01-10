@@ -47,13 +47,29 @@ def retrieve_data(trip_uuid):
     Retrieve gnss data and motion data from mongodb
     """
 
-    gnss_data = pd.DataFrame(mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data'])
+    logging.info('Start looking for trip data...')
+    gnss_data = None
+    dead = False
+    time_to_live = const.TIME_TO_LIVE
+    while gnss_data is None:
+        if time_to_live == 0:
+            dead = True
+            break
+        try:
+            gnss_data = pd.DataFrame(mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data'])
+        except Exception as ex:
+            logging.info('Still looking...')
+            pass
+        time.sleep(const.DELAY)
+        time_to_live -= 1
+    if dead:
+        return None, None, "Data retrieval failed due to timeout"
 
     # ping for motion data until found
     logging.info('Start looking for motion file...')
     motion_file = None
-    time_to_live = 30
     dead = False
+    time_to_live = const.TIME_TO_LIVE
     while motion_file is None:
         if time_to_live == 0:
             dead = True
@@ -61,8 +77,10 @@ def retrieve_data(trip_uuid):
         try:
             motion_file = mongodb_interface.get_file_by_filename(trip_uuid)
         except Exception as ex:
-            time.sleep(5)
-            time_to_live -= 1
+            logging.info('Still looking...')
+            pass
+        time.sleep(const.DELAY)
+        time_to_live -= 1
     if dead:
         return None, None, "Data retrieval failed due to timeout"
     else:
