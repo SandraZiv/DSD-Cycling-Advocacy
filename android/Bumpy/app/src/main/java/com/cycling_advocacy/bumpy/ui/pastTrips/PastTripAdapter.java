@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +27,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
     private List<PastTrip> dbData = new ArrayList<>();
     private Context context;
     private PastTripsUploadListener listener;
-    private ProgressBar progressBar;
-    private RecyclerView rv;
 
     PastTripAdapter(Context context, PastTripsUploadListener listener) {
         this.context = context;
@@ -45,8 +42,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             title = view.findViewById(R.id.tv_past_trips_title);
             detail = view.findViewById(R.id.tv_past_trips_details);
             imageUpload = view.findViewById(R.id.image_uploaded);
-            rv = view.findViewById(R.id.rv_past_trips);
-            progressBar = view.findViewById(R.id.pb_progressbar);
         }
     }
 
@@ -90,9 +85,6 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
                 Toast.makeText(context, R.string.upload_trip_for_stats, Toast.LENGTH_LONG).show();
             }
         });
-
-        progressBar.setVisibility(View.GONE);
-        rv.setVisibility(View.VISIBLE);
     }
 
     @Override
