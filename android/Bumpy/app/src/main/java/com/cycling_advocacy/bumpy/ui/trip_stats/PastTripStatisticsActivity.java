@@ -121,19 +121,19 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
             tvTripStatDuration.setText(duration);
         }
 
-        tvTripStatDistance.setText(String.valueOf(statistics.getDistance()));
+        tvTripStatDistance.setText(GeneralUtil.formatDecimal(statistics.getDistance()));
 
         if (statistics.getSpeed() != null) {
             PastTripDetailedResponse.Speed speed = statistics.getSpeed();
-            tvTripStatMaxSpeed.setText(String.valueOf(speed.getMaxSpeed()));
-            tvTripStatAvgSpeed.setText(String.valueOf(speed.getAvgSpeed()));
+            tvTripStatMaxSpeed.setText(GeneralUtil.formatDecimal(speed.getMaxSpeed()));
+            tvTripStatAvgSpeed.setText(GeneralUtil.formatDecimal(speed.getAvgSpeed()));
         }
 
         if (statistics.getElevation() != null) {
             PastTripDetailedResponse.Elevation elevation = statistics.getElevation();
-            tvTripStatMinElevation.setText(String.valueOf(elevation.getMinElevation()));
-            tvTripStatMaxElevation.setText(String.valueOf(elevation.getMaxElevation()));
-            tvTripStatAvgElevation.setText(String.valueOf(elevation.getAvgElevation()));
+            tvTripStatMinElevation.setText(GeneralUtil.formatNoDecimal(elevation.getMinElevation()));
+            tvTripStatMaxElevation.setText(GeneralUtil.formatNoDecimal(elevation.getMaxElevation()));
+            tvTripStatAvgElevation.setText(GeneralUtil.formatNoDecimal(elevation.getAvgElevation()));
         }
 
         // TODO set vibration + bumps!!!
@@ -177,15 +177,15 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         routeMap = findViewById(R.id.mv_route_map);
 
         routeMap.getTileProvider().clearTileCache();
-        Configuration.getInstance().setCacheMapTileCount((short)16);
-        Configuration.getInstance().setCacheMapTileOvershoot((short)16);
-        Configuration.getInstance().setTileDownloadThreads((short)16);
+        Configuration.getInstance().setCacheMapTileCount((short) 16);
+        Configuration.getInstance().setCacheMapTileOvershoot((short) 16);
+        Configuration.getInstance().setTileDownloadThreads((short) 16);
         routeMap.setTileSource(TileSourceFactory.MAPNIK);
 
         routeMap.setMultiTouchControls(true);
 
         IMapController mapController = routeMap.getController();
-        mapController.setZoom(12.0);
+        mapController.setZoom(15.4);
         routeMap.invalidate();
     }
 

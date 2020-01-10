@@ -45,6 +45,13 @@ public class GeneralUtil {
                 (duration % 60));
     }
 
+    public static String formatDecimal(double data) {
+        return String.format(Locale.getDefault(), "%.2f", data);
+    }
+
+    public static String formatNoDecimal(double data) {
+        return String.format(Locale.getDefault(), "%.0f", data);
+    }
 
     public static String generateUUID() {
         return UUID.randomUUID().toString();
