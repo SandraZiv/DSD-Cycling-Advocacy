@@ -57,6 +57,7 @@ def retrieve_data(trip_uuid):
             break
         try:
             gnss_data = pd.DataFrame(mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data'])
+            logging.info(gnss_data.__str__())
         except Exception as ex:
             logging.info('Still looking...')
             pass

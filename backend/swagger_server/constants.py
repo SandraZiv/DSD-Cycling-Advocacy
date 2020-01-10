@@ -13,5 +13,5 @@ MAP_UPDATE_JOB = 'map-update-job'
 TEST_JOB = 'test-job'
 
 VERBOSITY = True
-TIME_TO_LIVE = 30
+TIME_TO_LIVE = 180
 DELAY = 1   # seconds
