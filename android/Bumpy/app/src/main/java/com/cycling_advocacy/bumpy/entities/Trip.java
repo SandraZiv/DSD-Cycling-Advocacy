@@ -13,7 +13,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 public class Trip implements Serializable {
 
@@ -73,7 +72,7 @@ public class Trip implements Serializable {
     }
 
     public String getFormattedDistance(){
-        return String.format(Locale.getDefault(), "%.2f", distance);
+        return GeneralUtil.formatDecimal(distance);
     }
 
     public Date getStartTs() {
@@ -95,8 +94,8 @@ public class Trip implements Serializable {
         return "Trip{" +
                 "deviceUUID=" + deviceUUID + '\n' +
                 ", tripUUID=" + tripUUID + '\n' +
-                ", startTs=" + GeneralUtil.formatTimestamp(startTs) + '\n' +
-                ", stopTs=" + GeneralUtil.formatTimestamp(stopTs) + '\n' +
+                ", startTs=" + GeneralUtil.formatTimestampISO(startTs) + '\n' +
+                ", stopTs=" + GeneralUtil.formatTimestampISO(stopTs) + '\n' +
                 ", distance=" + distance + '\n' +
                 "{ " + gnssDataString + "}" +
                 '}';

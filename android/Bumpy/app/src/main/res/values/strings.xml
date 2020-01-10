@@ -85,16 +85,16 @@
 
     <!-- Trip statistics -->
     <string name="title_past_trip_statistics">Trip statistics</string>
-    <string name="trip_stat_uuid">Trip UUID: %1s</string>
-    <string name="trip_stat_start_ts">Start time: %1s</string>
-    <string name="trip_stat_end_ts">End time: %1s</string>
-    <string name="trip_stat_duration">Duration: %1$s</string>
-    <string name="trip_stat_distance">Distance: %1$.2f km</string>
-    <string name="trip_stat_max_speed">Max speed: %1$.2f km/h</string>
-    <string name="trip_stat_avg_speed">Avg speed: %1$.2f km</string>h/string>
-    <string name="trip_stat_min_elevation">Min elevation: %1$.2f m</string>
-    <string name="trip_stat_max_elevation">Max elevation: %1$.2f m</string>
-    <string name="trip_stat_avg_elevation">Avg elevation: %1$.2f m</string>
+    <string name="trip_stat_duration">Duration</string>
+    <string name="trip_stat_km">km</string>
+    <string name="trip_stat_max_speed">Max speed</string>
+    <string name="trip_stat_avg_speed">Avg speed</string>
+    <string name="trip_stat_min_elevation">Min elevation</string>
+    <string name="trip_stat_max_elevation">Max elevation</string>
+    <string name="trip_stat_avg_elevation">Avg elevation</string>
+    <string name="trip_stat_avg_vibration">Avg vibration</string>
+    <string name="trip_stat_max_vibration">Max vibration</string>
+    <string name="trip_stat_bumps_detected">Bumps detected</string>
     <string name="trip_stat_gnss_null_message">Cannot raw route: GNSS data not obtained</string>
     <string name="trip_stat_gnss_empty_message">Cannot raw route: GNSS data has no points</string>
     <string name="delete">Delete</string>

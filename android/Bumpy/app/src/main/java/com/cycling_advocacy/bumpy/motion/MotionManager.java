@@ -143,7 +143,7 @@ public class MotionManager implements SensorEventListener {
     private String motionToString() {
         StringBuilder motionDataString = new StringBuilder();
         motionDataString
-                .append(GeneralUtil.formatTimestamp(GeneralUtil.toDate(System.currentTimeMillis())))
+                .append(GeneralUtil.formatTimestampISO(GeneralUtil.toDate(System.currentTimeMillis())))
                 .append(",");
 
         if (hasAccelerometer) {

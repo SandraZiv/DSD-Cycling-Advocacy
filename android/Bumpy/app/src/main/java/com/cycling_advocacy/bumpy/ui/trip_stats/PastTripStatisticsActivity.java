@@ -38,7 +38,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     public static final String EXTRA_TRIP_UUID = "tripUUID";
 
     private TextView tvTripStatStartTS;
-    private TextView tvTripStatEndTS;
     private TextView tvTripStatDuration;
     private TextView tvTripStatDistance;
     private TextView tvTripStatMaxSpeed;
@@ -46,6 +45,9 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     private TextView tvTripStatMinElevation;
     private TextView tvTripStatMaxElevation;
     private TextView tvTripStatAvgElevation;
+    private TextView tvTripAvgVibration;
+    private TextView tvTripMaxVibration;
+    private TextView tvTripBumpsDetection;
 
     private MapView routeMap;
 
@@ -67,15 +69,17 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        tvTripStatStartTS = findViewById(R.id.tv_trip_stat_start_ts);
-        tvTripStatEndTS = findViewById(R.id.tv_trip_stat_end_ts);
-        tvTripStatDuration = findViewById(R.id.tv_trip_stat_duration);
-        tvTripStatDistance = findViewById(R.id.tv_trip_stat_distance);
-        tvTripStatMaxSpeed = findViewById(R.id.tv_trip_stat_max_speed);
-        tvTripStatAvgSpeed = findViewById(R.id.tv_trip_stat_avg_speed);
-        tvTripStatMinElevation = findViewById(R.id.tv_trip_stat_min_elevation);
-        tvTripStatMaxElevation = findViewById(R.id.tv_trip_stat_max_elevation);
-        tvTripStatAvgElevation = findViewById(R.id.tv_trip_stat_avg_elevation);
+        tvTripStatStartTS = findViewById(R.id.tv_start);
+        tvTripStatDuration = findViewById(R.id.tv_duration_value);
+        tvTripStatDistance = findViewById(R.id.tv_distance_value);
+        tvTripStatMaxSpeed = findViewById(R.id.tv_max_speed_value);
+        tvTripStatAvgSpeed = findViewById(R.id.tv_avg_speed_value);
+        tvTripStatMinElevation = findViewById(R.id.tv_min_elevation_value);
+        tvTripStatMaxElevation = findViewById(R.id.tv_max_elevation_value);
+        tvTripStatAvgElevation = findViewById(R.id.tv_avg_elevation_value);
+        tvTripAvgVibration = findViewById(R.id.tv_avg_vibration_value);
+        tvTripMaxVibration = findViewById(R.id.tv_max_vibration_value);
+        tvTripBumpsDetection = findViewById(R.id.tv_bumps_detected_value);
 
         DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
 
@@ -109,32 +113,30 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         this.tripStartTime = statistics.getStartTS();
 
         if (statistics.getStartTS() != null) {
-            tvTripStatStartTS.setText(getString(R.string.trip_stat_start_ts, statistics.getStartTS().toString()));
-        }
-
-        if (statistics.getEndTS() != null) {
-            tvTripStatEndTS.setText(getString(R.string.trip_stat_end_ts, statistics.getEndTS().toString()));
+            tvTripStatStartTS.setText(GeneralUtil.formatTimestampLocale(statistics.getStartTS()));
         }
 
         if (statistics.getStartTS() != null && statistics.getEndTS() != null) {
             String duration = GeneralUtil.formatDuration(statistics.getStartTS(), statistics.getEndTS());
-            tvTripStatDuration.setText(getString(R.string.trip_stat_duration, duration));
+            tvTripStatDuration.setText(duration);
         }
 
-        tvTripStatDistance.setText(getString(R.string.trip_stat_distance, statistics.getDistance()));
+        tvTripStatDistance.setText(GeneralUtil.formatDecimal(statistics.getDistance()));
 
         if (statistics.getSpeed() != null) {
             PastTripDetailedResponse.Speed speed = statistics.getSpeed();
-            tvTripStatMaxSpeed.setText(getString(R.string.trip_stat_max_speed, speed.getMaxSpeed()));
-            tvTripStatAvgSpeed.setText(getString(R.string.trip_stat_avg_speed, speed.getAvgSpeed()));
+            tvTripStatMaxSpeed.setText(GeneralUtil.formatDecimal(speed.getMaxSpeed()));
+            tvTripStatAvgSpeed.setText(GeneralUtil.formatDecimal(speed.getAvgSpeed()));
         }
 
         if (statistics.getElevation() != null) {
             PastTripDetailedResponse.Elevation elevation = statistics.getElevation();
-            tvTripStatMinElevation.setText(getString(R.string.trip_stat_min_elevation, elevation.getMinElevation()));
-            tvTripStatMaxElevation.setText(getString(R.string.trip_stat_max_elevation, elevation.getMaxElevation()));
-            tvTripStatAvgElevation.setText(getString(R.string.trip_stat_avg_elevation, elevation.getAvgElevation()));
+            tvTripStatMinElevation.setText(GeneralUtil.formatNoDecimal(elevation.getMinElevation()));
+            tvTripStatMaxElevation.setText(GeneralUtil.formatNoDecimal(elevation.getMaxElevation()));
+            tvTripStatAvgElevation.setText(GeneralUtil.formatNoDecimal(elevation.getAvgElevation()));
         }
+
+        // TODO set vibration + bumps!!!
 
         if (statistics.getGnssData() != null) {
             if (!statistics.getGnssData().isEmpty()) {
@@ -175,15 +177,15 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         routeMap = findViewById(R.id.mv_route_map);
 
         routeMap.getTileProvider().clearTileCache();
-        Configuration.getInstance().setCacheMapTileCount((short)16);
-        Configuration.getInstance().setCacheMapTileOvershoot((short)16);
-        Configuration.getInstance().setTileDownloadThreads((short)16);
+        Configuration.getInstance().setCacheMapTileCount((short) 16);
+        Configuration.getInstance().setCacheMapTileOvershoot((short) 16);
+        Configuration.getInstance().setTileDownloadThreads((short) 16);
         routeMap.setTileSource(TileSourceFactory.MAPNIK);
 
         routeMap.setMultiTouchControls(true);
 
         IMapController mapController = routeMap.getController();
-        mapController.setZoom(17.5);
+        mapController.setZoom(15.4);
         routeMap.invalidate();
     }
 

@@ -44,7 +44,6 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Set;
 
 public class TripInProgressActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -82,7 +81,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         setSupportActionBar(toolbar);
 
         tvDistance = findViewById(R.id.tv_distance);
-        tvDistance.setText(String.format(Locale.getDefault(), "%.2f", 0.00));
+        tvDistance.setText(GeneralUtil.formatDecimal(0.00));
         chronometerDuration = findViewById(R.id.chronometer_duration);
 
         speedometer = findViewById(R.id.gauge_view_speed);
