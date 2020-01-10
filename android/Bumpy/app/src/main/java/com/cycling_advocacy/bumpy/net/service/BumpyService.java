@@ -10,6 +10,7 @@ import java.util.List;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -33,6 +34,9 @@ public interface BumpyService {
 
     @GET("trip/getTripByTripUUID")
     Single<Response<PastTripDetailedResponse>> getTripByTripUUID(@Query("tripUUID") String tripUUID);
+
+    @GET("trip/getMotionFile")
+    Single<ResponseBody> getMotionFile(@Query("tripUUID") String tripUUID);
 
     @DELETE("trip/deleteTrip")
     Single<Response<ApiResponse>> deleteTrip(@Query("tripUUID") String tripUUID);

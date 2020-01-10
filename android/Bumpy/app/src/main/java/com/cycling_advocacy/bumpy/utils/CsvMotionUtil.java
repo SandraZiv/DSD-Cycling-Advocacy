@@ -1,12 +1,17 @@
 package com.cycling_advocacy.bumpy.utils;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Environment;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
+
+import okhttp3.ResponseBody;
 
 public class CsvMotionUtil {
 
@@ -61,6 +66,51 @@ public class CsvMotionUtil {
 
     public static boolean deleteMotionDataFile(Context context, String tripUUID) {
         File motionDataFile = getMotionDataFile(context, tripUUID);
-        return motionDataFile.delete();
+        if (motionDataFile != null) {
+            return motionDataFile.delete();
+        }
+        return false;
+    }
+
+    public static boolean writeResponseBodyToFile(ResponseBody body, Context context, Uri uri) {
+        try {
+            InputStream inputStream = null;
+            OutputStream outputStream = null;
+
+            try {
+                byte[] fileReader = new byte[4096];
+
+                inputStream = body.byteStream();
+                outputStream = context.getContentResolver().openOutputStream(uri);
+
+                while (true) {
+                    int read = inputStream.read(fileReader);
+
+                    if (read == -1) {
+                        break;
+                    }
+
+                    outputStream.write(fileReader, 0, read);
+                }
+
+                outputStream.flush();
+
+                return true;
+
+            } catch (IOException e) {
+                return false;
+
+            } finally {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+
+                if (outputStream != null) {
+                    outputStream.close();
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
     }
 }
