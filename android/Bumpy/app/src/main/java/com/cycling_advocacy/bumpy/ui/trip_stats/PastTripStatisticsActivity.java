@@ -38,7 +38,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     public static final String EXTRA_TRIP_UUID = "tripUUID";
 
     private TextView tvTripStatStartTS;
-    private TextView tvTripStatEndTS;
     private TextView tvTripStatDuration;
     private TextView tvTripStatDistance;
     private TextView tvTripStatMaxSpeed;
@@ -67,15 +66,14 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
 
         toolbar.setNavigationOnClickListener(v -> finish());
 
-        tvTripStatStartTS = findViewById(R.id.tv_trip_stat_start_ts);
-        tvTripStatEndTS = findViewById(R.id.tv_trip_stat_end_ts);
-        tvTripStatDuration = findViewById(R.id.tv_trip_stat_duration);
-        tvTripStatDistance = findViewById(R.id.tv_trip_stat_distance);
-        tvTripStatMaxSpeed = findViewById(R.id.tv_trip_stat_max_speed);
-        tvTripStatAvgSpeed = findViewById(R.id.tv_trip_stat_avg_speed);
-        tvTripStatMinElevation = findViewById(R.id.tv_trip_stat_min_elevation);
-        tvTripStatMaxElevation = findViewById(R.id.tv_trip_stat_max_elevation);
-        tvTripStatAvgElevation = findViewById(R.id.tv_trip_stat_avg_elevation);
+        tvTripStatStartTS = findViewById(R.id.tv_start);
+        tvTripStatDuration = findViewById(R.id.tv_duration_value);
+        tvTripStatDistance = findViewById(R.id.tv_distance_value);
+        tvTripStatMaxSpeed = findViewById(R.id.tv_max_speed_value);
+        tvTripStatAvgSpeed = findViewById(R.id.tv_avg_speed_value);
+        tvTripStatMinElevation = findViewById(R.id.tv_min_elevation_value);
+        tvTripStatMaxElevation = findViewById(R.id.tv_max_elevation_value);
+        tvTripStatAvgElevation = findViewById(R.id.tv_avg_elevation_value);
 
         DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
 
@@ -109,31 +107,27 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         this.tripStartTime = statistics.getStartTS();
 
         if (statistics.getStartTS() != null) {
-            tvTripStatStartTS.setText(getString(R.string.trip_stat_start_ts, statistics.getStartTS().toString()));
-        }
-
-        if (statistics.getEndTS() != null) {
-            tvTripStatEndTS.setText(getString(R.string.trip_stat_end_ts, statistics.getEndTS().toString()));
+            tvTripStatStartTS.setText(statistics.getStartTS().toString());
         }
 
         if (statistics.getStartTS() != null && statistics.getEndTS() != null) {
             String duration = GeneralUtil.formatDuration(statistics.getStartTS(), statistics.getEndTS());
-            tvTripStatDuration.setText(getString(R.string.trip_stat_duration, duration));
+            tvTripStatDuration.setText(duration);
         }
 
-        tvTripStatDistance.setText(getString(R.string.trip_stat_distance, statistics.getDistance()));
+        tvTripStatDistance.setText(String.valueOf(statistics.getDistance()));
 
         if (statistics.getSpeed() != null) {
             PastTripDetailedResponse.Speed speed = statistics.getSpeed();
-            tvTripStatMaxSpeed.setText(getString(R.string.trip_stat_max_speed, speed.getMaxSpeed()));
-            tvTripStatAvgSpeed.setText(getString(R.string.trip_stat_avg_speed, speed.getAvgSpeed()));
+            tvTripStatMaxSpeed.setText(String.valueOf(speed.getMaxSpeed()));
+            tvTripStatAvgSpeed.setText(String.valueOf(speed.getAvgSpeed()));
         }
 
         if (statistics.getElevation() != null) {
             PastTripDetailedResponse.Elevation elevation = statistics.getElevation();
-            tvTripStatMinElevation.setText(getString(R.string.trip_stat_min_elevation, elevation.getMinElevation()));
-            tvTripStatMaxElevation.setText(getString(R.string.trip_stat_max_elevation, elevation.getMaxElevation()));
-            tvTripStatAvgElevation.setText(getString(R.string.trip_stat_avg_elevation, elevation.getAvgElevation()));
+            tvTripStatMinElevation.setText(String.valueOf(elevation.getMinElevation()));
+            tvTripStatMaxElevation.setText(String.valueOf(elevation.getMaxElevation()));
+            tvTripStatAvgElevation.setText(String.valueOf(elevation.getAvgElevation()));
         }
 
         if (statistics.getGnssData() != null) {

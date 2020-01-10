@@ -9,80 +9,17 @@
 
     <include layout="@layout/toolbar" />
 
-    <LinearLayout
+    <org.osmdroid.views.MapView
+        android:id="@+id/mv_route_map"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_standard"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_marginTop="@dimen/margin_standard"/>
 
-        <TextView
-            android:id="@+id/tv_trip_stat_start_ts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_start_ts" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_end_ts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_end_ts" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_duration" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_distance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_distance" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_max_speed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_max_speed" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_avg_speed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_avg_speed" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_min_elevation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_min_elevation" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_max_elevation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_max_elevation" />
-
-        <TextView
-            android:id="@+id/tv_trip_stat_avg_elevation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/cyclingAdvocacyYellow"
-            tools:text="@string/trip_stat_avg_elevation" />
-
-        <org.osmdroid.views.MapView
-            android:id="@+id/mv_route_map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
+    <include layout="@layout/past_trip_statistics_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="@dimen/margin_double"/>
 
 </LinearLayout>
