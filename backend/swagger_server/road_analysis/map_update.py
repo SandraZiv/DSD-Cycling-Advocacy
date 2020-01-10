@@ -4,11 +4,15 @@ from shapely.geometry import Point, LineString
 from collections import defaultdict
 import operator
 
+
 def find_tracks_in_working_area(line):
     buffer = 20
-    min_lat, min_lon = transformer_3857_to_4326.transform(min(y for y in line.xy[1]) - buffer, min(x for x in line.xy[0]) - buffer)
-    max_lat, max_lon = transformer_3857_to_4326.transform(max(y for y in line.xy[1]) + buffer, max(x for x in line.xy[0]) + buffer)
-    geometry = {'$geometry': {'type': 'Polygon', 'coordinates': [[[min_lon, min_lat], [min_lon, max_lat], [max_lon, max_lat], [max_lon, min_lat], [min_lon, min_lat]]]}}
+    min_lat, min_lon = transformer_3857_to_4326.transform(min(y for y in line.xy[1]) - buffer,
+                                                          min(x for x in line.xy[0]) - buffer)
+    max_lat, max_lon = transformer_3857_to_4326.transform(max(y for y in line.xy[1]) + buffer,
+                                                          max(x for x in line.xy[0]) + buffer)
+    geometry = {'$geometry': {'type': 'Polygon', 'coordinates': [
+        [[min_lon, min_lat], [min_lon, max_lat], [max_lon, max_lat], [max_lon, min_lat], [min_lon, min_lat]]]}}
     return list(mongodb_interface.get_tracks_by_intersect_geometry(geometry))
 
 
@@ -75,28 +79,34 @@ def run_map_update(new_track):
         centerlines = merge(line, new_line)
         global_centerlines.extend(centerlines)
         if len(centerlines) > 0:
-            new_paths, new_quality_scores_paths = merge_overlapping(line, track['quality_scores'], centerlines, global_centerlines_quality_scores, centerlines_counter)
+            new_paths, new_quality_scores_paths = merge_overlapping(line, track['quality_scores'], centerlines,
+                                                                    global_centerlines_quality_scores,
+                                                                    centerlines_counter)
             # delete previous track
             delete_tracks.append(track['_id'])
             # insert new tracks
             for i, new_path in enumerate(new_paths):
-                track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(new_path)}, 'quality_scores': new_quality_scores_paths[i]}
+                track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(new_path)},
+                         'quality_scores': new_quality_scores_paths[i]}
                 insert_new_tracks.append(track)
     # delete tracks all together to speed up the process
     mongodb_interface.delete_tracks(delete_tracks)
-    new_paths, new_quality_scores_paths = merge_overlapping(new_line, new_track['quality_scores'], global_centerlines, global_centerlines_quality_scores, centerlines_counter)
+    new_paths, new_quality_scores_paths = merge_overlapping(new_line, new_track['quality_scores'], global_centerlines,
+                                                            global_centerlines_quality_scores, centerlines_counter)
     # insert new tracks
     for i, new_path in enumerate(new_paths):
-        track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(new_path)}, 'quality_scores': new_quality_scores_paths[i]}
+        track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(new_path)},
+                 'quality_scores': new_quality_scores_paths[i]}
         insert_new_tracks.append(track)
 
     def avg(arr):
         return sum(arr) / len(arr)
+
     for i, centerline in enumerate(global_centerlines):
         quality_scores = [avg(global_centerlines_quality_scores[i].get(j, [0])) for j in range(len(centerline.coords))]
-        track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(centerline)}, 'quality_scores': quality_scores}
+        track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(centerline)},
+                 'quality_scores': quality_scores}
         insert_new_tracks.append(track)
     # insert them all together to speed up the process
     if len(insert_new_tracks) > 0:
         mongodb_interface.insert_new_tracks(insert_new_tracks)
-

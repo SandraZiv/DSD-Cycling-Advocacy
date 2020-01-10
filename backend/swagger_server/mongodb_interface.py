@@ -27,7 +27,19 @@ def get_trips_by_device_uuid(device_uuid):
     return main_db.trips.find({'device_uuid': device_uuid}).sort([('end_ts', pymongo.DESCENDING)])
 
 
-def update_trip_statistics(trip_uuid, new_values):
+def update_trip_statistics(trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
+    new_values = {
+          "elevation": {
+              "minElevation": min_elevation,
+              "maxElevation": max_elevation,
+              "avgElevation": avg_elevation
+          },
+          "distance": distance,
+          "speed": {
+              "maxSpeed": max_speed,
+              "avgSpeed": avg_speed
+          }
+      }
     main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_values}, upsert=False)
     return
 
@@ -105,7 +117,7 @@ def get_file_by_filename(filename):
 
 def insert_new_file(filename, data, **kwargs):
     # strip removes double-double quotes from filename. should be handled in the frontend, but doesn't matter
-    fs.put(data, filename=filename.strip('"'), **kwargs)
+    fs.put(data, filename=filename.replace("\""", """), **kwargs)
 
 
 def delete_file_by_filename(filename, **kwargs):

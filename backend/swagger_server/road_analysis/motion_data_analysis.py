@@ -12,8 +12,7 @@ import time
 
 def haversine(lon1, lat1, lon2, lat2):
     """
-    Calculate the great circle distance between two points
-    on the earth (specified in decimal degrees)
+    Calculate the great circle distance between two points on the earth (specified in decimal degrees)
     """
     # convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
@@ -26,55 +25,10 @@ def haversine(lon1, lat1, lon2, lat2):
     return c * r
 
 
-# retrieve trip and motion file and return them as a list and a pandas dataframe respectively
-def retrieve_data(trip_uuid):
-    trip_data = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
-    motion_file = None
-    while motion_file is None:
-        try:
-            motion_file = mongodb_interface.get_file_by_filename(trip_uuid)
-        except Exception as ex:
-            time.sleep(1)
-    trip_df = pd.DataFrame(trip_data['gnss_data'])
-    log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
-    log += 'First timestamp of trip is: %s\n' % trip_df.head(1)['time_ts']
-    log += 'Last timestamp of trip is: %s\n' % trip_df.tail(1)['time_ts']
-    # motion dataframe creation
-    # TODO find a way to read grid file into dataframe without a temporary file
-    # this is horrible!
-    with open("tmp.csv", "w") as fp:
-        fp.write("ts,acc_x,acc_y,acc_z,mag_x,mag_y,mag_z,gyr_x,gyr_y,gyr_z\n")
-        fp.write(list(motion_file)[0].decode('utf-8'))
-    with open("tmp.csv", "r") as fp:
-        motion_df = pd.read_csv(fp)
-    os.remove("tmp.csv")
-    # TODO DEBUG ONLY there's an error in last row of the motion file I'm using, so I remove it
-    # motion_df = motion_df.head(-1)
-    motion_df['ts'] = motion_df['ts'].apply(datetime.datetime.strptime, args=['%Y-%m-%dT%H:%M:%SZ'])
-    log += 'First timestamp of motion data is: %s\n' % motion_df.iloc[0]['ts']
-    log += 'Last timestamp of motion data is: %s\n' % motion_df.iloc[-1]['ts']
-
-    return trip_df, motion_df, log
-
-
-# for each point into trip data, take the chunk of motion data marked with the same timestamp
-# describe() shows main statistics available for each chunk
-def calculate_road_quality(trip_uuid, trip_df, motion_df):
-    log = 'MOTION DATA SUMMARY DESCRIPTION\n'
-    log += str(motion_df.describe())
-    for index, ts in enumerate(trip_df['time_ts']):
-        chunk = motion_df.loc[motion_df['ts'] == ts]
-        # calculate road quality
-        # this is just a dummy example
-        road_quality = chunk['acc_z'].mean()
-        mongodb_interface.update_trip_road_quality(trip_uuid, index, road_quality)
-    max_road_quality = 0
-    min_road_quality = 0
-    avg_road_quality = 0
-    return max_road_quality, min_road_quality, avg_road_quality, log
-
-
 def plot(trip_df, motion_df):
+    """
+    Plot motion data signals
+    """
     plt.plot(motion_df['acc_x'], label='acc_x')
     plt.plot(motion_df['acc_y'], label='acc_y')
     plt.plot(motion_df['acc_z'], label='acc_z')
@@ -88,53 +42,102 @@ def plot(trip_df, motion_df):
     plt.show()
 
 
-def calculate_trip_statistics(trip_df):
-    distance = haversine(trip_df.head(1)['lon'], trip_df.head(1)['lat'],
-                         trip_df.tail(1)['lon'], trip_df.tail(1)['lat'])
-    max_speed = trip_df['speed'].max()
-    avg_speed = trip_df['speed'].mean()
-    max_elevation = trip_df['ele'].max()
-    min_elevation = trip_df['ele'].min()
-    avg_elevation = trip_df['ele'].mean()
-    return distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation
+def retrieve_data(trip_uuid):
+    """
+    Retrieve gnss data and motion data from mongodb
+    """
+
+    gnss_data = pd.DataFrame(mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data'])
+
+    # ping for motion data until found
+    logging.info('Start looking for motion file...')
+    motion_file = None
+    time_to_live = 30
+    dead = False
+    while motion_file is None:
+        if time_to_live == 0:
+            dead = True
+            break
+        try:
+            motion_file = mongodb_interface.get_file_by_filename(trip_uuid)
+        except Exception as ex:
+            time.sleep(5)
+            time_to_live -= 1
+    if dead:
+        return None, None, "Data retrieval failed due to timeout"
+    else:
+        log = 'MOTION DATA ANALYSIS OF TRIP %s\n' % trip_uuid
+        log += 'First timestamp of trip is: %s\n' % gnss_data.head(1)['time_ts']
+        log += 'Last timestamp of trip is: %s\n' % gnss_data.tail(1)['time_ts']
+
+    # motion dataframe creation
+    # TODO find a way to read grid file into dataframe without a temporary file
+    # this is horrible!
+    with open("tmp.csv", "w") as fp:
+        fp.write(list(motion_file)[0].decode('utf-8'))
+    with open("tmp.csv", "r") as fp:
+        motion_df = pd.read_csv(fp)
+    os.remove("tmp.csv")
+    # TODO DEBUG ONLY there's an error in last row of the motion file I'm using, so I remove it
+    # motion_df = motion_df.head(-1)
+    motion_df['timestamp'] = motion_df['timestamp'].apply(datetime.datetime.strptime, args=['%Y-%m-%dT%H:%M:%SZ'])
+    log += 'First timestamp of motion data is: %s\n' % motion_df.iloc[0]['timestamp']
+    log += 'Last timestamp of motion data is: %s\n' % motion_df.iloc[-1]['timestamp']
+
+    return gnss_data, motion_df, log
+
+
+# for each point into trip data, take the chunk of motion data marked with the same timestamp
+# describe() shows main statistics available for each chunk
+def calculate_road_quality(trip_uuid, gnss_data, motion_df):
+    log = 'MOTION DATA SUMMARY DESCRIPTION\n'
+    log += str(motion_df.describe())
+    road_quality = []
+    # time_ts is used as a primary key over gnss
+    for index, ts in enumerate(gnss_data['time_ts']):
+        if index == len(gnss_data['time_ts']) - 1:
+            # road quality is calculated per each gnss point except the last one
+            break
+        # chunk is the subset of motion data registered in the time interval of current gnss
+        chunk = motion_df.loc[motion_df['timestamp'] == ts]
+        # calculate road quality
+        # this is just a dummy example
+        # timestamp,accelerometerX,accelerometerY,accelerometerZ,magnetometerX,
+        # magnetometerY,magnetometerZ,gyroscopeX,gyroscopeY,gyroscopeZ
+        chunk_road_quality = chunk['accelerometerZ'].mean()
+        mongodb_interface.update_trip_road_quality(trip_uuid, index, chunk_road_quality)
+        road_quality.append(chunk_road_quality)
+    coords = [[gp['lon'], gp['lat']] for gp in mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data']]
+    track = {'loc': {'type': 'LineString', 'coordinates': coords},
+             'quality_scores': road_quality}
+    return track, log
+
+
+def calculate_trip_statistics(trip_uuid, gnss_data):
+    distance = haversine(gnss_data.head(1)['lon'], gnss_data.head(1)['lat'],
+                         gnss_data.tail(1)['lon'], gnss_data.tail(1)['lat'])
+    max_speed = gnss_data['speed'].max()
+    avg_speed = gnss_data['speed'].mean()
+    max_elevation = gnss_data['ele'].max()
+    min_elevation = gnss_data['ele'].min()
+    avg_elevation = gnss_data['ele'].mean()
+    mongodb_interface.update_trip_statistics(trip_uuid,
+                                             distance, max_speed, avg_speed, max_elevation, min_elevation,
+                                             avg_elevation)
+    log = 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
+          % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
+    return log
 
 
 def run_motion_data_analysis(trip_uuid):
-    trip = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
-    coords = [[gp['lon'], gp['lat']] for gp in trip['gnss_data']]
-    fake_const_quality_score = random.random()
-    return {'loc': {'type': 'LineString', 'coordinates': coords}, 'quality_scores': [fake_const_quality_score] * (len(coords) - 1)}
-
-    # TODO: make the output of this valid for next step
-    trip_df, motion_df, log = retrieve_data(trip_uuid)
-    plot(trip_df, motion_df)
-    distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation = calculate_trip_statistics(trip_df)
-    db.update_trip_statistics(trip_uuid,
-                              {
-                                  "elevation": {
-                                      "minElevation": min_elevation,
-                                      "maxElevation": max_elevation,
-                                      "avgElevation": avg_elevation
-                                  },
-                                  "distance": distance,
-                                  "speed": {
-                                      "maxSpeed": max_speed,
-                                      "avgSpeed": avg_speed
-                                  }
-                              })
-    log += 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
-           % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
-    max_road_quality, min_road_quality, avg_road_quality, motion_log = \
-        calculate_road_quality(trip_uuid, trip_df, motion_df)
-    log += motion_log
+    # trip and motion data
+    gnss_data, motion_df, db_log = retrieve_data(trip_uuid)
+    # trip statistics
+    stats_log = calculate_trip_statistics(trip_uuid, gnss_data)
+    # road quality
+    track, motion_log = calculate_road_quality(trip_uuid, gnss_data, motion_df)
     if const.VERBOSITY:
-        logging.info(log)
+        logging.info(db_log + stats_log + motion_log)
     else:
-        logging.info('Motion data analysis of trip %s completed\n'
-                     'Statistics: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n'
-                     'Max road quality: %s, min road quality: %s, avg road quality: %s'
-                     % (trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation,
-                        max_road_quality, min_road_quality, avg_road_quality))
-    # example data output:
-    # {}
-    return None
+        logging.info('Motion data analysis of trip %s completed' % trip_uuid)
+    return track

@@ -6,7 +6,7 @@ from threading import Thread
 from pika.exceptions import AMQPConnectionError
 from swagger_server.road_analysis import motion_data_analysis, map_update
 from swagger_server import constants as const
-import time
+# import time
 
 """
 --- JOB PUBLISHING ---
@@ -34,15 +34,28 @@ class Job:
 
     # serialize the info and publish the message on the provided queue
     # TODO exceptions in case publishing fails
-    def enqueue_job(self, queue):
+    def enqueue_job(self, queue, rabbitmq_host):
         job = json.dumps({'id': self.job_id, 'type': self.job_type, 'data': self.job_data})
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=const.RABBITMQ_HOST))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
         channel = connection.channel()
         channel.queue_declare(queue=queue)
         channel.basic_publish(exchange='', routing_key=queue, body=job)
         logging.info('New job published on queue: %s' % job)
         connection.close()
         return
+
+
+class Listener:
+
+    def __init__(self, queue_name, rabbitmq_host):
+        self.queue_name = queue_name
+        self.rabbitmq_host = rabbitmq_host
+
+    def start_consuming(self):
+        # instantiate a listener for trip road_analysis queue on a new thread and test it
+        new_thread = Thread(target=listen, args=(self.queue_name, self.rabbitmq_host))
+        new_thread.start()
+        return new_thread
 
 
 # job getters are fundamental because jobs are json messages, and they need to be parsed
@@ -59,21 +72,12 @@ def get_job_id(serialized_job):
     return json.loads(serialized_job)['id']
 
 
-# create a new listener inside a thread, listening to provided queue
-def start_consuming(queue_name):
-    # instantiate a listener for trip road_analysis queue on a new thread and test it
-    new_thread = Thread(target=listen, args=(queue_name,))
-    new_thread.start()
-    return new_thread
-
-
 # callback function for TRIP_ANALYSIS_JOB
 def execute_trip_analysis_job(trip_uuid):
     logging.info('Executing trip analysis job for %s' % trip_uuid)
-    # TODO development only
-    # to be sure that there is time to complete the uploading. should be done in another way
-    time.sleep(3)
+    # run motion data analysis
     track = motion_data_analysis.run_motion_data_analysis(trip_uuid)
+    # update the global map with new data
     map_update.run_map_update(track)
     return
 
@@ -84,10 +88,10 @@ def execute_test_job(rubbish):
 
 
 # TODO exception to handle disconnection
-def listen(queue_name):
+def listen(queue_name, rabbitmq_host):
     try:
         log = 'Started a new thread for queue listener\n'
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=const.RABBITMQ_HOST))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host))
         channel = connection.channel()
         channel.queue_declare(queue=queue_name)
 
@@ -109,4 +113,3 @@ def listen(queue_name):
         channel.start_consuming()
     except AMQPConnectionError:
         logging.info('Could not run the queue. Maybe there is not RabbitMQ server running on this machine?')
-
