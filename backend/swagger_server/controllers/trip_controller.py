@@ -124,7 +124,7 @@ def upload_motion_file():  # noqa: E501
     if file and '.' in file.filename and file.filename.rsplit('.', 1)[1].lower() == 'csv':
         mongodb_interface.insert_new_file(trip_uuid.replace("\"", ""), file)
         # enqueueing a trip road_analysis job
-        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=trip_uuid).enqueue_job(
+        queue.Job(job_type=const.TRIP_ANALYSIS_JOB, job_data=trip_uuid.replace("\"", "")).enqueue_job(
             const.TRIP_ANALYSIS_QUEUE, const.RABBITMQ_HOST)
         return ApiResponse(code=200, message='ok'), 200
     return ApiResponse(code=400, message='wrong file selected'), 400
