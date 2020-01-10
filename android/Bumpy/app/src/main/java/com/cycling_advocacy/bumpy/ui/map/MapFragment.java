@@ -3,10 +3,12 @@ package com.cycling_advocacy.bumpy.ui.map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +38,11 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,6 +55,14 @@ public class MapFragment extends Fragment implements RoadQualityListener {
 
     private MapView map;
     private MyLocationNewOverlay mLocationOverlay;
+
+    // TODO: This will most likely need changing -- coordinate with web frontend
+    private double BAD_ROAD_QUALITY_THRESHOLD = 4.0;
+    private double GOOD_ROAD_QUALITY_THRESHOLD = 6.0;
+
+    private double MAP_ZOOM_DISPLAY_THRESHOLD = 15.5;
+
+    private List<Polyline> currentlyDisplayedSegments = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -148,13 +160,25 @@ public class MapFragment extends Fragment implements RoadQualityListener {
         map.addMapListener(new DelayedMapListener(new MapListener() {
             @Override
             public boolean onScroll(ScrollEvent event) {
-                getRoadQualitySegments();
+                if (map.getZoomLevelDouble() >= MAP_ZOOM_DISPLAY_THRESHOLD) {
+                    getRoadQualitySegments();
+                } else {
+                    Log.d("Road quality map", "Map too zoomed out to display road quality");
+                }
                 return true;
             }
 
             @Override
             public boolean onZoom(ZoomEvent event) {
-                getRoadQualitySegments();
+                if (event.getZoomLevel() >= MAP_ZOOM_DISPLAY_THRESHOLD) {
+                    getRoadQualitySegments();
+                } else {
+                    // If map is too zoomed out we won't display road quality
+                    Log.d("Road quality map", "Map too zoomed out to display road quality");
+                    // This Toast seems to not trigger sometimes
+                    Toast.makeText(ctx, R.string.zoom_in_message, Toast.LENGTH_SHORT).show();
+                    clearPolylines();
+                }
                 return true;
             }
         }));
@@ -173,6 +197,52 @@ public class MapFragment extends Fragment implements RoadQualityListener {
 
     @Override
     public void onRoadQualitySegmentsObtained(List<RoadQualitySegmentsResponse> roadQualityData) {
-        // TODO: Draw road quality segments
+        // Clear existing Polylines, drawing over each old segments could lead to too many lines and affect performance (?)
+        clearPolylines();
+
+        if (!roadQualityData.isEmpty()) {
+            Log.d("Road quality map", "Drawing road quality");
+            for (RoadQualitySegmentsResponse path : roadQualityData) {
+                List<RoadQualitySegmentsResponse.Segment> segments = path.getSegments();
+                for (RoadQualitySegmentsResponse.Segment segment : segments) {
+                    double quality = segment.getQualityScore();
+                    int color;
+                    if (quality < BAD_ROAD_QUALITY_THRESHOLD) {
+                        color = Color.RED;
+                    } else if (quality > GOOD_ROAD_QUALITY_THRESHOLD) {
+                        color = Color.GREEN;
+                    } else {
+                        color = Color.YELLOW;
+                    }
+
+                    GeoPoint startPoint = new GeoPoint(segment.getStartLat(), segment.getStartLon());
+                    GeoPoint endPoint = new GeoPoint(segment.getEndLat(), segment.getEndLon());
+                    List<GeoPoint> segmentPoints = new ArrayList<>();
+                    segmentPoints.add(startPoint);
+                    segmentPoints.add(endPoint);
+
+                    Polyline segmentLine = new Polyline();
+                    segmentLine.setPoints(segmentPoints);
+                    segmentLine.getOutlinePaint().setColor(color);
+                    // TODO: Check if looks good with given MAP_ZOOM_DISPLAY_THRESHOLD
+                    segmentLine.getOutlinePaint().setStrokeWidth(20);
+
+                    map.getOverlayManager().add(segmentLine);
+                    currentlyDisplayedSegments.add(segmentLine);
+                }
+            }
+
+            map.invalidate();
+        }
+    }
+
+    private void clearPolylines() {
+        // TODO: Improve
+        // I don't like keeping all displayed segments in a list since there could be a lot of them
+        // I tried using map.getOverlayManager.clear() but that seems to remove the 'current position' guy as well and I wasn't able to re-draw him
+        Log.d("Road quality map", "Removing currently displayed segments");
+        for (Polyline segment : currentlyDisplayedSegments) {
+            map.getOverlayManager().remove(segment);
+        }
     }
 }
