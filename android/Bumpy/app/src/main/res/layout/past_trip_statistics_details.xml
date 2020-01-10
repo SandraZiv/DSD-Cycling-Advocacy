@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_extra_mini"
         android:text="@string/trip_stat_km"
         android:textColor="@color/cyclingAdvocacyYellowHint"
         app:layout_constraintBottom_toBottomOf="@+id/tv_distance_value"

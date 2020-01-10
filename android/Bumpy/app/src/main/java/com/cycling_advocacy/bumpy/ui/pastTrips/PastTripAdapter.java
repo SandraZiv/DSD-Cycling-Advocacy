@@ -57,8 +57,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         PastTrip pastTrip = pastTripList.get(position);
 
-        String startTime = pastTrip.getStartTime().toString();
-        holder.title.setText(startTime);
+        holder.title.setText(GeneralUtil.formatTimestampLocale(pastTrip.getStartTime()));
 
         String duration = GeneralUtil.formatDuration(pastTrip.getStartTime(), pastTrip.getEndTime());
         holder.detail.setText(

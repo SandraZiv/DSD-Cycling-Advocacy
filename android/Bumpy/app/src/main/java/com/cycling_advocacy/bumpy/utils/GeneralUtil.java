@@ -6,6 +6,7 @@ import android.content.Context;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -13,11 +14,16 @@ import java.util.UUID;
 
 public class GeneralUtil {
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final String DATE_FORMAT_ISO = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     private static final String DURATION_FORMAT = "%d:%02d:%02d";
 
-    public static String formatTimestamp(Date timestamp) {
-        return new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(timestamp);
+    public static String formatTimestampISO(Date timestamp) {
+        return new SimpleDateFormat(DATE_FORMAT_ISO, Locale.getDefault()).format(timestamp);
+    }
+
+    public static String formatTimestampLocale(Date timestamp){
+        DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault());
+        return df.format(timestamp);
     }
 
     public static Date toDate(long timestamp) {

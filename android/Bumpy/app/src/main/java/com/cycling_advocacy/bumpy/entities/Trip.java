@@ -95,8 +95,8 @@ public class Trip implements Serializable {
         return "Trip{" +
                 "deviceUUID=" + deviceUUID + '\n' +
                 ", tripUUID=" + tripUUID + '\n' +
-                ", startTs=" + GeneralUtil.formatTimestamp(startTs) + '\n' +
-                ", stopTs=" + GeneralUtil.formatTimestamp(stopTs) + '\n' +
+                ", startTs=" + GeneralUtil.formatTimestampISO(startTs) + '\n' +
+                ", stopTs=" + GeneralUtil.formatTimestampISO(stopTs) + '\n' +
                 ", distance=" + distance + '\n' +
                 "{ " + gnssDataString + "}" +
                 '}';

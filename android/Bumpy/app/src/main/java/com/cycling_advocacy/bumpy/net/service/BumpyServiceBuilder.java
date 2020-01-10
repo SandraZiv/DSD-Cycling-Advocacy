@@ -17,7 +17,7 @@ public class BumpyServiceBuilder {
 
     private static Retrofit createRetrofit() {
         Gson gson = new GsonBuilder()
-                .setDateFormat(GeneralUtil.DATE_FORMAT)
+                .setDateFormat(GeneralUtil.DATE_FORMAT_ISO)
                 .create();
 
         Retrofit.Builder retrofitBuiler = new Retrofit.Builder()

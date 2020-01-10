@@ -45,6 +45,9 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     private TextView tvTripStatMinElevation;
     private TextView tvTripStatMaxElevation;
     private TextView tvTripStatAvgElevation;
+    private TextView tvTripAvgVibration;
+    private TextView tvTripMaxVibration;
+    private TextView tvTripBumpsDetection;
 
     private MapView routeMap;
 
@@ -74,6 +77,9 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         tvTripStatMinElevation = findViewById(R.id.tv_min_elevation_value);
         tvTripStatMaxElevation = findViewById(R.id.tv_max_elevation_value);
         tvTripStatAvgElevation = findViewById(R.id.tv_avg_elevation_value);
+        tvTripAvgVibration = findViewById(R.id.tv_avg_vibration_value);
+        tvTripMaxVibration = findViewById(R.id.tv_max_vibration_value);
+        tvTripBumpsDetection = findViewById(R.id.tv_bumps_detected_value);
 
         DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
 
@@ -107,7 +113,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         this.tripStartTime = statistics.getStartTS();
 
         if (statistics.getStartTS() != null) {
-            tvTripStatStartTS.setText(statistics.getStartTS().toString());
+            tvTripStatStartTS.setText(GeneralUtil.formatTimestampLocale(statistics.getStartTS()));
         }
 
         if (statistics.getStartTS() != null && statistics.getEndTS() != null) {
@@ -129,6 +135,8 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
             tvTripStatMaxElevation.setText(String.valueOf(elevation.getMaxElevation()));
             tvTripStatAvgElevation.setText(String.valueOf(elevation.getAvgElevation()));
         }
+
+        // TODO set vibration + bumps!!!
 
         if (statistics.getGnssData() != null) {
             if (!statistics.getGnssData().isEmpty()) {

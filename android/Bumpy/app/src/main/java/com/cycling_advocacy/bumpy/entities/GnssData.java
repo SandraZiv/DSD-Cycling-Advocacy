@@ -49,7 +49,7 @@ public class GnssData implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return GeneralUtil.formatTimestamp(timestamp) + "\n" +
+        return GeneralUtil.formatTimestampISO(timestamp) + "\n" +
                 "Lat: " + lat + "\n" +
                 "Lon: " + lon + "\n" +
                 "Ele: " + ele + "\n" +
