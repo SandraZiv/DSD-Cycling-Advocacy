@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripInProgressActivity;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -31,8 +33,10 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.List;
 
-public class MapFragment extends Fragment {
+
+public class MapFragment extends Fragment implements RoadQualityListener {
 
     private static final int REQ_CODE_TRIP_UPLOAD = 21021;
     public static final String EXTRA_TRIP = "EXTRA_TRIP";
@@ -134,5 +138,14 @@ public class MapFragment extends Fragment {
         }
         mapController.setCenter(startPoint);
         map.invalidate();
+    }
+
+    private void getRoadQualitySegments() {
+        // TODO: Using the map, determine necessary geo points and make API call
+    }
+
+    @Override
+    public void onRoadQualitySegmentsObtained(List<RoadQualitySegmentsResponse> roadQualityData) {
+        // TODO: Draw road quality segments
     }
 }

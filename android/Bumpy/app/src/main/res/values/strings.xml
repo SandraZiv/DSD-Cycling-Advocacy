@@ -22,6 +22,7 @@
     <string name="submit">SUBMIT</string>
     <string name="grant_location">Grant location permission to start trip</string>
     <string name="content_description_current_location">Current Location</string>
+    <string name="get_road_quality_not_successful">Unable to obtain road quality</string>
 
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>

@@ -42,8 +42,8 @@ public interface BumpyService {
     Single<Response<String>> getShortDeviceUUID(@Query("deviceUUID") String deviceUUID);
 
     @GET("mapData/getRoadQualitySegments")
-    Single<List<RoadQualitySegmentsResponse>> getRoadQualitySegments(@Query("bottomLeftLat") double bottomLeftLat,
-                                                                     @Query("bottomLeftLon") double bottomLeftLon,
-                                                                     @Query("topRightLat") double topRightLat,
-                                                                     @Query("topRightLon") double topRightLon);
+    Single<Response<List<RoadQualitySegmentsResponse>>> getRoadQualitySegments(@Query("bottomLeftLat") double bottomLeftLat,
+                                                                               @Query("bottomLeftLon") double bottomLeftLon,
+                                                                               @Query("topRightLat") double topRightLat,
+                                                                               @Query("topRightLon") double topRightLon);
 }
