@@ -112,8 +112,10 @@ public class DataSender {
         RequestBody motionDataFileRB = RequestBody.create(MediaType.parse("text/csv"), motionDataFile);
         MultipartBody.Part motionDataFilePart = MultipartBody.Part.createFormData("file", motionDataFile.getName(), motionDataFileRB);
 
+        RequestBody plainTripUUID = RequestBody.create(MediaType.parse("text/plain"), trip.getTripUUID());
+
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
-        bumpyService.uploadMotionData(trip.getTripUUID(), motionDataFilePart)
+        bumpyService.uploadMotionData(plainTripUUID, motionDataFilePart)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<Response<ApiResponse>>() {
