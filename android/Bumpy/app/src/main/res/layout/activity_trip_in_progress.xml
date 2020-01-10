@@ -28,7 +28,8 @@
         android:layout_weight="4"
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_small"
-        app:maxSpeed="50"/>
+        app:maxSpeed="50"
+        app:unit="@string/speed_unit"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
