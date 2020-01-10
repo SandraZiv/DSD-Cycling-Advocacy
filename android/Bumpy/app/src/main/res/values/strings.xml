@@ -92,6 +92,9 @@
     <string name="trip_stat_min_elevation">Min elevation</string>
     <string name="trip_stat_max_elevation">Max elevation</string>
     <string name="trip_stat_avg_elevation">Avg elevation</string>
+    <string name="trip_stat_avg_vibration">Avg vibration</string>
+    <string name="trip_stat_max_vibration">Max vibration</string>
+    <string name="trip_stat_bumps_detected">Bumps detected</string>
     <string name="trip_stat_gnss_null_message">Cannot raw route: GNSS data not obtained</string>
     <string name="trip_stat_gnss_empty_message">Cannot raw route: GNSS data has no points</string>
     <string name="delete">Delete</string>

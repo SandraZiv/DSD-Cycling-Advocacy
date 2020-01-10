@@ -177,7 +177,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         routeMap.setMultiTouchControls(true);
 
         IMapController mapController = routeMap.getController();
-        mapController.setZoom(17.5);
+        mapController.setZoom(12.0);
         routeMap.invalidate();
     }
 
