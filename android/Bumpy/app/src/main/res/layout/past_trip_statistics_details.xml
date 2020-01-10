@@ -25,16 +25,18 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_extra_mini"
         android:layout_marginRight="@dimen/margin_extra_mini"
-        android:textSize="@dimen/text_size_large"
+        android:textSize="@dimen/text_size_big"
         android:textColor="@color/cyclingAdvocacyYellow"
         app:layout_constraintEnd_toStartOf="@id/tv_distance_label"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="25.97" />
+        tools:text="45.97" />
 
     <TextView
         android:id="@+id/tv_distance_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
         android:text="@string/trip_stat_km"
         android:textColor="@color/cyclingAdvocacyYellowHint"
         app:layout_constraintBottom_toBottomOf="@+id/tv_distance_value"
@@ -51,7 +53,7 @@
         android:text="@string/duration"
         android:textColor="@color/cyclingAdvocacyYellowHint"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tv_start" />
 
     <TextView
         android:id="@+id/tv_duration_value"
@@ -68,12 +70,11 @@
         android:id="@+id/tv_avg_speed_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:text="@string/trip_stat_avg_speed"
         android:textColor="@color/cyclingAdvocacyYellowHint"
         app:layout_constraintEnd_toStartOf="@+id/tv_max_speed_label"
         app:layout_constraintStart_toEndOf="@+id/tv_duration_label"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/tv_duration_label" />
 
     <TextView
         android:id="@+id/tv_avg_speed_value"
@@ -90,13 +91,12 @@
         android:id="@+id/tv_max_speed_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         android:textColor="@color/cyclingAdvocacyYellowHint"
         android:text="@string/trip_stat_max_speed"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/tv_duration_label" />
 
     <TextView
         android:id="@+id/tv_max_speed_value"
