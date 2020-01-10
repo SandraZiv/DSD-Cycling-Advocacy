@@ -56,7 +56,6 @@ public class PastTripsFragment extends Fragment
             }
 
             adapter.addDbData(pastTrips);
-            manageEmptyView();
         });
 
         return root;
@@ -95,6 +94,12 @@ public class PastTripsFragment extends Fragment
     @Override
     public void onReceived(List<PastTrip> pastTrips) {
         adapter.addApiData(pastTrips);
+        stopLoading();
+        manageEmptyView();
+    }
+
+    @Override
+    public void onError() {
         stopLoading();
         manageEmptyView();
     }

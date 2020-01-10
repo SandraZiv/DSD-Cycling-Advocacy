@@ -42,6 +42,7 @@ public class DataRetriever {
                         Log.d("Get trips for device", "Get trips for device response: " + response.message());
                         if (!response.isSuccessful()) {
                             Toast.makeText(context, R.string.get_trips_not_successful, Toast.LENGTH_SHORT).show();
+                            listener.onError();
                         } else {
                             List<PastTripGeneralResponse> pastTripsGeneral = response.body();
                             List<PastTrip> pastTrips = new ArrayList<>();
@@ -56,6 +57,8 @@ public class DataRetriever {
                     @Override
                     public void onError(Throwable e) {
                         Log.d("Get trips for device", "Failed to retrieve trips for device: "  + e.getMessage());
+                        Toast.makeText(context, R.string.get_trips_not_successful, Toast.LENGTH_SHORT).show();
+                        listener.onError();
                     }
                 });
     }
@@ -76,6 +79,7 @@ public class DataRetriever {
                         Log.d("Get trip statistics", "Get trip statistics response: " + response.message());
                         if (!response.isSuccessful()) {
                             Toast.makeText(context, R.string.get_trip_stats_not_successful, Toast.LENGTH_SHORT).show();
+                            listener.onError();
                         } else {
                             listener.onStatisticDone(response.body());
                         }
@@ -84,6 +88,8 @@ public class DataRetriever {
                     @Override
                     public void onError(Throwable e) {
                         Log.d("Get trip statistics", "Failed to retrieve trip statistics: "  + e.getMessage());
+                        Toast.makeText(context, R.string.get_trip_stats_not_successful, Toast.LENGTH_SHORT).show();
+                        listener.onError();
                     }
                 });
     }

@@ -4,4 +4,5 @@ import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 
 public interface StatisticListener {
     void onStatisticDone(PastTripDetailedResponse statistics);
+    void onError();
 }

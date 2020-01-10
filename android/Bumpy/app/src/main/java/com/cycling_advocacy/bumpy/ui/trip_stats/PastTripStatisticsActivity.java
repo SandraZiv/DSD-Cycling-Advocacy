@@ -160,6 +160,11 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         }
     }
 
+    @Override
+    public void onError() {
+        finish();
+    }
+
     private void initRouteMap() {
         Context ctx = this;
 

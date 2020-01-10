@@ -34,7 +34,7 @@
     <string name="duration">DURATION</string>
   
     <!--Data retriever-->
-    <string name="get_trips_not_successful">Get past trips for this device unsuccessful!</string>
+    <string name="get_trips_not_successful">Get past trips unsuccessful!</string>
     <string name="get_trip_stats_not_successful">Get past trip statistics unsuccessful!</string>
 
     <!-- Trip upload -->
