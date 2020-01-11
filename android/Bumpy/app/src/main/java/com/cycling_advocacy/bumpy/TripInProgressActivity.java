@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -235,6 +236,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
-        vibrationMeter.speedTo(vibrationPercentage);
+        vibrationMeter.speedTo(vibrationPercentage, 0);
     }
 }
