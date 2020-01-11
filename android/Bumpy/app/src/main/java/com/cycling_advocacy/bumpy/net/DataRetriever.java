@@ -5,6 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
+import com.cycling_advocacy.bumpy.ui.map.RoadQualityListener;
 import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsReceivedListener;
 import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
@@ -90,6 +92,40 @@ public class DataRetriever {
                         Log.d("Get trip statistics", "Failed to retrieve trip statistics: "  + e.getMessage());
                         Toast.makeText(context, R.string.get_trip_stats_not_successful, Toast.LENGTH_SHORT).show();
                         listener.onError();
+                    }
+                });
+    }
+
+    public static void getRoadQualitySegments(final Context context,
+                                              final RoadQualityListener listener,
+                                              double bottomLeftLat,
+                                              double bottomLeftLon,
+                                              double topRightLat,
+                                              double topRightLon) {
+        BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
+        bumpyService.getRoadQualitySegments(bottomLeftLat, bottomLeftLon, topRightLat, topRightLon)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<List<RoadQualitySegmentsResponse>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onSuccess(Response<List<RoadQualitySegmentsResponse>> response) {
+                        Log.d("Get road quality", "Get road quality response: " + response.message());
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(context, R.string.get_road_quality_not_successful, Toast.LENGTH_SHORT).show();
+                        } else {
+                            listener.onRoadQualitySegmentsObtained(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Get road quality", "Failed to retrieve road quality: "  + e.getMessage());
+                        Toast.makeText(context, R.string.get_road_quality_not_successful, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

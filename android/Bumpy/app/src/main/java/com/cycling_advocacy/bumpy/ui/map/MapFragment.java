@@ -3,6 +3,7 @@ package com.cycling_advocacy.bumpy.ui.map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,18 +23,29 @@ import com.cycling_advocacy.bumpy.BuildConfig;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.TripInProgressActivity;
 import com.cycling_advocacy.bumpy.entities.Trip;
+import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
+import org.osmdroid.events.DelayedMapListener;
+import org.osmdroid.events.MapListener;
+import org.osmdroid.events.ScrollEvent;
+import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class MapFragment extends Fragment {
+
+public class MapFragment extends Fragment implements RoadQualityListener {
 
     private static final int REQ_CODE_TRIP_UPLOAD = 21021;
     public static final String EXTRA_TRIP = "EXTRA_TRIP";
@@ -41,6 +54,14 @@ public class MapFragment extends Fragment {
 
     private MapView map;
     private MyLocationNewOverlay mLocationOverlay;
+
+    // TODO: This will most likely need changing -- coordinate with web frontend
+    private static final double BAD_ROAD_QUALITY_THRESHOLD = 4.0;
+    private static final double GOOD_ROAD_QUALITY_THRESHOLD = 6.0;
+
+    private static final double MAP_ZOOM_DISPLAY_THRESHOLD = 15.5;
+
+    private List<Polyline> currentlyDisplayedSegments = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -134,5 +155,90 @@ public class MapFragment extends Fragment {
         }
         mapController.setCenter(startPoint);
         map.invalidate();
+
+        map.addMapListener(new DelayedMapListener(new MapListener() {
+            @Override
+            public boolean onScroll(ScrollEvent event) {
+                if (map.getZoomLevelDouble() >= MAP_ZOOM_DISPLAY_THRESHOLD) {
+                    getRoadQualitySegments();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onZoom(ZoomEvent event) {
+                if (event.getZoomLevel() >= MAP_ZOOM_DISPLAY_THRESHOLD) {
+                    getRoadQualitySegments();
+                } else {
+                    // If map is too zoomed out we won't display road quality
+                    // This Toast seems to not trigger sometimes
+                    Toast.makeText(ctx, R.string.zoom_in_message, Toast.LENGTH_SHORT).show();
+                    clearPolylines();
+                }
+                return true;
+            }
+        }));
+    }
+
+    private void getRoadQualitySegments() {
+        BoundingBox boundingBox = map.getBoundingBox();
+
+        double latNorth = boundingBox.getLatNorth();
+        double latSouth = boundingBox.getLatSouth();
+        double lonEast = boundingBox.getLonEast();
+        double lonWest = boundingBox.getLonWest();
+
+        DataRetriever.getRoadQualitySegments(ctx, this, latSouth, lonWest, latNorth, lonEast);
+    }
+
+    @Override
+    public void onRoadQualitySegmentsObtained(List<RoadQualitySegmentsResponse> roadQualityData) {
+        // Clear existing Polylines, drawing over each old segments could lead to too many lines and affect performance (?)
+        clearPolylines();
+
+        if (!roadQualityData.isEmpty()) {
+            for (RoadQualitySegmentsResponse path : roadQualityData) {
+                List<RoadQualitySegmentsResponse.Segment> segments = path.getSegments();
+                for (RoadQualitySegmentsResponse.Segment segment : segments) {
+                    Double quality = segment.getQualityScore();
+
+                    int color;
+                    if (quality == null) {
+                        color = Color.BLACK;
+                    } else if (quality < BAD_ROAD_QUALITY_THRESHOLD) {
+                        color = Color.RED;
+                    } else if (quality > GOOD_ROAD_QUALITY_THRESHOLD) {
+                        color = Color.GREEN;
+                    } else {
+                        color = Color.YELLOW;
+                    }
+
+                    GeoPoint startPoint = new GeoPoint(segment.getStartLat(), segment.getStartLon());
+                    GeoPoint endPoint = new GeoPoint(segment.getEndLat(), segment.getEndLon());
+                    List<GeoPoint> segmentPoints = new ArrayList<>();
+                    segmentPoints.add(startPoint);
+                    segmentPoints.add(endPoint);
+
+                    Polyline segmentLine = new Polyline();
+                    segmentLine.setPoints(segmentPoints);
+                    segmentLine.getOutlinePaint().setColor(color);
+                    segmentLine.getOutlinePaint().setStrokeWidth(20);
+
+                    map.getOverlayManager().add(segmentLine);
+                    currentlyDisplayedSegments.add(segmentLine);
+                }
+            }
+
+            map.invalidate();
+        }
+    }
+
+    private void clearPolylines() {
+        // TODO: Improve
+        // I don't like keeping all displayed segments in a list since there could be a lot of them
+        // I tried using map.getOverlayManager.clear() but that seems to remove the 'current position' guy as well and I wasn't able to re-draw him
+        for (Polyline segment : currentlyDisplayedSegments) {
+            map.getOverlayManager().remove(segment);
+        }
     }
 }

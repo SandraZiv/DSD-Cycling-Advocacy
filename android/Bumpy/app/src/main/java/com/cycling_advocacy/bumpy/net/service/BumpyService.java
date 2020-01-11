@@ -4,6 +4,7 @@ import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.model.ApiResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
+import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 
 import java.util.List;
 
@@ -39,4 +40,10 @@ public interface BumpyService {
 
     @GET("device/getShortDeviceUUID")
     Single<Response<String>> getShortDeviceUUID(@Query("deviceUUID") String deviceUUID);
+
+    @GET("mapData/getRoadQualitySegments")
+    Single<Response<List<RoadQualitySegmentsResponse>>> getRoadQualitySegments(@Query("bottomLeftLat") double bottomLeftLat,
+                                                                               @Query("bottomLeftLon") double bottomLeftLon,
+                                                                               @Query("topRightLat") double topRightLat,
+                                                                               @Query("topRightLon") double topRightLon);
 }
