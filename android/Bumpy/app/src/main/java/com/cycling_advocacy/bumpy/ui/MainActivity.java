@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy;
+package com.cycling_advocacy.bumpy.ui;
 
 import android.Manifest;
 import android.os.Build;
@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.utils.PermissionUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

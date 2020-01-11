@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy.ui.pastTrips;
+package com.cycling_advocacy.bumpy.ui.past_trips;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.ui.trip_stats.PastTripStatisticsActivity;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,9 +28,9 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
     private List<PastTrip> apiData = new ArrayList<>();
     private List<PastTrip> dbData = new ArrayList<>();
     private Context context;
-    private PastTripsUploadListener listener;
+    private PastTripClickedListener listener;
 
-    PastTripAdapter(Context context, PastTripsUploadListener listener) {
+    PastTripAdapter(Context context, PastTripClickedListener listener) {
         this.context = context;
         this.listener = listener;
     }
@@ -45,6 +47,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         }
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -61,7 +64,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
 
         String duration = GeneralUtil.formatDuration(pastTrip.getStartTime(), pastTrip.getEndTime());
         holder.detail.setText(
-                context.getString(R.string.trip_description_display, duration, pastTrip.getDistance())
+                context.getString(R.string.past_trip_description_display, duration, pastTrip.getDistance())
         );
 
         if (!pastTrip.isUploaded()) {
@@ -70,7 +73,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             holder.imageUpload.setVisibility(View.INVISIBLE);
         }
 
-        holder.imageUpload.setOnClickListener(view -> listener.upload(pastTrip.getTripUUID()));
+        holder.imageUpload.setOnClickListener(view -> listener.onSyncClick(pastTrip));
 
         holder.itemView.setOnClickListener(view -> {
             PastTrip selectedTrip = pastTripList.get(position);
@@ -83,6 +86,11 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             } else {
                 Toast.makeText(context, R.string.upload_trip_for_stats, Toast.LENGTH_LONG).show();
             }
+        });
+
+        holder.itemView.setOnLongClickListener(view -> {
+            listener.onPastTripLongClick(pastTrip);
+            return true;
         });
     }
 

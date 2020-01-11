@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy;
+package com.cycling_advocacy.bumpy.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 public class OnboardingActivity extends AppCompatActivity {

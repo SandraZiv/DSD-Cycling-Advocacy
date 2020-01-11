@@ -35,23 +35,23 @@
 
         <!-- todo onboarding activity no action bar style -->
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".ui.OnboardingActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".TripInProgressActivity"
+            android:name=".ui.TripInProgressActivity"
             android:label="@string/trip_in_progress"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.trip_stats.PastTripStatisticsActivity"
             android:label="@string/title_past_trip_statistics"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/PreferenceCompatStyle" />
 

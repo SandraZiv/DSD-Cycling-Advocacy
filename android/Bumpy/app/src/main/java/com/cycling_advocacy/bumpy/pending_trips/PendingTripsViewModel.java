@@ -38,4 +38,8 @@ public class PendingTripsViewModel extends AndroidViewModel {
     public void delete(PendingTrip pendingTrip) {
         this.repository.deleteAsync(pendingTrip);
     }
+
+    public void deleteByTripUUID(String tripUUID) {
+        this.repository.deleteByTripUUIDAsync(tripUUID);
+    }
 }

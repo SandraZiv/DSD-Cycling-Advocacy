@@ -9,29 +9,33 @@ import com.cycling_advocacy.bumpy.db.BumpyDB;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-public class PendingTripsRepository {
+class PendingTripsRepository {
 
     private final PendingTripsDao pendingTripsDao;
     private LiveData<List<PendingTrip>> pendingTrips;
 
-    public PendingTripsRepository(Context context) {
+    PendingTripsRepository(Context context) {
         this.pendingTripsDao = BumpyDB.getInstance(context).pendingTripsDao();
         this.pendingTrips = pendingTripsDao.getPendingTrips();
     }
 
-    public void insertAsync(final PendingTrip pendingTrip) {
+    void insertAsync(final PendingTrip pendingTrip) {
         Executors.newSingleThreadExecutor().execute(() -> this.pendingTripsDao.insert(pendingTrip));
     }
 
-    public void deleteAsync(final PendingTrip pendingTrip) {
+    void deleteAsync(final PendingTrip pendingTrip) {
         Executors.newSingleThreadExecutor().execute(() -> this.pendingTripsDao.delete(pendingTrip));
     }
 
-    public LiveData<List<PendingTrip>> getPendingTrips() {
+    void deleteByTripUUIDAsync(String tripUUID) {
+        Executors.newSingleThreadExecutor().execute(() -> this.pendingTripsDao.deleteByTripUUID(tripUUID));
+    }
+
+    LiveData<List<PendingTrip>> getPendingTrips() {
         return this.pendingTrips;
     }
 
-    public LiveData<PendingTrip> getPendingTripByTripUUID(String tripUUID) {
+    LiveData<PendingTrip> getPendingTripByTripUUID(String tripUUID) {
         return this.pendingTripsDao.getPendingTripByTripUUID(tripUUID);
     }
 }

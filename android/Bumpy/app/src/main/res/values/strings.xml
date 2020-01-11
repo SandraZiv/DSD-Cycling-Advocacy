@@ -39,7 +39,7 @@
     <string name="get_trips_not_successful">Get past trips unsuccessful!</string>
     <string name="get_trip_stats_not_successful">Get past trip statistics unsuccessful!</string>
 
-    <!-- Trip upload -->
+    <!-- Trip onSyncClick -->
     <string name="dialog_upload_trip_title">Upload trip data?</string>
     <string name="dialog_upload_trip_message">Initiate the upload of collected data?</string>
     <string name="dialog_yes">Yes</string>
@@ -50,9 +50,8 @@
 
     <!--Past trips-->
     <string name="upload_data_description">Upload cycling data</string>
-    <string name="trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
-    <string name="duration_display">Duration: %1$s  </string>
-    <string name="distance_display">Distance: %1$.2f km  </string>
+    <string name="past_trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
+    <string name="past_trip_title">Trip on %s</string>
     <string name="upload_trip_for_stats">Please upload trip to see statistics</string>
     <string name="no_data_available">Seems you haven\'t completed any trip yet\nLet\'s start cycling!</string>
 
@@ -101,6 +100,7 @@
     <string name="trip_stat_gnss_empty_message">Cannot raw route: GNSS data has no points</string>
     <string name="delete">Delete</string>
     <string name="deleted_successfully">Trip deleted successfully</string>
+    <string name="deleted_error">Trip could not be deleted</string>
     <string name="export">Export motion data</string>
     <string name="export_success">Trip exported successfully</string>
     <string name="export_error_write">Trip could not be written to selected folder</string>

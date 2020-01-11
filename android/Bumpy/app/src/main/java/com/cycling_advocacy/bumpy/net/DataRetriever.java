@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 import com.cycling_advocacy.bumpy.ui.map.RoadQualityListener;
-import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsReceivedListener;
+import com.cycling_advocacy.bumpy.ui.past_trips.PastTripsReceivedListener;
 import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
@@ -44,7 +44,7 @@ public class DataRetriever {
                         Log.d("Get trips for device", "Get trips for device response: " + response.message());
                         if (!response.isSuccessful()) {
                             Toast.makeText(context, R.string.get_trips_not_successful, Toast.LENGTH_SHORT).show();
-                            listener.onError();
+                            listener.onPastTripsError();
                         } else {
                             List<PastTripGeneralResponse> pastTripsGeneral = response.body();
                             List<PastTrip> pastTrips = new ArrayList<>();
@@ -52,7 +52,7 @@ public class DataRetriever {
                                 pastTrips.add(new PastTrip(pastTripGeneral));
                             }
 
-                            listener.onReceived(pastTrips);
+                            listener.onPastTripsReceived(pastTrips);
                         }
                     }
 
@@ -60,7 +60,7 @@ public class DataRetriever {
                     public void onError(Throwable e) {
                         Log.d("Get trips for device", "Failed to retrieve trips for device: "  + e.getMessage());
                         Toast.makeText(context, R.string.get_trips_not_successful, Toast.LENGTH_SHORT).show();
-                        listener.onError();
+                        listener.onPastTripsError();
                     }
                 });
     }
@@ -81,7 +81,7 @@ public class DataRetriever {
                         Log.d("Get trip statistics", "Get trip statistics response: " + response.message());
                         if (!response.isSuccessful()) {
                             Toast.makeText(context, R.string.get_trip_stats_not_successful, Toast.LENGTH_SHORT).show();
-                            listener.onError();
+                            listener.onStatisticError();
                         } else {
                             listener.onStatisticDone(response.body());
                         }
@@ -91,7 +91,7 @@ public class DataRetriever {
                     public void onError(Throwable e) {
                         Log.d("Get trip statistics", "Failed to retrieve trip statistics: "  + e.getMessage());
                         Toast.makeText(context, R.string.get_trip_stats_not_successful, Toast.LENGTH_SHORT).show();
-                        listener.onError();
+                        listener.onStatisticError();
                     }
                 });
     }

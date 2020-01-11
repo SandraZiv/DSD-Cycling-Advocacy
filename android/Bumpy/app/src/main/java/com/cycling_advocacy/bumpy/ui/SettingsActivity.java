@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy;
+package com.cycling_advocacy.bumpy.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.TripUploadType;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 public class SettingsActivity extends AppCompatActivity {

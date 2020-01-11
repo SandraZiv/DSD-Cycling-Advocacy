@@ -22,6 +22,7 @@ import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.entities.GnssData;
 import com.cycling_advocacy.bumpy.net.DataManager;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
+import com.cycling_advocacy.bumpy.net.OnDeleteTripListener;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
@@ -37,7 +38,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class PastTripStatisticsActivity extends AppCompatActivity implements StatisticListener {
+public class PastTripStatisticsActivity extends AppCompatActivity
+        implements StatisticListener, OnDeleteTripListener {
 
     public static final String EXTRA_TRIP_UUID = "tripUUID";
     private static final int REQ_CODE_EXPORT_CSV = 820;
@@ -194,7 +196,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     }
 
     @Override
-    public void onError() {
+    public void onStatisticError() {
         finish();
     }
 
@@ -221,8 +223,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     }
 
     private void deleteTrip() {
-        DataManager.deleteTrip(this, this.tripUUID, this.tripStartTime);
-        finish();
+        DataManager.deleteTrip(this, this, this.tripUUID, this.tripStartTime);
     }
 
     private void exportMotionFile() {
@@ -236,5 +237,15 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         intent.putExtra(Intent.EXTRA_TITLE, this.tripUUID + ".csv");
 
         startActivityForResult(intent, REQ_CODE_EXPORT_CSV);
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        finish();
+    }
+
+    @Override
+    public void onDeleteError() {
+        Toast.makeText(this, R.string.deleted_error, Toast.LENGTH_LONG).show();
     }
 }
