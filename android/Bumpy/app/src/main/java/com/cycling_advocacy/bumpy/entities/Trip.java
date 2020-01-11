@@ -29,10 +29,13 @@ public class Trip implements Serializable {
     @SerializedName("gnssData")
     private List<GnssData> gnssDataList;
 
+    private transient double maxVibration;
+
     public Trip(Context context) {
         this.deviceUUID = PreferenceUtil.getLongDeviceUUID(context);
         this.tripUUID = GeneralUtil.generateUUID();
         this.gnssDataList = new LinkedList<>();
+        this.maxVibration = 0.0;
     }
 
     public void start() {
@@ -83,6 +86,14 @@ public class Trip implements Serializable {
         return stopTs;
     }
 
+    public double getMaxVibration() { return maxVibration; }
+
+    public void updateMaxVibration (double vibration) {
+        if (vibration > maxVibration) {
+            maxVibration = vibration;
+        }
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -97,6 +108,7 @@ public class Trip implements Serializable {
                 ", startTs=" + GeneralUtil.formatTimestampISO(startTs) + '\n' +
                 ", stopTs=" + GeneralUtil.formatTimestampISO(stopTs) + '\n' +
                 ", distance=" + distance + '\n' +
+                ", maxVibration=" + maxVibration + '\n' +
                 "{ " + gnssDataString + "}" +
                 '}';
     }

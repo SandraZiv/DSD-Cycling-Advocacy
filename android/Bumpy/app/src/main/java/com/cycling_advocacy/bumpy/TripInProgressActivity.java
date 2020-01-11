@@ -237,5 +237,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
         vibrationMeter.speedTo(vibrationPercentage, 0);
+        trip.updateMaxVibration(vibrationPercentage);
     }
 }

@@ -103,7 +103,11 @@ public class AchievementsInitial {
             new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
-                    return false;
+                    if (trip.getMaxVibration() >= 65.0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
     );
