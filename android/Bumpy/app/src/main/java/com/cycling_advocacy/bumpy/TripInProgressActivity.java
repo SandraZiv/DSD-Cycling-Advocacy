@@ -228,13 +228,14 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         GnssData gnssData = new GnssData(location);
         trip.addGpsData(gnssData);
 
-        speedometer.speedTo((int)gnssData.getSpeed());
+        speedometer.speedTo((int)gnssData.getSpeed(), 10);
         tvDistance.setText(trip.getFormattedDistance());
 
     }
 
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
-        vibrationMeter.speedTo(vibrationPercentage);
+        vibrationMeter.speedTo(vibrationPercentage, 0);
+        trip.updateMaxVibration(vibrationPercentage);
     }
 }

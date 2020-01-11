@@ -94,7 +94,6 @@ public class AchievementsInitial {
             }
     );
 
-    // todo get vibration from trips
     private static Achievement a5 = new Achievement(
             5,
             R.string.a5_title,
@@ -103,7 +102,7 @@ public class AchievementsInitial {
             new AchievementCondition() {
                 @Override
                 public boolean isCompleted(Trip trip) {
-                    return false;
+                    return trip.getMaxVibration() >= 65.0;
                 }
             }
     );
