@@ -27,6 +27,7 @@ import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
 
 import java.util.ArrayList;
@@ -151,8 +152,23 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
                 route.getOutlinePaint().setColor(Color.RED);
                 route.getOutlinePaint().setStrokeWidth(20);
 
+                Marker startMarker = new Marker(routeMap);
+                startMarker.setPosition(routePoints.get(0));
+                startMarker.setIcon(getResources().getDrawable(R.drawable.ic_start_icon));
+                startMarker.setAnchor(0.5f,0.5f);
+                startMarker.setTitle(getString(R.string.trip_stats_marker_start, GeneralUtil.formatTimestampLocale(statistics.getStartTS())));
+
+
+                Marker endMarker = new Marker(routeMap);
+                endMarker.setPosition(routePoints.get(routePoints.size()-1));
+                endMarker.setIcon(getResources().getDrawable(R.drawable.ic_final));
+                endMarker.setAnchor(0.5f,0.5f);
+                endMarker.setTitle(getString(R.string.trip_stats_marker_end, GeneralUtil.formatTimestampLocale(statistics.getEndTS())));
+
                 routeMap.getOverlayManager().add(route);
                 routeMap.getController().setCenter(routePoints.get(0));
+                routeMap.getOverlays().add(startMarker);
+                routeMap.getOverlays().add(endMarker);
                 routeMap.invalidate();
             } else {
                 Toast.makeText(this, R.string.trip_stat_gnss_empty_message, Toast.LENGTH_SHORT).show();
