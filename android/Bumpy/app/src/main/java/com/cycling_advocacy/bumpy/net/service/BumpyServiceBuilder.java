@@ -1,8 +1,9 @@
 package com.cycling_advocacy.bumpy.net.service;
 
-import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -17,7 +18,7 @@ public class BumpyServiceBuilder {
 
     private static Retrofit createRetrofit() {
         Gson gson = new GsonBuilder()
-                .setDateFormat(GeneralUtil.DATE_FORMAT_ISO)
+                .registerTypeAdapter(Date.class, new GsonUTC())
                 .create();
 
         Retrofit.Builder retrofitBuiler = new Retrofit.Builder()
