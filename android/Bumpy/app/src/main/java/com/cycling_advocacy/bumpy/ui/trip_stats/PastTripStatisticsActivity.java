@@ -2,7 +2,6 @@ package com.cycling_advocacy.bumpy.ui.trip_stats;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -157,14 +156,14 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
                 startMarker.setPosition(routePoints.get(0));
                 startMarker.setIcon(getResources().getDrawable(R.drawable.ic_start_icon));
                 startMarker.setAnchor(0.5f,0.5f);
-                startMarker.setTitle("Trip Start: "+GeneralUtil.formatTimestampLocale(statistics.getStartTS()));
+                startMarker.setTitle(getString(R.string.trip_stats_marker_start, GeneralUtil.formatTimestampLocale(statistics.getStartTS())));
 
 
                 Marker endMarker = new Marker(routeMap);
                 endMarker.setPosition(routePoints.get(routePoints.size()-1));
                 endMarker.setIcon(getResources().getDrawable(R.drawable.ic_final));
                 endMarker.setAnchor(0.5f,0.5f);
-                endMarker.setTitle("Trip End: "+GeneralUtil.formatTimestampLocale(statistics.getEndTS()));
+                endMarker.setTitle(getString(R.string.trip_stats_marker_end, GeneralUtil.formatTimestampLocale(statistics.getEndTS())));
 
                 routeMap.getOverlayManager().add(route);
                 routeMap.getController().setCenter(routePoints.get(0));
