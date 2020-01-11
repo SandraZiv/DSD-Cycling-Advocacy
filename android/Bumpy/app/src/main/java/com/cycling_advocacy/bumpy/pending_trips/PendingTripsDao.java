@@ -23,4 +23,7 @@ public interface PendingTripsDao {
 
     @Delete
     void delete(PendingTrip pendingTrip);
+
+    @Query("DELETE FROM pending_trips WHERE tripUUID = :tripUUID")
+    void deleteByTripUUID(String tripUUID);
 }
