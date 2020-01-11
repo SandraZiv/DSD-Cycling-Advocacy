@@ -5,6 +5,7 @@ from swagger_server.models.api_response import ApiResponse  # noqa: E501
 from swagger_server.models.full_processed_trip import FullProcessedTrip  # noqa: E501
 from swagger_server.models.processed_trip import ProcessedTrip  # noqa: E501
 from swagger_server.models.trip import Trip  # noqa: E501
+from swagger_server.models.bumpy_point import BumpyPoint  # noqa: E501
 from swagger_server.road_analysis import queue
 from swagger_server import constants as const
 from swagger_server import mongodb_interface
@@ -65,6 +66,15 @@ def get_trip_by_trip_uuid():  # noqa: E501
     trip = mongodb_interface.get_trip_by_trip_uuid(trip_uuid)
     if not trip:
         return ApiResponse(code=400, message='trip not found'), 400
+    raw_points = mongodb_interface.get_points_by_points_id(trip.get('bumpy_points', []))
+    output_points = []
+    for raw_point in raw_points:
+        output_points.append({
+            'lat': raw_point['loc']['coordinates'][1],
+            'lon': raw_point['loc']['coordinates'][0],
+            'bump_score': raw_point['bump_score']
+        })
+    trip['bumpy_points'] = list(map(BumpyPoint.from_dict, output_points))
     return FullProcessedTrip().from_dict(trip), 200
 
 
@@ -80,6 +90,8 @@ def get_trips_by_device_uuid():  # noqa: E501
     """
     device_uuid = connexion.request.args.get('deviceUUID', None)
     trips = mongodb_interface.get_trips_by_device_uuid(device_uuid)
+    for trip in trips:
+        trip['bumpy_points_count'] = len(trip.get('bumpy_points', []))
     return list(map(ProcessedTrip.from_dict, trips)), 200
 
 

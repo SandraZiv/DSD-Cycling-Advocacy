@@ -8,6 +8,7 @@ from typing import List, Dict  # noqa: F401
 from swagger_server.models.base_model_ import Model
 from swagger_server.models.processed_trip_elevation import ProcessedTripElevation  # noqa: F401,E501
 from swagger_server.models.processed_trip_speed import ProcessedTripSpeed  # noqa: F401,E501
+from swagger_server.models.processed_trip_vibration import ProcessedTripVibration  # noqa: F401,E501
 from swagger_server import util
 
 
@@ -16,7 +17,7 @@ class ProcessedTrip(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, device_uuid: str=None, trip_uuid: str=None, start_ts: datetime=None, end_ts: datetime=None, distance: float=None, speed: ProcessedTripSpeed=None, elevation: ProcessedTripElevation=None):  # noqa: E501
+    def __init__(self, device_uuid: str=None, trip_uuid: str=None, start_ts: datetime=None, end_ts: datetime=None, distance: float=None, speed: ProcessedTripSpeed=None, elevation: ProcessedTripElevation=None, vibration: ProcessedTripVibration=None, bumpy_points_count: int=None):  # noqa: E501
         """ProcessedTrip - a model defined in Swagger
 
         :param device_uuid: The device_uuid of this ProcessedTrip.  # noqa: E501
@@ -33,6 +34,10 @@ class ProcessedTrip(Model):
         :type speed: ProcessedTripSpeed
         :param elevation: The elevation of this ProcessedTrip.  # noqa: E501
         :type elevation: ProcessedTripElevation
+        :param vibration: The vibration of this ProcessedTrip.  # noqa: E501
+        :type vibration: ProcessedTripVibration
+        :param bumpy_points_count: The bumpy_points_count of this ProcessedTrip.  # noqa: E501
+        :type bumpy_points_count: int
         """
         self.swagger_types = {
             'device_uuid': str,
@@ -41,7 +46,9 @@ class ProcessedTrip(Model):
             'end_ts': datetime,
             'distance': float,
             'speed': ProcessedTripSpeed,
-            'elevation': ProcessedTripElevation
+            'elevation': ProcessedTripElevation,
+            'vibration': ProcessedTripVibration,
+            'bumpy_points_count': int
         }
 
         self.attribute_map = {
@@ -51,7 +58,9 @@ class ProcessedTrip(Model):
             'end_ts': 'endTS',
             'distance': 'distance',
             'speed': 'speed',
-            'elevation': 'elevation'
+            'elevation': 'elevation',
+            'vibration': 'vibration',
+            'bumpy_points_count': 'bumpyPointsCount'
         }
         self._device_uuid = device_uuid
         self._trip_uuid = trip_uuid
@@ -60,6 +69,8 @@ class ProcessedTrip(Model):
         self._distance = distance
         self._speed = speed
         self._elevation = elevation
+        self._vibration = vibration
+        self._bumpy_points_count = bumpy_points_count
 
     @classmethod
     def from_dict(cls, dikt) -> 'ProcessedTrip':
@@ -220,3 +231,45 @@ class ProcessedTrip(Model):
         """
 
         self._elevation = elevation
+
+    @property
+    def vibration(self) -> ProcessedTripVibration:
+        """Gets the vibration of this ProcessedTrip.
+
+
+        :return: The vibration of this ProcessedTrip.
+        :rtype: ProcessedTripVibration
+        """
+        return self._vibration
+
+    @vibration.setter
+    def vibration(self, vibration: ProcessedTripVibration):
+        """Sets the vibration of this ProcessedTrip.
+
+
+        :param vibration: The vibration of this ProcessedTrip.
+        :type vibration: ProcessedTripVibration
+        """
+
+        self._vibration = vibration
+
+    @property
+    def bumpy_points_count(self) -> int:
+        """Gets the bumpy_points_count of this ProcessedTrip.
+
+
+        :return: The bumpy_points_count of this ProcessedTrip.
+        :rtype: int
+        """
+        return self._bumpy_points_count
+
+    @bumpy_points_count.setter
+    def bumpy_points_count(self, bumpy_points_count: int):
+        """Sets the bumpy_points_count of this ProcessedTrip.
+
+
+        :param bumpy_points_count: The bumpy_points_count of this ProcessedTrip.
+        :type bumpy_points_count: int
+        """
+
+        self._bumpy_points_count = bumpy_points_count

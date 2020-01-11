@@ -6,8 +6,10 @@ from datetime import date, datetime  # noqa: F401
 from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
+from swagger_server.models.bumpy_point import BumpyPoint  # noqa: F401,E501
 from swagger_server.models.processed_trip_elevation import ProcessedTripElevation  # noqa: F401,E501
 from swagger_server.models.processed_trip_speed import ProcessedTripSpeed  # noqa: F401,E501
+from swagger_server.models.processed_trip_vibration import ProcessedTripVibration  # noqa: F401,E501
 from swagger_server.models.trip_gnss_data import TripGnssData  # noqa: F401,E501
 from swagger_server import util
 
@@ -17,7 +19,7 @@ class FullProcessedTrip(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, device_uuid: str=None, trip_uuid: str=None, start_ts: datetime=None, end_ts: datetime=None, distance: float=None, speed: ProcessedTripSpeed=None, elevation: ProcessedTripElevation=None, gnss_data: List[TripGnssData]=None):  # noqa: E501
+    def __init__(self, device_uuid: str=None, trip_uuid: str=None, start_ts: datetime=None, end_ts: datetime=None, distance: float=None, speed: ProcessedTripSpeed=None, elevation: ProcessedTripElevation=None, vibration: ProcessedTripVibration=None, bumpy_points: List[BumpyPoint]=None, gnss_data: List[TripGnssData]=None):  # noqa: E501
         """FullProcessedTrip - a model defined in Swagger
 
         :param device_uuid: The device_uuid of this FullProcessedTrip.  # noqa: E501
@@ -34,6 +36,10 @@ class FullProcessedTrip(Model):
         :type speed: ProcessedTripSpeed
         :param elevation: The elevation of this FullProcessedTrip.  # noqa: E501
         :type elevation: ProcessedTripElevation
+        :param vibration: The vibration of this FullProcessedTrip.  # noqa: E501
+        :type vibration: ProcessedTripVibration
+        :param bumpy_points: The bumpy_points of this FullProcessedTrip.  # noqa: E501
+        :type bumpy_points: List[BumpyPoint]
         :param gnss_data: The gnss_data of this FullProcessedTrip.  # noqa: E501
         :type gnss_data: List[TripGnssData]
         """
@@ -45,6 +51,8 @@ class FullProcessedTrip(Model):
             'distance': float,
             'speed': ProcessedTripSpeed,
             'elevation': ProcessedTripElevation,
+            'vibration': ProcessedTripVibration,
+            'bumpy_points': List[BumpyPoint],
             'gnss_data': List[TripGnssData]
         }
 
@@ -56,6 +64,8 @@ class FullProcessedTrip(Model):
             'distance': 'distance',
             'speed': 'speed',
             'elevation': 'elevation',
+            'vibration': 'vibration',
+            'bumpy_points': 'bumpyPoints',
             'gnss_data': 'gnssData'
         }
         self._device_uuid = device_uuid
@@ -65,6 +75,8 @@ class FullProcessedTrip(Model):
         self._distance = distance
         self._speed = speed
         self._elevation = elevation
+        self._vibration = vibration
+        self._bumpy_points = bumpy_points
         self._gnss_data = gnss_data
 
     @classmethod
@@ -226,6 +238,48 @@ class FullProcessedTrip(Model):
         """
 
         self._elevation = elevation
+
+    @property
+    def vibration(self) -> ProcessedTripVibration:
+        """Gets the vibration of this FullProcessedTrip.
+
+
+        :return: The vibration of this FullProcessedTrip.
+        :rtype: ProcessedTripVibration
+        """
+        return self._vibration
+
+    @vibration.setter
+    def vibration(self, vibration: ProcessedTripVibration):
+        """Sets the vibration of this FullProcessedTrip.
+
+
+        :param vibration: The vibration of this FullProcessedTrip.
+        :type vibration: ProcessedTripVibration
+        """
+
+        self._vibration = vibration
+
+    @property
+    def bumpy_points(self) -> List[BumpyPoint]:
+        """Gets the bumpy_points of this FullProcessedTrip.
+
+
+        :return: The bumpy_points of this FullProcessedTrip.
+        :rtype: List[BumpyPoint]
+        """
+        return self._bumpy_points
+
+    @bumpy_points.setter
+    def bumpy_points(self, bumpy_points: List[BumpyPoint]):
+        """Sets the bumpy_points of this FullProcessedTrip.
+
+
+        :param bumpy_points: The bumpy_points of this FullProcessedTrip.
+        :type bumpy_points: List[BumpyPoint]
+        """
+
+        self._bumpy_points = bumpy_points
 
     @property
     def gnss_data(self) -> List[TripGnssData]:

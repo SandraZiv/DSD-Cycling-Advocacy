@@ -93,6 +93,14 @@ def delete_tracks(tracks_id):
 #
 
 
+def get_points_by_distance_geometry(geometry):
+    return main_db.points.find({'loc': {'$near': geometry}, '$maxDistance': 10})
+
+
+def get_points_by_points_id(points_id):
+    return main_db.points.find({'_id': {'$in': list(map(ObjectId, points_id))}})
+
+
 def get_points_by_intersect_geometry(geometry):
     return main_db.points.find({'loc': {'$geoIntersects': geometry}})
 
