@@ -102,9 +102,11 @@
     <string name="delete">Delete</string>
     <string name="deleted_successfully">Trip deleted successfully</string>
     <string name="export">Export motion data</string>
+    <string name="export_success">Trip exported successfully</string>
+    <string name="export_error_write">Trip could not be written to selected folder</string>
+    <string name="export_error_net">Trip data not found</string>
     <string name="trip_stats_marker_start">Start time\n%s</string>
     <string name="trip_stats_marker_end">End time\n%s</string>
-
 
     <!-- Completed Achievement  -->
     <string name="achievements_hurray">HURRAY!</string>

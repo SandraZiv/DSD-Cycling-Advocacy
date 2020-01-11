@@ -1,7 +1,10 @@
 package com.cycling_advocacy.bumpy.ui.trip_stats;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -37,6 +40,7 @@ import java.util.List;
 public class PastTripStatisticsActivity extends AppCompatActivity implements StatisticListener {
 
     public static final String EXTRA_TRIP_UUID = "tripUUID";
+    private static final int REQ_CODE_EXPORT_CSV = 820;
 
     private TextView tvTripStatStartTS;
     private TextView tvTripStatDuration;
@@ -106,6 +110,17 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
         }
 
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        super.onActivityResult(requestCode, resultCode, resultData);
+        if (requestCode == REQ_CODE_EXPORT_CSV && resultCode == Activity.RESULT_OK) {
+            if (resultData != null) {
+                Uri uri = resultData.getData();
+                DataManager.getMotionFile(this, this.tripUUID, uri);
+            }
+        }
     }
 
     @Override
@@ -211,6 +226,15 @@ public class PastTripStatisticsActivity extends AppCompatActivity implements Sta
     }
 
     private void exportMotionFile() {
+        openDocumentSavePicker();
+    }
 
+    private void openDocumentSavePicker() {
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/csv");
+        intent.putExtra(Intent.EXTRA_TITLE, this.tripUUID + ".csv");
+
+        startActivityForResult(intent, REQ_CODE_EXPORT_CSV);
     }
 }
