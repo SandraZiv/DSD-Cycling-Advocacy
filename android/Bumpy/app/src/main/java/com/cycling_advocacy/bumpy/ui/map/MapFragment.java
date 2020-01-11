@@ -205,9 +205,12 @@ public class MapFragment extends Fragment implements RoadQualityListener {
             for (RoadQualitySegmentsResponse path : roadQualityData) {
                 List<RoadQualitySegmentsResponse.Segment> segments = path.getSegments();
                 for (RoadQualitySegmentsResponse.Segment segment : segments) {
-                    double quality = segment.getQualityScore();
+                    Double quality = segment.getQualityScore();
+
                     int color;
-                    if (quality < BAD_ROAD_QUALITY_THRESHOLD) {
+                    if (quality == null) {
+                        color = Color.BLACK;
+                    } else if (quality < BAD_ROAD_QUALITY_THRESHOLD) {
                         color = Color.RED;
                     } else if (quality > GOOD_ROAD_QUALITY_THRESHOLD) {
                         color = Color.GREEN;

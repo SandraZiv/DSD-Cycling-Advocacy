@@ -43,9 +43,9 @@ public class RoadQualitySegmentsResponse {
         private double endLon;
 
         @SerializedName("qualityScore")
-        private double qualityScore;
+        private Double qualityScore;
 
-        public Segment(String segmentUUID, double startLat, double startLon, double endLat, double endLon, double qualityScore) {
+        public Segment(String segmentUUID, double startLat, double startLon, double endLat, double endLon, Double qualityScore) {
             this.segmentUUID = segmentUUID;
             this.startLat = startLat;
             this.startLon = startLon;
@@ -74,8 +74,8 @@ public class RoadQualitySegmentsResponse {
 
         public void setEndLon(double endLon) { this.endLon = endLon; }
 
-        public double getQualityScore() { return qualityScore; }
+        public Double getQualityScore() { return qualityScore; }
 
-        public void setQualityScore(double qualityScore) { this.qualityScore = qualityScore; }
+        public void setQualityScore(Double qualityScore) { this.qualityScore = qualityScore; }
     }
 }
