@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class DataManager {
 
-    public static void deleteTrip(Context context, String tripUUID, Date tripStartTime) {
+    public static void deleteTrip(Context context, OnDeleteTripListener listener, String tripUUID, Date tripStartTime) {
         BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
         bumpyService.deleteTrip(tripUUID)
                 .subscribeOn(Schedulers.io())
@@ -38,11 +38,17 @@ public class DataManager {
                         Toast.makeText(context, R.string.deleted_successfully, Toast.LENGTH_SHORT).show();
                         AchievementsPrefs.decreaseDailyTripCount(context, tripStartTime.getTime());
                         AchievementsPrefs.decreaseTotalTripCount(context);
+
+                        if (listener != null) {
+                            listener.onDeleteSuccess();
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (listener != null) {
+                            listener.onDeleteError();
+                        }
                     }
                 });
     }

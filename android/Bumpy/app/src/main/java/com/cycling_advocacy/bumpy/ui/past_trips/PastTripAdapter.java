@@ -73,7 +73,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
             holder.imageUpload.setVisibility(View.INVISIBLE);
         }
 
-        holder.imageUpload.setOnClickListener(view -> listener.upload(pastTrip));
+        holder.imageUpload.setOnClickListener(view -> listener.onSyncClick(pastTrip));
 
         holder.itemView.setOnClickListener(view -> {
             PastTrip selectedTrip = pastTripList.get(position);
@@ -89,7 +89,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.ViewHo
         });
 
         holder.itemView.setOnLongClickListener(view -> {
-            listener.delete(pastTrip);
+            listener.onPastTripLongClick(pastTrip);
             return true;
         });
     }

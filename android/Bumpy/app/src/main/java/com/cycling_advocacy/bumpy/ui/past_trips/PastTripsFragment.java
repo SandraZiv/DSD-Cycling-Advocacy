@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -22,6 +23,7 @@ import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.DataManager;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.DataSender;
+import com.cycling_advocacy.bumpy.net.OnDeleteTripListener;
 import com.cycling_advocacy.bumpy.pending_trips.PendingTrip;
 import com.cycling_advocacy.bumpy.pending_trips.PendingTripsViewModel;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PastTripsFragment extends Fragment
-        implements PastTripClickedListener, PastTripsReceivedListener {
+        implements PastTripClickedListener, PastTripsReceivedListener, OnDeleteTripListener {
 
     private PendingTripsViewModel pendingTripsViewModel;
     private PastTripAdapter adapter;
@@ -97,20 +99,20 @@ public class PastTripsFragment extends Fragment
     }
 
     @Override
-    public void onReceived(List<PastTrip> pastTrips) {
+    public void onPastTripsReceived(List<PastTrip> pastTrips) {
         adapter.addApiData(pastTrips);
         stopLoading();
         manageEmptyView();
     }
 
     @Override
-    public void onError() {
+    public void onPastTripsError() {
         stopLoading();
         manageEmptyView();
     }
 
     @Override
-    public void upload(PastTrip pastTrip) {
+    public void onSyncClick(PastTrip pastTrip) {
         pendingTripsViewModel.getPendingTripByTripUUID(pastTrip.getTripUUID()).observe(this, pendingTrip -> {
             if (pendingTrip != null) {
                 DataSender.sendPendingData(getContext(), PastTripsFragment.this, pendingTrip);
@@ -120,7 +122,7 @@ public class PastTripsFragment extends Fragment
     }
 
     @Override
-    public void delete(PastTrip pastTrip) {
+    public void onPastTripLongClick(PastTrip pastTrip) {
         Context ctx = getContext();
         if (ctx == null) {
             return;
@@ -134,7 +136,7 @@ public class PastTripsFragment extends Fragment
 
         builder.setAdapter(optionList, (dialog, which) -> {
             if (pastTrip.isUploaded()) {
-                DataManager.deleteTrip(ctx, pastTrip.getTripUUID(), pastTrip.getStartTime());
+                DataManager.deleteTrip(ctx, this, pastTrip.getTripUUID(), pastTrip.getStartTime());
             } else {
                 pendingTripsViewModel.deleteByTripUUID(pastTrip.getTripUUID());
                 AchievementsPrefs.decreaseDailyTripCount(ctx, pastTrip.getStartTime().getTime());
@@ -145,5 +147,15 @@ public class PastTripsFragment extends Fragment
         });
 
         builder.show();
+    }
+
+    @Override
+    public void onDeleteSuccess() {
+        DataRetriever.getPastTripsList(getContext(), this);
+    }
+
+    @Override
+    public void onDeleteError() {
+        Toast.makeText(getContext(), R.string.deleted_error, Toast.LENGTH_LONG).show();
     }
 }
