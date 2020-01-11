@@ -50,9 +50,8 @@
 
     <!--Past trips-->
     <string name="upload_data_description">Upload cycling data</string>
-    <string name="trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
-    <string name="duration_display">Duration: %1$s  </string>
-    <string name="distance_display">Distance: %1$.2f km  </string>
+    <string name="past_trip_description_display">"Duration %1$s   Distance: %2$.2f km"</string>
+    <string name="past_trip_title">Trip on %s</string>
     <string name="upload_trip_for_stats">Please upload trip to see statistics</string>
     <string name="no_data_available">Seems you haven\'t completed any trip yet\nLet\'s start cycling!</string>
 
