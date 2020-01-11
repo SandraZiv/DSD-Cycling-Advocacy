@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -229,7 +228,7 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         GnssData gnssData = new GnssData(location);
         trip.addGpsData(gnssData);
 
-        speedometer.speedTo((int)gnssData.getSpeed());
+        speedometer.speedTo((int)gnssData.getSpeed(), 10);
         tvDistance.setText(trip.getFormattedDistance());
 
     }
