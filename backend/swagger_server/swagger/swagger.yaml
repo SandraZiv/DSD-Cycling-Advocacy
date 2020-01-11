@@ -657,6 +657,7 @@ components:
           type: number
         qualityScore:
           type: number
+          nullable: true
       example:
         startLat: 7.20745371414910351859361981041729450225830078125
         endLat: 13.19231682452650744608035893179476261138916015625

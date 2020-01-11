@@ -65,6 +65,9 @@ def merge_overlapping(line, quality_scores, centerlines, centerlines_quality_sco
 
 def run_map_update(new_track):
     # working with flat data!
+    if len(new_track['loc']['coordinates']) < 2:
+        # TODO: do something, the track is too short to be processed!
+        return
     new_line = track_to_line(new_track)
     global_centerlines = []
     global_centerlines_quality_scores = defaultdict(lambda: defaultdict(list))
@@ -100,10 +103,11 @@ def run_map_update(new_track):
         insert_new_tracks.append(track)
 
     def avg(arr):
-        return sum(arr) / len(arr)
+        if len(arr) > 0:
+            return sum(arr) / len(arr)
 
     for i, centerline in enumerate(global_centerlines):
-        quality_scores = [avg(global_centerlines_quality_scores[i].get(j, [0])) for j in range(len(centerline.coords))]
+        quality_scores = [avg(global_centerlines_quality_scores[i].get(j, [])) for j in range(len(centerline.coords))]
         track = {'loc': {'type': 'LineString', 'coordinates': line_to_track(centerline)},
                  'quality_scores': quality_scores}
         insert_new_tracks.append(track)
