@@ -7,7 +7,7 @@ import android.widget.Toast;
 import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 import com.cycling_advocacy.bumpy.ui.map.RoadQualityListener;
-import com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsReceivedListener;
+import com.cycling_advocacy.bumpy.ui.past_trips.PastTripsReceivedListener;
 import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;

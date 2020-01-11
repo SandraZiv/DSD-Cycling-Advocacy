@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy.ui.pastTrips;
+package com.cycling_advocacy.bumpy.ui.past_trips;
 
 import com.cycling_advocacy.bumpy.entities.PastTrip;
 

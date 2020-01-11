@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cycling_advocacy.bumpy.BuildConfig;
 import com.cycling_advocacy.bumpy.R;
-import com.cycling_advocacy.bumpy.TripInProgressActivity;
+import com.cycling_advocacy.bumpy.ui.TripInProgressActivity;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.DataSender;

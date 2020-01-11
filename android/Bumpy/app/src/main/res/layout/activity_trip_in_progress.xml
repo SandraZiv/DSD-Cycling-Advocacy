@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:weightSum="12"
-    tools:context=".TripInProgressActivity">
+    tools:context=".ui.TripInProgressActivity">
 
     <TextView
         android:layout_width="wrap_content"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_pastTrips"
-        android:name="com.cycling_advocacy.bumpy.ui.pastTrips.PastTripsFragment"
+        android:name="com.cycling_advocacy.bumpy.ui.past_trips.PastTripsFragment"
         android:label="@string/bottom_nav_title_past_trips"
         tools:layout="@layout/fragment_past_trips" />
 
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.cycling_advocacy.bumpy.SettingsActivity$SettingsFragment"
+        android:name="com.cycling_advocacy.bumpy.ui.SettingsActivity$SettingsFragment"
         android:label="@string/bottom_nav_title_settings"
         tools:layout="@xml/preferences"/>
 

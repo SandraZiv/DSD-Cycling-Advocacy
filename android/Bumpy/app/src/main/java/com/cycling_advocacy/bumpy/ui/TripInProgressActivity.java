@@ -1,4 +1,4 @@
-package com.cycling_advocacy.bumpy;
+package com.cycling_advocacy.bumpy.ui;
 
 import android.Manifest;
 import android.app.Activity;
@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.cycling_advocacy.bumpy.R;
 import com.cycling_advocacy.bumpy.achievements.Achievement;
 import com.cycling_advocacy.bumpy.achievements.AchievementsViewModel;
 import com.cycling_advocacy.bumpy.achievements.db.AchievementEntity;

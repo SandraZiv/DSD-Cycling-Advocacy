@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cycling_advocacy.bumpy.ui.MainActivity;
+import com.cycling_advocacy.bumpy.ui.OnboardingActivity;
 import com.cycling_advocacy.bumpy.utils.PreferenceUtil;
 
 public class LauncherActivity extends AppCompatActivity {
