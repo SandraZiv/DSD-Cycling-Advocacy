@@ -103,6 +103,7 @@ def run_map_update(new_track):
         insert_new_tracks.append(track)
 
     def avg(arr):
+        arr = list(filter(None, arr))
         if len(arr) > 0:
             return sum(arr) / len(arr)
 
