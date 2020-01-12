@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 public class GeneralUtil {
@@ -18,7 +19,9 @@ public class GeneralUtil {
     private static final String DURATION_FORMAT = "%d:%02d:%02d";
 
     public static String formatTimestampISO(Date timestamp) {
-        return new SimpleDateFormat(DATE_FORMAT_ISO, Locale.getDefault()).format(timestamp);
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT_ISO, Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return dateFormat.format(timestamp);
     }
 
     public static String formatTimestampLocale(Date timestamp){
