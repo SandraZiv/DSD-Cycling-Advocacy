@@ -109,7 +109,6 @@ def retrieve_data(trip_uuid):
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_uuid, gnss_data, motion_df):
-    print(motion_df)
     log = 'MOTION DATA SUMMARY DESCRIPTION\n'
     log += str(motion_df.describe())
     road_quality = []
@@ -119,8 +118,7 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
             # road quality is calculated per each gnss point except the last one
             break
         # chunk is the subset of motion data registered in the time interval of current gnss
-        chunk = motion_df.loc[motion_df['timestamp'] == ts]
-        print(chunk)
+        chunk = motion_df.loc[motion_df['timestamp'] == ts + datetime.timedelta(hours=1)]
         # calculate road quality
         # this is just a dummy example
         # timestamp,accelerometerX,accelerometerY,accelerometerZ,magnetometerX,
