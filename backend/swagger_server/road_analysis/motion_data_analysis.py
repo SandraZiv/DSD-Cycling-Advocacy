@@ -120,7 +120,7 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     for index, ts in enumerate(gnss_data['time_ts']):
         if index == len(gnss_data['time_ts']) - 1:
             # road quality is calculated per each gnss point except the last one
-            break
+            road_quality.append(0)
         # chunk is the subset of motion data registered in the time interval of current gnss
         chunk = motion_df.loc[motion_df['timestamp'] == ts]
         # calculate road quality
@@ -131,8 +131,9 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
     for index, chunk_road_quality in enumerate(normalized_road_quality):
         mongodb_interface.update_trip_road_quality(trip_uuid, index, chunk_road_quality)
-    mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min(),
-                                                     normalized_road_quality.max(), normalized_road_quality.mean())
+    mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min()*100,
+                                                     normalized_road_quality.max()*100,
+                                                     normalized_road_quality.mean()*100)
     coords = [[gp['lon'], gp['lat']] for gp in mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data']]
     track = {'loc': {'type': 'LineString', 'coordinates': coords},
              'quality_scores': road_quality}
