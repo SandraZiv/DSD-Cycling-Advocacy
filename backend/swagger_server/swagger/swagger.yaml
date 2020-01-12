@@ -452,19 +452,29 @@ components:
           $ref: '#/components/schemas/ProcessedTrip_speed'
         elevation:
           $ref: '#/components/schemas/ProcessedTrip_elevation'
+        vibration:
+          $ref: '#/components/schemas/ProcessedTrip_vibration'
+        bumpyPointsCount:
+          minimum: 0
+          type: integer
       example:
         elevation:
-          minElevation: 5.63737665663332876420099637471139430999755859375
-          maxElevation: 5.962133916683182377482808078639209270477294921875
-          avgElevation: 2.3021358869347654518833223846741020679473876953125
+          minElevation: 5.637376656633329
+          maxElevation: 5.962133916683182
+          avgElevation: 2.3021358869347655
         distance: 0.080082819046101150206595775671303272247314453125
+        bumpyPointsCount: 0
         endTS: 2000-01-23T04:56:07.000+00:00
         startTS: 2000-01-23T04:56:07.000+00:00
+        vibration:
+          minVibration: 1.46581298050294517310021547018550336360931396484375
+          maxVibration: 6.02745618307040320615897144307382404804229736328125
+          avgVibration: 5.962133916683182377482808078639209270477294921875
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         speed:
-          maxSpeed: 0.602745618307040320615897144307382404804229736328125
-          avgSpeed: 0.146581298050294517310021547018550336360931396484375
+          maxSpeed: 0.6027456183070403
+          avgSpeed: 0.14658129805029452
     FullProcessedTrip:
       type: object
       properties:
@@ -488,36 +498,53 @@ components:
           $ref: '#/components/schemas/ProcessedTrip_speed'
         elevation:
           $ref: '#/components/schemas/ProcessedTrip_elevation'
+        vibration:
+          $ref: '#/components/schemas/ProcessedTrip_vibration'
+        bumpyPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/BumpyPoint'
         gnssData:
           type: array
           items:
             $ref: '#/components/schemas/Trip_gnssData'
       example:
         elevation:
-          minElevation: 5.63737665663332876420099637471139430999755859375
-          maxElevation: 5.962133916683182377482808078639209270477294921875
-          avgElevation: 2.3021358869347654518833223846741020679473876953125
+          minElevation: 5.637376656633329
+          maxElevation: 5.962133916683182
+          avgElevation: 2.3021358869347655
+        bumpyPoints:
+        - bumpyScore: 5.962133916683182377482808078639209270477294921875
+          lon: 26.3846336490530148921607178635895252227783203125
+          lat: 54.2471056476336315199660020880401134490966796875
+        - bumpyScore: 5.962133916683182377482808078639209270477294921875
+          lon: 26.3846336490530148921607178635895252227783203125
+          lat: 54.2471056476336315199660020880401134490966796875
         distance: 0.080082819046101150206595775671303272247314453125
         endTS: 2000-01-23T04:56:07.000+00:00
         gnssData:
-        - timeTS: 2000-01-23T04:56:07.000+00:00
-          precision: 5.962133916683182377482808078639209270477294921875
-          lon: 26.3846336490530148921607178635895252227783203125
-          lat: 54.2471056476336315199660020880401134490966796875
-          speed: 2.3021358869347654518833223846741020679473876953125
-          ele: 5.63737665663332876420099637471139430999755859375
-        - timeTS: 2000-01-23T04:56:07.000+00:00
-          precision: 5.962133916683182377482808078639209270477294921875
-          lon: 26.3846336490530148921607178635895252227783203125
-          lat: 54.2471056476336315199660020880401134490966796875
-          speed: 2.3021358869347654518833223846741020679473876953125
-          ele: 5.63737665663332876420099637471139430999755859375
+        - timeTS: {}
+          precision: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+          speed: 2.3021358869347655
+          ele: 5.637376656633329
+        - timeTS: {}
+          precision: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+          speed: 2.3021358869347655
+          ele: 5.637376656633329
         startTS: 2000-01-23T04:56:07.000+00:00
+        vibration:
+          minVibration: 1.46581298050294517310021547018550336360931396484375
+          maxVibration: 6.02745618307040320615897144307382404804229736328125
+          avgVibration: 5.962133916683182377482808078639209270477294921875
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         speed:
-          maxSpeed: 0.602745618307040320615897144307382404804229736328125
-          avgSpeed: 0.146581298050294517310021547018550336360931396484375
+          maxSpeed: 0.6027456183070403
+          avgSpeed: 0.14658129805029452
     Track:
       type: object
       properties:
@@ -527,16 +554,16 @@ components:
             $ref: '#/components/schemas/Track_segments'
       example:
         segments:
-        - startLat: 7.20745371414910351859361981041729450225830078125
-          endLat: 13.19231682452650744608035893179476261138916015625
-          startLon: 108.494211295267263039932004176080226898193359375
-          endLon: 107.3184105002972756892631878145039081573486328125
-          qualityScore: 5.63737665663332876420099637471139430999755859375
-        - startLat: 7.20745371414910351859361981041729450225830078125
-          endLat: 13.19231682452650744608035893179476261138916015625
-          startLon: 108.494211295267263039932004176080226898193359375
-          endLon: 107.3184105002972756892631878145039081573486328125
-          qualityScore: 5.63737665663332876420099637471139430999755859375
+        - startLat: 7.2074537141491035
+          endLat: 13.192316824526507
+          startLon: 108.49421129526726
+          endLon: 107.31841050029728
+          qualityScore: 5.637376656633329
+        - startLat: 7.2074537141491035
+          endLat: 13.192316824526507
+          startLon: 108.49421129526726
+          endLon: 107.31841050029728
+          qualityScore: 5.637376656633329
     BumpyPoint:
       type: object
       properties:
@@ -548,12 +575,12 @@ components:
           maximum: 180
           minimum: 0
           type: number
-        bumpScore:
+        bumpyScore:
           type: number
       example:
-        lon: 108.49421129526726
-        lat: 7.2074537141491035
-        bumpScore: 1.4658129805029452
+        bumpyScore: 5.962133916683182377482808078639209270477294921875
+        lon: 26.3846336490530148921607178635895252227783203125
+        lat: 54.2471056476336315199660020880401134490966796875
     ApiResponse:
       type: object
       properties:
@@ -600,12 +627,12 @@ components:
           type: number
           description: Expressed in meters per second
       example:
-        timeTS: 2000-01-23T04:56:07.000+00:00
-        precision: 5.962133916683182377482808078639209270477294921875
-        lon: 26.3846336490530148921607178635895252227783203125
-        lat: 54.2471056476336315199660020880401134490966796875
-        speed: 2.3021358869347654518833223846741020679473876953125
-        ele: 5.63737665663332876420099637471139430999755859375
+        timeTS: {}
+        precision: 5.962133916683182
+        lon: 26.384633649053015
+        lat: 54.24710564763363
+        speed: 2.3021358869347655
+        ele: 5.637376656633329
     ProcessedTrip_speed:
       type: object
       properties:
@@ -618,8 +645,8 @@ components:
           type: number
           description: Expressed in meters per second
       example:
-        maxSpeed: 0.602745618307040320615897144307382404804229736328125
-        avgSpeed: 0.146581298050294517310021547018550336360931396484375
+        maxSpeed: 0.6027456183070403
+        avgSpeed: 0.14658129805029452
     ProcessedTrip_elevation:
       type: object
       properties:
@@ -633,9 +660,9 @@ components:
           type: number
           description: Expressed in meters
       example:
-        minElevation: 5.63737665663332876420099637471139430999755859375
-        maxElevation: 5.962133916683182377482808078639209270477294921875
-        avgElevation: 2.3021358869347654518833223846741020679473876953125
+        minElevation: 5.637376656633329
+        maxElevation: 5.962133916683182
+        avgElevation: 2.3021358869347655
     Track_segments:
       type: object
       properties:
@@ -659,9 +686,22 @@ components:
           type: number
           nullable: true
       example:
-        startLat: 7.20745371414910351859361981041729450225830078125
-        endLat: 13.19231682452650744608035893179476261138916015625
-        startLon: 108.494211295267263039932004176080226898193359375
-        endLon: 107.3184105002972756892631878145039081573486328125
-        qualityScore: 5.63737665663332876420099637471139430999755859375
+        startLat: 7.2074537141491035
+        endLat: 13.192316824526507
+        startLon: 108.49421129526726
+        endLon: 107.31841050029728
+        qualityScore: 5.637376656633329
+    ProcessedTrip_vibration:
+      type: object
+      properties:
+        maxVibration:
+          type: number
+        minVibration:
+          type: number
+        avgVibration:
+          type: number
+      example:
+        minVibration: 1.46581298050294517310021547018550336360931396484375
+        maxVibration: 6.02745618307040320615897144307382404804229736328125
+        avgVibration: 5.962133916683182377482808078639209270477294921875
 
