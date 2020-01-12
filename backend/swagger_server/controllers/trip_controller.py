@@ -89,7 +89,7 @@ def get_trips_by_device_uuid():  # noqa: E501
     :rtype: List[Trip]
     """
     device_uuid = connexion.request.args.get('deviceUUID', None)
-    trips = mongodb_interface.get_trips_by_device_uuid(device_uuid)
+    trips = list(mongodb_interface.get_trips_by_device_uuid(device_uuid))
     for trip in trips:
         trip['bumpy_points_count'] = len(trip.get('bumpy_points', []))
     return list(map(ProcessedTrip.from_dict, trips)), 200
