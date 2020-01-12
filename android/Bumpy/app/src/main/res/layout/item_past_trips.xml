@@ -39,7 +39,6 @@
         android:layout_height="match_parent"
         android:background="@color/cyclingAdvocacyBlack"
         android:contentDescription="@string/upload_data_description"
-        android:tint="@color/cyclingAdvocacyYellow"
         app:srcCompat="@drawable/ic_upload" />
 
 </LinearLayout>
