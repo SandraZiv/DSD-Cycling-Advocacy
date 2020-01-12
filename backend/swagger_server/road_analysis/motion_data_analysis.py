@@ -7,6 +7,7 @@ import logging
 import matplotlib.pyplot as plt
 from math import radians, cos, sin, asin, sqrt
 import random
+import numpy as np
 import time
 
 
@@ -106,26 +107,35 @@ def retrieve_data(trip_uuid):
     return gnss_data, motion_df, log
 
 
+def normalize(vector):
+    lower, upper = 0, 1
+    return [lower + (upper - lower) * x for x in vector]
+
+
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_uuid, gnss_data, motion_df):
+    print(gnss_data.head())
+    print(motion_df.head())
     log = 'MOTION DATA SUMMARY DESCRIPTION\n'
     log += str(motion_df.describe())
     road_quality = []
+    m_accZ = motion_df['accelerometerZ'].mean()
     # time_ts is used as a primary key over gnss
     for index, ts in enumerate(gnss_data['time_ts']):
         if index == len(gnss_data['time_ts']) - 1:
             # road quality is calculated per each gnss point except the last one
             break
         # chunk is the subset of motion data registered in the time interval of current gnss
-        chunk = motion_df.loc[motion_df['timestamp'] == ts + datetime.timedelta(hours=1)]
+        chunk = motion_df.loc[motion_df['timestamp'] == ts]
         # calculate road quality
-        # this is just a dummy example
-        # timestamp,accelerometerX,accelerometerY,accelerometerZ,magnetometerX,
-        # magnetometerY,magnetometerZ,gyroscopeX,gyroscopeY,gyroscopeZ
-        chunk_road_quality = chunk['accelerometerZ'].mean()
+        r2 = 0
+        for accZ in chunk['accelerometerZ']:
+            r2 += (m_accZ - accZ) ** 2
+        road_quality.append(r2)
+    normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
+    for index, chunk_road_quality in enumerate(normalized_road_quality):
         mongodb_interface.update_trip_road_quality(trip_uuid, index, chunk_road_quality)
-        road_quality.append(chunk_road_quality)
     coords = [[gp['lon'], gp['lat']] for gp in mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data']]
     track = {'loc': {'type': 'LineString', 'coordinates': coords},
              'quality_scores': road_quality}
