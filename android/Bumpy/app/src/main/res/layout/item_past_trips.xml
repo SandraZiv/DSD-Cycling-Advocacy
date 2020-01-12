@@ -40,7 +40,7 @@
         android:background="@color/cyclingAdvocacyBlack"
         android:contentDescription="@string/upload_data_description"
         android:tint="@color/cyclingAdvocacyYellow"
-        app:srcCompat="@android:drawable/ic_popup_sync" />
+        app:srcCompat="@drawable/ic_upload" />
 
 </LinearLayout>
 
