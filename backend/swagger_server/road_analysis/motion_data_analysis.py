@@ -107,11 +107,6 @@ def retrieve_data(trip_uuid):
     return gnss_data, motion_df, log
 
 
-def normalize(vector):
-    lower, upper = 0, 1
-    return [lower + (upper - lower) * x for x in vector]
-
-
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_uuid, gnss_data, motion_df):
@@ -136,6 +131,8 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
     for index, chunk_road_quality in enumerate(normalized_road_quality):
         mongodb_interface.update_trip_road_quality(trip_uuid, index, chunk_road_quality)
+    mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min(),
+                                                     normalized_road_quality.max(), normalized_road_quality.mean())
     coords = [[gp['lon'], gp['lat']] for gp in mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data']]
     track = {'loc': {'type': 'LineString', 'coordinates': coords},
              'quality_scores': road_quality}
