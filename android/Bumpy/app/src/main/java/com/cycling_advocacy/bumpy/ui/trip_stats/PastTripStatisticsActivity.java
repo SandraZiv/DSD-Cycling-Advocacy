@@ -154,7 +154,11 @@ public class PastTripStatisticsActivity extends AppCompatActivity
             tvTripStatAvgElevation.setText(GeneralUtil.formatNoDecimal(elevation.getAvgElevation()));
         }
 
-        // TODO set vibration + bumps!!!
+        tvTripAvgVibration.setText(Double.toString(statistics.getVibration().getAvgVibration()));
+        tvTripMaxVibration.setText(Double.toString(statistics.getVibration().getMaxVibration()));
+
+        tvTripBumpsDetection.setText(Integer.toString(statistics.getBumpyPoints().size()));
+
 
         if (statistics.getGnssData() != null) {
             if (!statistics.getGnssData().isEmpty()) {
