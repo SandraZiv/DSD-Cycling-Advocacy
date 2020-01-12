@@ -109,6 +109,7 @@ def retrieve_data(trip_uuid):
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_uuid, gnss_data, motion_df):
+    print(motion_df)
     log = 'MOTION DATA SUMMARY DESCRIPTION\n'
     log += str(motion_df.describe())
     road_quality = []
@@ -119,6 +120,7 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
             break
         # chunk is the subset of motion data registered in the time interval of current gnss
         chunk = motion_df.loc[motion_df['timestamp'] == ts]
+        print(chunk)
         # calculate road quality
         # this is just a dummy example
         # timestamp,accelerometerX,accelerometerY,accelerometerZ,magnetometerX,
@@ -133,18 +135,16 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
 
 
 def calculate_trip_statistics(trip_uuid, gnss_data):
-    distance = haversine(gnss_data.head(1)['lon'], gnss_data.head(1)['lat'],
-                         gnss_data.tail(1)['lon'], gnss_data.tail(1)['lat'])
     max_speed = gnss_data['speed'].max()
     avg_speed = gnss_data['speed'].mean()
     max_elevation = gnss_data['ele'].max()
     min_elevation = gnss_data['ele'].min()
     avg_elevation = gnss_data['ele'].mean()
     mongodb_interface.update_trip_statistics(trip_uuid,
-                                             distance, max_speed, avg_speed, max_elevation, min_elevation,
+                                             max_speed, avg_speed, max_elevation, min_elevation,
                                              avg_elevation)
-    log = 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
-          % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
+    log = 'TRIP STATISTICS: max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
+          % (max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
     return log
 
 

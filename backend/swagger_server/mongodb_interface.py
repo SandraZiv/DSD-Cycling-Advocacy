@@ -27,14 +27,13 @@ def get_trips_by_device_uuid(device_uuid):
     return main_db.trips.find({'device_uuid': device_uuid}).sort([('end_ts', pymongo.DESCENDING)])
 
 
-def update_trip_statistics(trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
+def update_trip_statistics(trip_uuid, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
     new_values = {
           "elevation": {
               "minElevation": min_elevation,
               "maxElevation": max_elevation,
               "avgElevation": avg_elevation
           },
-          "distance": distance,
           "speed": {
               "maxSpeed": max_speed,
               "avgSpeed": avg_speed
