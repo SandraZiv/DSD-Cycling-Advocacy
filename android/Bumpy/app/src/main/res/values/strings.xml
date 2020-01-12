@@ -33,7 +33,8 @@
     <string name="vibration">Vibration</string>
     <string name="distance">Distance (km)</string>
     <string name="duration">Duration</string>
-  
+    <string name="maximum">MAX</string>
+
     <!--Data retriever-->
     <string name="get_trips_not_successful">Get past trips unsuccessful!</string>
     <string name="get_trip_stats_not_successful">Get past trip statistics unsuccessful!</string>
