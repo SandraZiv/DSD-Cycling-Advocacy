@@ -36,28 +36,28 @@
                 app:maxSpeed="50"
                 app:unit=""/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/margin_double"
-            android:gravity="center_horizontal">
-
-            <TextView
-                android:id="@+id/tv_max_speed"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/circle"
-                tools:text="35"
-                android:textColor="@color/cyclingAdvocacyYellow"
-                android:padding="@dimen/margin_mini"/>
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_double"
+                android:gravity="center_horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/maximum"
-                android:textColor="@color/cyclingAdvocacyYellow"
-                android:textSize="@dimen/text_size_micro"/>
+                <TextView
+                    android:id="@+id/tv_max_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/circle"
+                    tools:text="35"
+                    android:textColor="@color/cyclingAdvocacyYellow"
+                    android:padding="@dimen/margin_mini"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/maximum"
+                    android:textColor="@color/cyclingAdvocacyYellow"
+                    android:textSize="@dimen/text_size_micro"/>
         </LinearLayout>
 
     </LinearLayout>
