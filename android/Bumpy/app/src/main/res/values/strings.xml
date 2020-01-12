@@ -28,9 +28,8 @@
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>
     <string name="google_api_install">You need to install Google Play Services to use the App properly</string>
-    <string name="speed_unit">km/h</string>
     <string name="vibration_unit">%</string>
-    <string name="speed">Speed</string>
+    <string name="speed">Speed (km/h)</string>
     <string name="vibration">Vibration</string>
     <string name="distance">Distance (km)</string>
     <string name="duration">Duration</string>

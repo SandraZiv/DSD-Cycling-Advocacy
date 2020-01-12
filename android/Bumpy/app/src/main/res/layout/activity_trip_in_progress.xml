@@ -23,13 +23,13 @@
     <com.github.anastr.speedviewlib.RaySpeedometer
         android:id="@+id/gauge_view_speed"
         style="@style/GaugeViewStyle"
-        android:layout_width="@dimen/gauge_size"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/gauge_size"
         android:layout_weight="4"
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_small"
         app:maxSpeed="50"
-        app:unit="@string/speed_unit"/>
+        app:unit=""/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
     <com.github.anastr.speedviewlib.RaySpeedometer
         android:id="@+id/gauge_view_vibration"
         style="@style/GaugeViewStyle"
-        android:layout_width="@dimen/gauge_size"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/gauge_size"
         android:layout_weight="4"
         android:layout_gravity="center"
