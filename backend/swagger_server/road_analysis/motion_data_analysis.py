@@ -133,16 +133,24 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
 
 
 def calculate_trip_statistics(trip_uuid, gnss_data):
+    distance = 0
+    prev_point = None
+    for index, curr_point in gnss_data.iterrows():
+        if index == 0:
+            prev_point = curr_point
+        else:
+            distance += haversine(prev_point['lon'], prev_point['lat'], curr_point['lon'], curr_point['lat'])
+    print(distance)
     max_speed = gnss_data['speed'].max()
     avg_speed = gnss_data['speed'].mean()
     max_elevation = gnss_data['ele'].max()
     min_elevation = gnss_data['ele'].min()
     avg_elevation = gnss_data['ele'].mean()
-    mongodb_interface.update_trip_statistics(trip_uuid,
+    mongodb_interface.update_trip_statistics(trip_uuid, distance,
                                              max_speed, avg_speed, max_elevation, min_elevation,
                                              avg_elevation)
-    log = 'TRIP STATISTICS: max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
-          % (max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
+    log = 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
+          % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
     return log
 
 

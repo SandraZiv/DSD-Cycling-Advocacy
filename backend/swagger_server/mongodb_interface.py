@@ -10,6 +10,7 @@ client = pymongo.MongoClient(mongodbUri, maxPoolSize=10, connect=False)
 main_db = client.main_db
 file_db = client.file_db
 
+
 #
 # TRIPS
 #
@@ -27,18 +28,19 @@ def get_trips_by_device_uuid(device_uuid):
     return main_db.trips.find({'device_uuid': device_uuid}).sort([('end_ts', pymongo.DESCENDING)])
 
 
-def update_trip_statistics(trip_uuid, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
+def update_trip_statistics(trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
     new_values = {
-          "elevation": {
-              "minElevation": min_elevation,
-              "maxElevation": max_elevation,
-              "avgElevation": avg_elevation
-          },
-          "speed": {
-              "maxSpeed": max_speed,
-              "avgSpeed": avg_speed
-          }
-      }
+        "elevation": {
+            "minElevation": min_elevation,
+            "maxElevation": max_elevation,
+            "avgElevation": avg_elevation
+        },
+        "distance": distance,
+        "speed": {
+            "maxSpeed": max_speed,
+            "avgSpeed": avg_speed
+        }
+    }
     main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_values}, upsert=False)
     return
 
@@ -46,7 +48,7 @@ def update_trip_statistics(trip_uuid, max_speed, avg_speed, max_elevation, min_e
 # TODO update road quality https://docs.mongodb.com/manual/tutorial/update-documents/
 def update_trip_road_quality(trip_uuid, gnss_index, road_quality):
     main_db.trips.update_one({'trip_uuid': trip_uuid},
-                             {"$set": {'gnss_data.'+str(gnss_index)+'.road_quality': road_quality}})
+                             {"$set": {'gnss_data.' + str(gnss_index) + '.road_quality': road_quality}})
 
 
 def delete_trip_by_trip_uuid(trip_uuid):
