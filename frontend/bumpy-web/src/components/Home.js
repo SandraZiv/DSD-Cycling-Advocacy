@@ -80,7 +80,6 @@ export class Home extends Component {
                     } else if (s.qualityScore > 0.1) {
                         return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#00b837'}/>
                     } else {
-                        console.log(s.endLat, s.endLon)
                         return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#078d2f'}/>
 
                     }
