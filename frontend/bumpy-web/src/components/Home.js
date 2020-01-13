@@ -62,20 +62,22 @@ export class Home extends Component {
             roadQualityPolys = mapData.map(track => {
                 return track.segments.map(s => {
                     if (s.qualityScore > 0.9) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#fc0303'}/>
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#b02727'}/>
                     } else if (s.qualityScore > 0.8) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#fc0303'}/>
+                     } else if (s.qualityScore > 0.7) {
                         return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ff5900'}/>
-                    } else if (s.qualityScore > 0.7) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ff8c00'}/>
                     } else if (s.qualityScore > 0.6) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ffbf00'}/>
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ff8c00'}/>
                     } else if (s.qualityScore > 0.5) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ffff00'}/>
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ffbf00'}/>
                     } else if (s.qualityScore > 0.4) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#cdeb0c'}/>
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ffff00'}/>
                     } else if (s.qualityScore > 0.3) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#0ceb4e'}/>
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#cdeb0c'}/>
                     } else if (s.qualityScore > 0.2) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#0ceb4e'}/>
+                    } else if (s.qualityScore > 0.1) {
                         return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#00b837'}/>
                     } else {
                         console.log(s.endLat, s.endLon)
