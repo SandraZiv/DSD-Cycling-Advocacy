@@ -147,7 +147,7 @@ export class TripPreview extends Component {
                     </CardGroup>
                     <LeafletMap
                         style={{
-                            height: '400px',
+                            height: '580px',
                             width: '100%',
                             margin: '10px auto'
                         }}

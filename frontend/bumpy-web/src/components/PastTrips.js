@@ -28,7 +28,7 @@ export const PastTrips = (props) => {
                     setShortUuid(urlUUID);
                     return response.text()
                 } else {
-                    alert('UUID not valid');
+                    alert('User Identifier not valid');
                     props.history.push('/login');
                 }
             })
@@ -47,6 +47,7 @@ export const PastTrips = (props) => {
                             trip.startTS = formatDateDefault(trip.startTS);
                             trip.endTS = formatDateDefault(trip.endTS);
                             trip.distance = formatFloat(trip.distance);
+                            // trip.vibration = trip.vibration.avgVibration;
                             return trip
                         }));
                     });
@@ -71,13 +72,11 @@ export const PastTrips = (props) => {
                 })}
             }}> <i className="fa fa-trash"/>
         </Button>
-    )
+    );
 
 
     let tripTable = "";
     if (trips !== undefined) {
-        // console.log(trips)
-
         const columns = [{
             dataField: 'startTS',
             text: 'Start time',
@@ -90,10 +89,10 @@ export const PastTrips = (props) => {
             dataField: 'distance',
             text: 'Distance(km)',
             sort: true
-            // }, {
-            //     dataField: 'vibration',
-            //     text: 'Average vibration(%)',
-            //     sort: true
+        }, {
+            dataField: 'vibration',
+            text: 'Average vibration(%)',
+            sort: true
         },  {
              dataField: 'details',
              text: '',
