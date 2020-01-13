@@ -30,10 +30,9 @@
     <string name="google_api_install">You need to install Google Play Services to use the App properly</string>
     <string name="vibration_unit">%</string>
     <string name="speed">Speed (km/h)</string>
-    <string name="vibration">Vibration</string>
+    <string name="vibration">Vibration (%)</string>
     <string name="distance">Distance (km)</string>
     <string name="duration">Duration</string>
-    <string name="maximum">MAX</string>
 
     <!--Data retriever-->
     <string name="get_trips_not_successful">Get past trips unsuccessful!</string>

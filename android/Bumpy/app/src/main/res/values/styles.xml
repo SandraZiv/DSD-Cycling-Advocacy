@@ -45,6 +45,8 @@
         <item name="rayColor">@color/transparentYellow</item>
         <item name="speedTextSize">@dimen/text_size_big</item>
         <item name="speedometerWidth">@dimen/speed_width</item>
+        <item name="textSize">@dimen/text_size_small</item>
+        <item name="unit">""</item>
     </style>
 
 </resources>

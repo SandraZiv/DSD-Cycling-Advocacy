@@ -8,14 +8,12 @@
     <dimen name="margin_double">28dp</dimen>
     <dimen name="margin_extra_double">60dp</dimen>
 
-    <dimen name="text_size_big">30sp</dimen>
-    <dimen name="text_size_large">24sp</dimen>
-    <dimen name="text_size_medium">20sp</dimen>
-    <dimen name="text_size_small">15sp</dimen>
     <dimen name="text_size_mini">12sp</dimen>
-    <dimen name="text_size_micro">8sp</dimen>
+    <dimen name="text_size_small">15sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_big">30sp</dimen>
 
-    <dimen name="gauge_size">160dp</dimen>
     <dimen name="speed_width">25dp</dimen>
 
 </resources>

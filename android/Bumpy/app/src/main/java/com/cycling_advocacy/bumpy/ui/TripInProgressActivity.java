@@ -53,8 +53,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         VibrationChangedListener {
 
     private TextView tvDistance;
-    private TextView tvMaxSpeed;
-    private TextView tvMaxVibration;
     private Chronometer chronometerDuration;
     private RaySpeedometer speedometer;
     private RaySpeedometer vibrationMeter;
@@ -84,8 +82,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
         setSupportActionBar(toolbar);
 
         tvDistance = findViewById(R.id.tv_distance);
-        tvMaxSpeed = findViewById(R.id.tv_max_speed);
-        tvMaxVibration = findViewById(R.id.tv_max_vibration);
         tvDistance.setText(GeneralUtil.formatDecimal(0.00));
         chronometerDuration = findViewById(R.id.chronometer_duration);
 
@@ -235,13 +231,11 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
         speedometer.speedTo((int)gnssData.getSpeed(), 10);
         tvDistance.setText(trip.getFormattedDistance());
-        //todo set live max speed
     }
 
     @Override
     public void onVibrationChanged(int vibrationPercentage) {
         vibrationMeter.speedTo(vibrationPercentage, 0);
         trip.updateMaxVibration(vibrationPercentage);
-        //todo set live max vibration
     }
 }
