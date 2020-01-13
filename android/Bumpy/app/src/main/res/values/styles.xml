@@ -1,11 +1,52 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/cyclingAdvocacyBlack</item>
         <item name="colorPrimaryDark">@color/cyclingAdvocacyBlack</item>
         <item name="colorAccent">@color/cyclingAdvocacyYellow</item>
+    </style>
+
+    <!--todo launcher style-->
+    <style name="AppTheme.Launcher">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowBackground">@color/cyclingAdvocacyBlack</item>
+    </style>
+
+    <style name="SwitchCompatStyle">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">@color/cyclingAdvocacyYellow</item>
+        <item name="android:colorForeground">@color/white</item>
+    </style>
+
+    <style name="StandardToolbar">
+        <item name="android:background">@color/cyclingAdvocacyYellow</item>
+    </style>
+
+    <style name="StandardButton">
+        <item name="android:padding">@dimen/margin_small</item>
+        <item name="android:background">@color/cyclingAdvocacyYellow</item>
+        <item name="android:textColor">@color/cyclingAdvocacyBlack</item>
+    </style>
+
+    <style name="PreferenceCompatStyle" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:background">@color/cyclingAdvocacyBlack</item>
+        <item name="android:textColor">@color/cyclingAdvocacyYellow</item>
+    </style>
+
+    <style name="GaugeViewStyle">
+        <item name="backgroundCircleColor">@color/darkGrey</item>
+        <item name="lowSpeedColor">@color/cyclingAdvocacyYellow</item>
+        <item name="mediumSpeedColor">@color/mediumOrange</item>
+        <item name="highSpeedColor">@color/highRed</item>
+        <item name="speedBackgroundColor">@color/cyclingAdvocacyYellow</item>
+        <item name="textColor">@color/cyclingAdvocacyYellow</item>
+        <item name="rayColor">@color/transparentYellow</item>
+        <item name="speedTextSize">@dimen/text_size_big</item>
+        <item name="speedometerWidth">@dimen/speed_width</item>
+        <item name="textSize">@dimen/text_size_small</item>
+        <item name="unit">""</item>
     </style>
 
 </resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cyclingAdvocacyBlack"
+    android:orientation="vertical"
+    tools:context=".ui.trip_stats.PastTripStatisticsActivity">
+
+    <include layout="@layout/toolbar" />
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mv_route_map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_marginTop="@dimen/margin_small"/>
+
+    <include layout="@layout/past_trip_statistics_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:layout_marginTop="@dimen/margin_standard"/>
+
+</LinearLayout>

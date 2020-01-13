@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="cyclingAdvocacyYellow">#ffdd00</color>
+    <color name="cyclingAdvocacyYellow">#FFDD00</color>
+    <color name="cyclingAdvocacyYellowHint">#81FFDD00</color>
     <color name="cyclingAdvocacyYellowLogo">#ffff01</color>
     <color name="cyclingAdvocacyBlack">#000000</color>
+
+    <color name="grey">#DA8D8989</color>
+    <color name="white">#ffffff</color>
+
+    <!-- Gauge View -->
+    <color name="darkGrey">#D2464545</color>
+    <color name="mediumOrange">#FF5722</color>
+    <color name="highRed">#EC2F33</color>
+    <color name="transparentYellow">#40FFDD00</color>
 </resources>
