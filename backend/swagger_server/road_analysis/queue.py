@@ -78,6 +78,8 @@ def execute_trip_analysis_job(trip_uuid):
     # run motion data analysis
     track = motion_data_analysis.run_motion_data_analysis(trip_uuid)
     # update the global map with new data
+    if track is None:
+        return
     map_update.run_map_update(track)
     return
 

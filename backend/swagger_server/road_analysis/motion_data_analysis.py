@@ -67,6 +67,9 @@ def retrieve_data(trip_uuid):
     if dead:
         return None, None, "Data retrieval failed due to timeout"
 
+    if len(gnss_data.index) == 1:
+        return None, None, "Trip with only one GNSS point"
+
     # ping for motion data until found
     logging.info('Start looking for motion file...')
     motion_file = None
@@ -128,7 +131,12 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
         for accZ in chunk['accelerometerZ']:
             r2 += (m_accZ - accZ) ** 2
         road_quality.append(r2)
-    normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
+    normalized_road_quality = []
+    if np.max(road_quality) - np.min(road_quality) != 0:
+        normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
+    else:
+        normalized_road_quality.append(0)
+    print(normalized_road_quality)
     # switch from road badness to road goodness
     # normalized_road_quality = 1 - normalized_road_quality
     for index, chunk_road_quality in enumerate(normalized_road_quality):
@@ -167,6 +175,9 @@ def calculate_trip_statistics(trip_uuid, gnss_data):
 def run_motion_data_analysis(trip_uuid):
     # trip and motion data
     gnss_data, motion_df, db_log = retrieve_data(trip_uuid)
+    if gnss_data is None or motion_df is None:
+        logging.info(db_log)
+        return None
     # trip statistics
     stats_log = calculate_trip_statistics(trip_uuid, gnss_data)
     # road quality
