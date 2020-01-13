@@ -40,7 +40,7 @@ export class TripPreview extends Component {
             fetch(`/v1/trip/deleteTrip?tripUUID=${this.state.trip.tripUUID}`, {
                 method: 'DELETE'
             }).then(response => {
-                this.props.history.goBack()
+                this.props.history.goBack();
             })
         }
     }
@@ -68,14 +68,14 @@ export class TripPreview extends Component {
                maxSpeed = formatFloat(tripData.speed.maxSpeed) + ' km/h';
             }
 
-            let avgVibration = '15%';
-            let bumpsDetected = '12';
+            let avgVibration = '';
+            let bumpsDetected = '';
 
             let avgElevation = '', maxElevation = '', minElevation = '';
             if (tripData.elevation !== undefined) {
-              avgElevation = formatFloat(tripData.elevation.avgElevation) + ' m';
-              maxElevation = formatFloat(tripData.elevation.maxElevation) + ' m';
-              minElevation = formatFloat(tripData.elevation.minElevation) + ' m';
+              avgElevation = tripData.elevation.avgElevation.toFixed(0) + ' m';
+              maxElevation = tripData.elevation.maxElevation.toFixed(0) + ' m';
+              minElevation = tripData.elevation.minElevation.toFixed(0) + ' m';
             }
 
             let points = tripData.gnssData.map(point => [point.lat, point.lon]);
@@ -147,7 +147,7 @@ export class TripPreview extends Component {
                     </CardGroup>
                     <LeafletMap
                         style={{
-                            height: '360px',
+                            height: '580px',
                             width: '100%',
                             margin: '10px auto'
                         }}

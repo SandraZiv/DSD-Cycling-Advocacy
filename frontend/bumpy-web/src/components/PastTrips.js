@@ -28,7 +28,7 @@ export const PastTrips = (props) => {
                     setShortUuid(urlUUID);
                     return response.text()
                 } else {
-                    alert('UUID not valid');
+                    alert('User Identifier not valid');
                     props.history.push('/login');
                 }
             })
@@ -47,6 +47,7 @@ export const PastTrips = (props) => {
                             trip.startTS = formatDateDefault(trip.startTS);
                             trip.endTS = formatDateDefault(trip.endTS);
                             trip.distance = formatFloat(trip.distance);
+                            // trip.vibration = trip.vibration.avgVibration;
                             return trip
                         }));
                     });
@@ -61,10 +62,21 @@ export const PastTrips = (props) => {
             </Button>
         </Link>;
 
+    let deleteFormatter = (cell, row) =>
+        (<Button className = "btn bg-danger text-white border-white" onClick={() => {
+            if (window.confirm('Are you sure you wish to delete this trip?')){
+                fetch(`/v1/trip/deleteTrip?tripUUID=${row.tripUUID}`, {
+                    method: 'DELETE'
+                }).then(response => {
+                    window.location.reload();
+                })}
+            }}> <i className="fa fa-trash"/>
+        </Button>
+    );
+
+
     let tripTable = "";
     if (trips !== undefined) {
-        // console.log(trips)
-
         const columns = [{
             dataField: 'startTS',
             text: 'Start time',
@@ -77,10 +89,10 @@ export const PastTrips = (props) => {
             dataField: 'distance',
             text: 'Distance(km)',
             sort: true
-            // }, {
-            //     dataField: 'vibration',
-            //     text: 'Average vibration(%)',
-            //     sort: true
+        }, {
+            dataField: 'vibration',
+            text: 'Average vibration(%)',
+            sort: true
         },  {
              dataField: 'details',
              text: '',
@@ -90,6 +102,14 @@ export const PastTrips = (props) => {
              headerStyle: () => {
                    return { width: "10%" }}
 
+        }, {
+             dataField: 'delete',
+             text: '',
+             sort: false,
+             isDummyField: true,
+             formatter: deleteFormatter,
+             headerStyle: () => {
+                    return { width: "10%" }}
         }];
 
 

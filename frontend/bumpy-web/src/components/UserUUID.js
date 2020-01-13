@@ -19,7 +19,7 @@ export const UserUUID = (props) => {
                         setShortUuid(uuidUpperCase);
                         props.history.push(`/user/${uuidUpperCase}`);
                     } else {
-                        alert("UUID not valid")
+                        alert("User Identifier not valid")
                     }
                 })
         } catch (e) {
