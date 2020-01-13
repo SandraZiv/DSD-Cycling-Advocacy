@@ -231,7 +231,6 @@ public class TripInProgressActivity extends AppCompatActivity implements GoogleA
 
         speedometer.speedTo((int)gnssData.getSpeed(), 10);
         tvDistance.setText(trip.getFormattedDistance());
-
     }
 
     @Override
