@@ -54,8 +54,7 @@ public class MapFragment extends Fragment implements RoadQualityListener {
 
     private MapView map;
     private MyLocationNewOverlay mLocationOverlay;
-
-    // TODO: This will most likely need changing -- coordinate with web frontend
+    
     private static final double BAD_ROAD_QUALITY_THRESHOLD = 0.4;
     private static final double GOOD_ROAD_QUALITY_THRESHOLD = 0.6;
 
