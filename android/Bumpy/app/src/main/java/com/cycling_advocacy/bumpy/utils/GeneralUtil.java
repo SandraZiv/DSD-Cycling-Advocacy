@@ -2,6 +2,7 @@ package com.cycling_advocacy.bumpy.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -80,5 +81,31 @@ public class GeneralUtil {
         }
 
         return true;
+    }
+
+    public static int getColorFromRoadQuality(Double quality) {
+        if (quality == null) {
+            return Color.GRAY;
+        } else if (quality < 0.1) {
+            return Color.parseColor("#B02727");
+        } else if (quality >= 0.1 && quality < 0.2) {
+            return Color.parseColor("#FC0303");
+        } else if (quality >= 0.2 && quality < 0.3) {
+            return Color.parseColor("#FF5900");
+        } else if (quality >= 0.3 && quality < 0.4) {
+            return Color.parseColor("#FF8C00");
+        } else if (quality >= 0.4 && quality < 0.5) {
+            return Color.parseColor("#FFBF00");
+        } else if (quality >= 0.5 && quality < 0.6) {
+            return Color.parseColor("#FFFF00");
+        } else if (quality >= 0.6 && quality < 0.7) {
+            return Color.parseColor("#CDEB0C");
+        } else if (quality >= 0.7 && quality < 0.8) {
+            return Color.parseColor("#0CEB4E");
+        } else if (quality >= 0.8 && quality < 0.9) {
+            return Color.parseColor("#00B837");
+        } else {
+            return Color.parseColor("#078D2F");
+        }
     }
 }

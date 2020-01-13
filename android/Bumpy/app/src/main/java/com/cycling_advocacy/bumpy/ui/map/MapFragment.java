@@ -26,6 +26,7 @@ import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
 import com.cycling_advocacy.bumpy.net.DataSender;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
+import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
@@ -55,9 +56,6 @@ public class MapFragment extends Fragment implements RoadQualityListener {
     private MapView map;
     private MyLocationNewOverlay mLocationOverlay;
     
-    private static final double BAD_ROAD_QUALITY_THRESHOLD = 0.4;
-    private static final double GOOD_ROAD_QUALITY_THRESHOLD = 0.6;
-
     private static final double MAP_ZOOM_DISPLAY_THRESHOLD = 15.5;
 
     private List<Polyline> currentlyDisplayedSegments = new ArrayList<>();
@@ -201,16 +199,7 @@ public class MapFragment extends Fragment implements RoadQualityListener {
                 for (RoadQualitySegmentsResponse.Segment segment : segments) {
                     Double quality = segment.getQualityScore();
 
-                    int color;
-                    if (quality == null) {
-                        color = Color.BLACK;
-                    } else if (quality < BAD_ROAD_QUALITY_THRESHOLD) {
-                        color = Color.RED;
-                    } else if (quality > GOOD_ROAD_QUALITY_THRESHOLD) {
-                        color = Color.GREEN;
-                    } else {
-                        color = Color.YELLOW;
-                    }
+                    int color = GeneralUtil.getColorFromRoadQuality(quality);
 
                     GeoPoint startPoint = new GeoPoint(segment.getStartLat(), segment.getStartLon());
                     GeoPoint endPoint = new GeoPoint(segment.getEndLat(), segment.getEndLon());
