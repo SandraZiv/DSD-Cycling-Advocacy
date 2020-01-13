@@ -56,6 +56,10 @@ public class GeneralUtil {
         return String.format(Locale.getDefault(), "%.0f", data);
     }
 
+    public static String formatInt(int data) {
+        return String.format(Locale.getDefault(), "%d", data);
+    }
+
     public static String generateUUID() {
         return UUID.randomUUID().toString();
     }
