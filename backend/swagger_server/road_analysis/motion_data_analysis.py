@@ -129,7 +129,8 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
             r2 += (m_accZ - accZ) ** 2
         road_quality.append(r2)
     normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
-    normalized_road_quality = 1 - normalized_road_quality
+    # switch from road badness to road goodness
+    # normalized_road_quality = 1 - normalized_road_quality
     for index, chunk_road_quality in enumerate(normalized_road_quality):
         mongodb_interface.update_trip_road_quality(trip_uuid, index, chunk_road_quality)
     mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min()*100,
