@@ -61,6 +61,19 @@ export const PastTrips = (props) => {
             </Button>
         </Link>;
 
+    let deleteFormatter = (cell, row) =>
+        (<Button className = "btn bg-danger text-white border-white" onClick={() => {
+            if (window.confirm('Are you sure you wish to delete this trip?')){
+                fetch(`/v1/trip/deleteTrip?tripUUID=${row.tripUUID}`, {
+                    method: 'DELETE'
+                }).then(response => {
+                    window.location.reload();
+                })}
+            }}> <i className="fa fa-trash"/>
+        </Button>
+    )
+
+
     let tripTable = "";
     if (trips !== undefined) {
         // console.log(trips)
@@ -90,6 +103,14 @@ export const PastTrips = (props) => {
              headerStyle: () => {
                    return { width: "10%" }}
 
+        }, {
+             dataField: 'delete',
+             text: '',
+             sort: false,
+             isDummyField: true,
+             formatter: deleteFormatter,
+             headerStyle: () => {
+                    return { width: "10%" }}
         }];
 
 
