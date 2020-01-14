@@ -40,7 +40,7 @@ def update_road_quality_statistics(trip_uuid, min_road_quality, max_road_quality
     return
 
 
-def update_trip_statistics(trip_uuid, distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
+def update_trip_statistics(trip_uuid, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation):
     new_values = {
         "elevation": {
             "minElevation": min_elevation,
@@ -52,7 +52,6 @@ def update_trip_statistics(trip_uuid, distance, max_speed, avg_speed, max_elevat
             "maxVibration": 6.027456183070403,
             "avgVibration": 5.962133916683182
         },
-        "distance": distance,
         "speed": {
             "maxSpeed": max_speed,
             "avgSpeed": avg_speed

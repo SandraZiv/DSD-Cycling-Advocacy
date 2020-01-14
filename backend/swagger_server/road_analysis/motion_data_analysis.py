@@ -113,8 +113,6 @@ def retrieve_data(trip_uuid):
 # for each point into trip data, take the chunk of motion data marked with the same timestamp
 # describe() shows main statistics available for each chunk
 def calculate_road_quality(trip_uuid, gnss_data, motion_df):
-    print(gnss_data.head())
-    print(motion_df.head())
     log = 'MOTION DATA SUMMARY DESCRIPTION\n'
     log += str(motion_df.describe())
     road_quality = []
@@ -134,8 +132,6 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     normalized_road_quality = []
     if np.max(road_quality) - np.min(road_quality) != 0:
         normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
-    else:
-        normalized_road_quality.append(0)
     print(normalized_road_quality)
     # switch from road badness to road goodness
     # normalized_road_quality = 1 - normalized_road_quality
@@ -152,23 +148,23 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
 
 
 def calculate_trip_statistics(trip_uuid, gnss_data):
-    distance = 0
-    prev_point = None
-    for index, curr_point in gnss_data.iterrows():
-        if index == 0:
-            prev_point = curr_point
-        else:
-            distance += haversine(prev_point['lon'], prev_point['lat'], curr_point['lon'], curr_point['lat'])
+    # distance = 0
+    # prev_point = None
+    # for index, curr_point in gnss_data.iterrows():
+    #     if index == 0:
+    #         prev_point = curr_point
+    #     else:
+    #         distance += haversine(prev_point['lon'], prev_point['lat'], curr_point['lon'], curr_point['lat'])
     max_speed = gnss_data['speed'].max()
     avg_speed = gnss_data['speed'].mean()
     max_elevation = gnss_data['ele'].max()
     min_elevation = gnss_data['ele'].min()
     avg_elevation = gnss_data['ele'].mean()
-    mongodb_interface.update_trip_statistics(trip_uuid, distance,
+    mongodb_interface.update_trip_statistics(trip_uuid, # distance,
                                              max_speed, avg_speed, max_elevation, min_elevation,
                                              avg_elevation)
-    log = 'TRIP STATISTICS: distance: %s, max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
-          % (distance, max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
+    log = 'TRIP STATISTICS: max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
+          % (max_speed, avg_speed, max_elevation, min_elevation, avg_elevation)
     return log
 
 
