@@ -53,7 +53,6 @@ export class Home extends Component {
     }
 
     render() {
-
         let roadQualityPolys = "";
         if (this.state.roadQualityHeatMap !== undefined) {
             let mapData = this.state.roadQualityHeatMap;
@@ -81,7 +80,6 @@ export class Home extends Component {
                         return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#00b837'}/>
                     } else {
                         return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#078d2f'}/>
-
                     }
                 })
             });
@@ -109,9 +107,9 @@ export class Home extends Component {
                     easeLinearity={0.35}>
                     <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
                     {roadQualityPolys}
-                    <Marker icon ={iconMarker} position={[45.79100789999999, 15.991219900000003]}>
-                          <Popup>Bump</Popup>
-                        </Marker>
+                    {/*<Marker icon ={iconMarker} position={[45.79100789999999, 15.991219900000003]}>*/}
+                    {/*      <Popup>Bump</Popup>*/}
+                    {/*</Marker>*/}
                 </LeafletMap>
             </div>
         );
