@@ -71,8 +71,8 @@ export class TripPreview extends Component {
             let avgVibration = '';
             let bumpsDetected = '';
             if (tripData.vibration !== undefined) {
-                avgVibration = tripData.vibration.avgVibration;
-                bumpsDetected = tripData.bumpyPoints.size();
+                avgVibration = formatFloat(tripData.vibration.avgVibration);
+                bumpsDetected = tripData.bumpyPoints.length;
             }
 
             let avgElevation = '', maxElevation = '', minElevation = '';
