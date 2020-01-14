@@ -47,7 +47,7 @@ export const PastTrips = (props) => {
                             trip.startTS = formatDateDefault(trip.startTS);
                             trip.endTS = formatDateDefault(trip.endTS);
                             trip.distance = formatFloat(trip.distance);
-                            trip.avgVibration = trip.vibration.avgVibration;
+                            trip.avgVibration = formatFloat(trip.vibration.avgVibration);
                             return trip
                         }));
                     });
