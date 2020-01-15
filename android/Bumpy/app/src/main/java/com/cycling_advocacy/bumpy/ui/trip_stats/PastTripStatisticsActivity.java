@@ -153,7 +153,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity
         }
 
         if (statistics.getVibration() != null) {
-            tvTripAvgVibration.setText(GeneralUtil.formatNoDecimal(statistics.getVibration().getAvgVibration()));
+            tvTripAvgVibration.setText(GeneralUtil.formatDecimal(statistics.getVibration().getAvgVibration()));
         }
 
         tvTripBumpsDetection.setText(GeneralUtil.formatInt(statistics.getBumpyPoints().size()));
