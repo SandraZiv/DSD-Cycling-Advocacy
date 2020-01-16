@@ -5,11 +5,11 @@ import React from "react";
 export const bumpToMarker = (bump, i) => {
     let score;
     switch (bump.bumpyScore) {
-        case 1: score = "Minor bump"; break;
-        case 2: score = "Small bump"; break;
-        case 3: score = "Moderate Bump"; break;
+        case 1: score = "Very little bump"; break;
+        case 2: score = "Little bump"; break;
+        case 3: score = "Moderate bump"; break;
         case 4: score = "Large bump"; break;
-        case 5: score = "Critical bump"; break;
+        case 5: score = "Very large bump"; break;
         default: score = bump.bumpyScore;
     }
     
