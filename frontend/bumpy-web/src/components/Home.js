@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Map as LeafletMap, TileLayer, Polyline, Marker} from 'react-leaflet';
-import L from 'leaflet';
+import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
+import {bumpToMarker} from "../bumpyIssues";
 
 export class Home extends Component {
 
@@ -92,9 +92,7 @@ export class Home extends Component {
             let bumpyData = this.state.bumpyPoints;
 
             let i = 0; // used for keys
-            bumpyIssueMarkers = bumpyData.map(bump =>
-                <Marker key={i++} icon ={bumpIconMarker} position={[bump.lat, bump.lon]}/>
-            )
+            bumpyIssueMarkers = bumpyData.map(bump => bumpToMarker(bump, i++));
         }
 
         return (
@@ -125,8 +123,3 @@ export class Home extends Component {
         );
     }
 }
-
-export const bumpIconMarker = new L.icon({
-    iconUrl: require('./../images/marker.png'),
-    iconSize: [20,35]
-});

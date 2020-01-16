@@ -4,7 +4,7 @@ import {Map as LeafletMap, TileLayer, Polyline, Marker, Popup} from 'react-leafl
 import {formatDateDefault} from "../dateformat";
 import {buildDuration, formatFloat} from "../utils";
 import L from 'leaflet';
-import {bumpIconMarker} from "./Home";
+import {bumpToMarker} from "../bumpyIssues";
 
 export class TripPreview extends Component {
 
@@ -91,9 +91,7 @@ export class TripPreview extends Component {
 
             let bumpyData = tripData.bumpyPoints;
             let i = 0; // used for keys
-            let bumpyIssueMarkers = bumpyData.map(bump =>
-                <Marker key={i++} icon ={bumpIconMarker} position={[bump.lat, bump.lon]}/>
-            );
+            let bumpyIssueMarkers = bumpyData.map(bump => bumpToMarker(bump, i++));
 
             card = <Card className="text-left">
                 <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
