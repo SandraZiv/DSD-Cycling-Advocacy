@@ -47,7 +47,7 @@ export const PastTrips = (props) => {
                             trip.startTS = formatDateDefault(trip.startTS);
                             trip.endTS = formatDateDefault(trip.endTS);
                             trip.distance = formatFloat(trip.distance);
-                            // trip.vibration = trip.vibration.avgVibration;
+                            trip.avgVibration = formatFloat(trip.vibration.avgVibration);
                             return trip
                         }));
                     });
@@ -90,7 +90,7 @@ export const PastTrips = (props) => {
             text: 'Distance(km)',
             sort: true
         }, {
-            dataField: 'vibration',
+            dataField: 'avgVibration',
             text: 'Average vibration(%)',
             sort: true
         },  {

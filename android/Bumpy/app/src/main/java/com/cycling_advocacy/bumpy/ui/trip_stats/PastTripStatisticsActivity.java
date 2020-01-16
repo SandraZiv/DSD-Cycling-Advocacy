@@ -53,7 +53,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity
     private TextView tvTripStatMaxElevation;
     private TextView tvTripStatAvgElevation;
     private TextView tvTripAvgVibration;
-    private TextView tvTripMaxVibration;
     private TextView tvTripBumpsDetection;
 
     private MapView routeMap;
@@ -85,7 +84,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity
         tvTripStatMaxElevation = findViewById(R.id.tv_max_elevation_value);
         tvTripStatAvgElevation = findViewById(R.id.tv_avg_elevation_value);
         tvTripAvgVibration = findViewById(R.id.tv_avg_vibration_value);
-        tvTripMaxVibration = findViewById(R.id.tv_max_vibration_value);
         tvTripBumpsDetection = findViewById(R.id.tv_bumps_detected_value);
 
         DataRetriever.getPastTripStatistics(this, this, getIntent().getStringExtra(EXTRA_TRIP_UUID));
@@ -155,8 +153,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity
         }
 
         if (statistics.getVibration() != null) {
-            tvTripAvgVibration.setText(GeneralUtil.formatNoDecimal(statistics.getVibration().getAvgVibration()));
-            tvTripMaxVibration.setText(GeneralUtil.formatNoDecimal(statistics.getVibration().getMaxVibration()));
+            tvTripAvgVibration.setText(GeneralUtil.formatDecimal(statistics.getVibration().getAvgVibration()));
         }
 
         tvTripBumpsDetection.setText(GeneralUtil.formatInt(statistics.getBumpyPoints().size()));

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
+import {bumpToMarker} from "../bumpyIssues";
 
 export class Home extends Component {
 
@@ -11,7 +12,8 @@ export class Home extends Component {
             // longitude: 9.489166159182783,
             latitude: 45.815,
             longitude: 15.982,
-            roadQualityHeatMap: undefined
+            roadQualityHeatMap: undefined,
+            bumpyPoints: undefined
         }
     };
 
@@ -42,6 +44,12 @@ export class Home extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({roadQualityHeatMap: data});
+            });
+
+        fetch(`/v1/mapData/getBumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({bumpyPoints: data});
             })
     }
 
@@ -53,17 +61,40 @@ export class Home extends Component {
             let i = 0; // used for keys
             roadQualityPolys = mapData.map(track => {
                 return track.segments.map(s => {
-                    if (s.qualityScore > 6) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'green'}/>
-                    } else if (s.qualityScore < 4) {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'red'}/>
+                    if (s.qualityScore > 0.9) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#b02727'}/>
+                    } else if (s.qualityScore > 0.8) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#fc0303'}/>
+                     } else if (s.qualityScore > 0.7) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ff5900'}/>
+                    } else if (s.qualityScore > 0.6) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ff8c00'}/>
+                    } else if (s.qualityScore > 0.5) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ffbf00'}/>
+                    } else if (s.qualityScore > 0.4) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#ffff00'}/>
+                    } else if (s.qualityScore > 0.3) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#cdeb0c'}/>
+                    } else if (s.qualityScore > 0.2) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#0ceb4e'}/>
+                    } else if (s.qualityScore > 0.1) {
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#00b837'}/>
                     } else {
-                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'yellow'}/>
+                        return <Polyline key={i++} positions={[[s.startLat, s.startLon], [s.endLat, s.endLon]]} color={'#078d2f'}/>
                     }
                 })
             });
 
         }
+
+        let bumpyIssueMarkers = "";
+        if (this.state.bumpyPoints !== undefined) {
+            let bumpyData = this.state.bumpyPoints;
+
+            let i = 0; // used for keys
+            bumpyIssueMarkers = bumpyData.map(bump => bumpToMarker(bump, i++));
+        }
+
         return (
             <div>
                 <h5>Road Quality Map</h5>
@@ -86,6 +117,7 @@ export class Home extends Component {
                     easeLinearity={0.35}>
                     <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
                     {roadQualityPolys}
+                    {bumpyIssueMarkers}
                 </LeafletMap>
             </div>
         );
