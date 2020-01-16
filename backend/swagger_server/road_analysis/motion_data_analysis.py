@@ -148,24 +148,34 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
 
 
 def calculate_bumps(trip_uuid, gnss_data, motion_df):
-    bumps = []
+    bumpy_scores = []
     m_acc_z = motion_df['accelerometerZ'].mean()
     for index, gnss in gnss_data.iterrows():
         chunk = motion_df.loc[motion_df['timestamp'] == gnss['time_ts']]
         for i, record in chunk.iterrows():
+            bumpy_score = None
+            lon = None
+            lat = None
             curr_acc_z = record['accelerometerZ']
             if const.BUMPS_THRESHOLDS[0] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[1] * m_acc_z:
-                bumps.append({"bumpyScore": 1, "lon": gnss['lon'], "lat": gnss['lat']})
+                bumpy_score, lon, lat = 1, gnss['lon'], gnss['lat']
             elif const.BUMPS_THRESHOLDS[1] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[2] * m_acc_z:
-                bumps.append({"bumpyScore": 2, "lon": gnss['lon'], "lat": gnss['lat']})
+                bumpy_score, lon, lat = 2, gnss['lon'], gnss['lat']
             elif const.BUMPS_THRESHOLDS[2] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[3] * m_acc_z:
-                bumps.append({"bumpyScore": 3, "lon": gnss['lon'], "lat": gnss['lat']})
+                bumpy_score, lon, lat = 3, gnss['lon'], gnss['lat']
             elif const.BUMPS_THRESHOLDS[3] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[4] * m_acc_z:
-                bumps.append({"bumpyScore": 4, "lon": gnss['lon'], "lat": gnss['lat']})
+                bumpy_score, lon, lat = 4, gnss['lon'], gnss['lat']
             elif curr_acc_z > const.BUMPS_THRESHOLDS[4] * m_acc_z:
-                bumps.append({"bumpyScore": 5, "lon": gnss['lon'], "lat": gnss['lat']})
-    bumps_ids = mongodb_interface.insert_new_points(bumps).inserted_ids
-    return bumps, bumps_ids
+                bumpy_score, lon, lat = 5, gnss['lon'], gnss['lat']
+            bumpy_scores.append({
+                    "bumpyScore": bumpy_score,
+                    "loc": {
+                        "type": "Point",
+                        "coordinates": [lon, lat]
+                    }
+                })
+    bumps_ids = mongodb_interface.insert_new_points(bumpy_scores).inserted_ids
+    return bumpy_scores, bumps_ids
 
 
 def calculate_trip_statistics(trip_uuid, gnss_data):
