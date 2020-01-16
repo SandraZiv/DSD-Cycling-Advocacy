@@ -47,11 +47,6 @@ def update_trip_statistics(trip_uuid, max_speed, avg_speed, max_elevation, min_e
             "maxElevation": max_elevation,
             "avgElevation": avg_elevation
         },
-        "vibration": {
-            "minVibration": 1.4658129805029452,
-            "maxVibration": 6.027456183070403,
-            "avgVibration": 5.962133916683182
-        },
         "speed": {
             "maxSpeed": max_speed,
             "avgSpeed": avg_speed
@@ -59,6 +54,11 @@ def update_trip_statistics(trip_uuid, max_speed, avg_speed, max_elevation, min_e
     }
     main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_values}, upsert=False)
     return
+
+
+def update_trip_bumpy_points(trip_uuid, bumpy_points_ids):
+    new_value = {"bumpyPoints": bumpy_points_ids}
+    main_db.trips.update_one({'trip_uuid': trip_uuid}, {"$set": new_value}, upsert=False)
 
 
 # TODO update road quality https://docs.mongodb.com/manual/tutorial/update-documents/
@@ -123,7 +123,7 @@ def get_points_by_intersect_geometry(geometry):
 
 
 def insert_new_points(points):
-    main_db.points.insert_many(points)
+    return main_db.points.insert_many(points)
 
 
 #
