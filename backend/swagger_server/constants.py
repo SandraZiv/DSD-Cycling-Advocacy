@@ -15,3 +15,5 @@ TEST_JOB = 'test-job'
 VERBOSITY = True
 TIME_TO_LIVE = 180
 DELAY = 1   # seconds
+
+BUMPS_THRESHOLDS = [2, 2.5, 3, 3.5, 4]

@@ -26,19 +26,19 @@ def haversine(lon1, lat1, lon2, lat2):
     return c * r
 
 
-def plot(trip_df, motion_df):
+def plot(motion_df, bumps):
     """
     Plot motion data signals
     """
-    plt.plot(motion_df['acc_x'], label='acc_x')
-    plt.plot(motion_df['acc_y'], label='acc_y')
-    plt.plot(motion_df['acc_z'], label='acc_z')
-    plt.plot(motion_df['mag_x'], label='mag_x')
-    plt.plot(motion_df['mag_y'], label='mag_y')
-    plt.plot(motion_df['mag_z'], label='mag_z')
-    plt.plot(motion_df['gyr_x'], label='gyr_x')
-    plt.plot(motion_df['gyr_y'], label='gyr_y')
-    plt.plot(motion_df['gyr_z'], label='gyr_z')
+    plt.plot(motion_df['accelerometerZ'], label='acc_z')
+    plt.axhline(y=2*motion_df['accelerometerZ'].mean(), label='2x', color='r', linestyle='-')
+    # plt.plot(motion_df['acc_y'], label='acc_y')
+    # plt.plot(motion_df['mag_x'], label='mag_x')
+    # plt.plot(motion_df['mag_y'], label='mag_y')
+    # plt.plot(motion_df['mag_z'], label='mag_z')
+    # plt.plot(motion_df['gyr_x'], label='gyr_x')
+    # plt.plot(motion_df['gyr_y'], label='gyr_y')
+    # plt.plot(motion_df['gyr_z'], label='gyr_z')
     plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
     plt.show()
 
@@ -137,14 +137,46 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     # normalized_road_quality = 1 - normalized_road_quality
     for index, chunk_road_quality in enumerate(normalized_road_quality):
         mongodb_interface.update_trip_road_quality(trip_uuid, index, chunk_road_quality)
-    mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min()*100,
-                                                     normalized_road_quality.max()*100,
-                                                     normalized_road_quality.mean()*100)
+    mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min() * 100,
+                                                     normalized_road_quality.max() * 100,
+                                                     normalized_road_quality.mean() * 100)
     print(gnss_data)
     coords = [[gp['lon'], gp['lat']] for gp in mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data']]
     track = {'loc': {'type': 'LineString', 'coordinates': coords},
              'quality_scores': road_quality}
     return track, log
+
+
+def calculate_bumps(trip_uuid, gnss_data, motion_df):
+    bumpy_scores = []
+    m_acc_z = motion_df['accelerometerZ'].mean()
+    for index, gnss in gnss_data.iterrows():
+        chunk = motion_df.loc[motion_df['timestamp'] == gnss['time_ts']]
+        for i, record in chunk.iterrows():
+            curr_acc_z = record['accelerometerZ']
+            if curr_acc_z > const.BUMPS_THRESHOLDS[0] * m_acc_z:
+                bumpy_score = None
+                lon = None
+                lat = None
+                if const.BUMPS_THRESHOLDS[0] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[1] * m_acc_z:
+                    bumpy_score, lon, lat = 1, gnss['lon'], gnss['lat']
+                elif const.BUMPS_THRESHOLDS[1] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[2] * m_acc_z:
+                    bumpy_score, lon, lat = 2, gnss['lon'], gnss['lat']
+                elif const.BUMPS_THRESHOLDS[2] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[3] * m_acc_z:
+                    bumpy_score, lon, lat = 3, gnss['lon'], gnss['lat']
+                elif const.BUMPS_THRESHOLDS[3] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[4] * m_acc_z:
+                    bumpy_score, lon, lat = 4, gnss['lon'], gnss['lat']
+                elif curr_acc_z > const.BUMPS_THRESHOLDS[4] * m_acc_z:
+                    bumpy_score, lon, lat = 5, gnss['lon'], gnss['lat']
+                bumpy_scores.append({
+                    "bump_score": bumpy_score,
+                    "loc": {
+                        "type": "Point",
+                        "coordinates": [lon, lat]
+                    }
+                })
+    bumps_ids = mongodb_interface.insert_new_points(bumpy_scores).inserted_ids
+    return bumpy_scores, bumps_ids
 
 
 def calculate_trip_statistics(trip_uuid, gnss_data):
@@ -160,7 +192,7 @@ def calculate_trip_statistics(trip_uuid, gnss_data):
     max_elevation = gnss_data['ele'].max()
     min_elevation = gnss_data['ele'].min()
     avg_elevation = gnss_data['ele'].mean()
-    mongodb_interface.update_trip_statistics(trip_uuid, # distance,
+    mongodb_interface.update_trip_statistics(trip_uuid,  # distance,
                                              max_speed, avg_speed, max_elevation, min_elevation,
                                              avg_elevation)
     log = 'TRIP STATISTICS: max speed: %s, avg speed: %s, max ele: %s, min ele: %s, avg ele: %s\n' \
@@ -178,6 +210,9 @@ def run_motion_data_analysis(trip_uuid):
     stats_log = calculate_trip_statistics(trip_uuid, gnss_data)
     # road quality
     track, motion_log = calculate_road_quality(trip_uuid, gnss_data, motion_df)
+    bumps, bumps_ids = calculate_bumps(trip_uuid, gnss_data, motion_df)
+    mongodb_interface.update_trip_bumpy_points(trip_uuid, bumps_ids)
+    plot(motion_df, bumps)
     if const.VERBOSITY:
         logging.info(db_log + stats_log + motion_log)
     else:
