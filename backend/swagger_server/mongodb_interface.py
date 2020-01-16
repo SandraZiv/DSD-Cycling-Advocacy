@@ -148,3 +148,6 @@ def insert_new_file(filename, data, **kwargs):
 def delete_file_by_filename(filename, **kwargs):
     file = fs.find_one({'filename': filename})
     fs.delete(file._id, **kwargs)
+
+
+# main_db.points.drop()

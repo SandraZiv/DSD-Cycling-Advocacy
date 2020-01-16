@@ -153,22 +153,23 @@ def calculate_bumps(trip_uuid, gnss_data, motion_df):
     for index, gnss in gnss_data.iterrows():
         chunk = motion_df.loc[motion_df['timestamp'] == gnss['time_ts']]
         for i, record in chunk.iterrows():
-            bumpy_score = None
-            lon = None
-            lat = None
             curr_acc_z = record['accelerometerZ']
-            if const.BUMPS_THRESHOLDS[0] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[1] * m_acc_z:
-                bumpy_score, lon, lat = 1, gnss['lon'], gnss['lat']
-            elif const.BUMPS_THRESHOLDS[1] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[2] * m_acc_z:
-                bumpy_score, lon, lat = 2, gnss['lon'], gnss['lat']
-            elif const.BUMPS_THRESHOLDS[2] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[3] * m_acc_z:
-                bumpy_score, lon, lat = 3, gnss['lon'], gnss['lat']
-            elif const.BUMPS_THRESHOLDS[3] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[4] * m_acc_z:
-                bumpy_score, lon, lat = 4, gnss['lon'], gnss['lat']
-            elif curr_acc_z > const.BUMPS_THRESHOLDS[4] * m_acc_z:
-                bumpy_score, lon, lat = 5, gnss['lon'], gnss['lat']
-            bumpy_scores.append({
-                    "bumpyScore": bumpy_score,
+            if curr_acc_z > const.BUMPS_THRESHOLDS[0] * m_acc_z:
+                bumpy_score = None
+                lon = None
+                lat = None
+                if const.BUMPS_THRESHOLDS[0] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[1] * m_acc_z:
+                    bumpy_score, lon, lat = 1, gnss['lon'], gnss['lat']
+                elif const.BUMPS_THRESHOLDS[1] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[2] * m_acc_z:
+                    bumpy_score, lon, lat = 2, gnss['lon'], gnss['lat']
+                elif const.BUMPS_THRESHOLDS[2] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[3] * m_acc_z:
+                    bumpy_score, lon, lat = 3, gnss['lon'], gnss['lat']
+                elif const.BUMPS_THRESHOLDS[3] * m_acc_z < curr_acc_z <= const.BUMPS_THRESHOLDS[4] * m_acc_z:
+                    bumpy_score, lon, lat = 4, gnss['lon'], gnss['lat']
+                elif curr_acc_z > const.BUMPS_THRESHOLDS[4] * m_acc_z:
+                    bumpy_score, lon, lat = 5, gnss['lon'], gnss['lat']
+                bumpy_scores.append({
+                    "bump_score": bumpy_score,
                     "loc": {
                         "type": "Point",
                         "coordinates": [lon, lat]
