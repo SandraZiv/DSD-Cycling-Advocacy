@@ -26,7 +26,6 @@ import com.cycling_advocacy.bumpy.net.OnDeleteTripListener;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -34,9 +33,6 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
-import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
-import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
-import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -191,11 +187,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity
                 routeMap.getOverlays().add(startMarker);
                 routeMap.getOverlays().add(endMarker);
                 routeMap.invalidate();
-            } else {
-                Toast.makeText(this, R.string.trip_stat_gnss_empty_message, Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, R.string.trip_stat_gnss_null_message, Toast.LENGTH_SHORT).show();
         }
 
         if (statistics.getBumpyPoints() != null) {
@@ -232,11 +224,7 @@ public class PastTripStatisticsActivity extends AppCompatActivity
 
                     routeMap.getOverlays().add(marker);
                 }
-            } else {
-                Toast.makeText(this, R.string.trip_stat_bump_points_empty_message, Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, R.string.trip_stat_bump_points_null_message, Toast.LENGTH_SHORT).show();
         }
     }
 

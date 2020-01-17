@@ -101,10 +101,6 @@
     <string name="trip_stat_avg_vibration">Avg vibration</string>
     <string name="trip_stat_max_vibration">Max vibration</string>
     <string name="trip_stat_bumps_detected">Bumps detected</string>
-    <string name="trip_stat_gnss_null_message">Cannot raw route: GNSS data not obtained</string>
-    <string name="trip_stat_gnss_empty_message">Cannot raw route: GNSS data has no points</string>
-    <string name="trip_stat_bump_points_null_message">Cannot draw bumps: Bumps data not obtained</string>
-    <string name="trip_stat_bump_points_empty_message">Cannot draw bumps: Bumps data has no points</string>
     <string name="delete">Delete</string>
     <string name="deleted_successfully">Trip deleted successfully</string>
     <string name="deleted_error">Trip could not be deleted</string>
