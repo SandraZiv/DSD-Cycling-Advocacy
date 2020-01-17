@@ -40,6 +40,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
@@ -65,7 +66,7 @@ public class MapFragment extends Fragment implements RoadQualityListener, BumpyP
 
     private List<Polyline> currentlyDisplayedSegments = new ArrayList<>();
 
-    private SimpleFastPointOverlay currentlyDisplayedPointsOverlay;
+    private List<Marker> currentlyDisplayedMarkers = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -258,28 +259,23 @@ public class MapFragment extends Fragment implements RoadQualityListener, BumpyP
         clearBumpyPoints();
 
         if (!bumpyPoints.isEmpty()) {
-            List<IGeoPoint> bumpyGeoPoints = new ArrayList<>();
             for (BumpyPointsResponse point : bumpyPoints) {
-                bumpyGeoPoints.add(new GeoPoint(point.getLat(), point.getLon()));
+                Marker marker = new Marker(map);
+                marker.setPosition(new GeoPoint(point.getLat(), point.getLon()));
+                marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+
+                // TODO: Add pop-up based on score, change icon
+
+                currentlyDisplayedMarkers.add(marker);
+                map.getOverlays().add(marker);
             }
 
-            SimplePointTheme pointTheme = new SimplePointTheme(bumpyGeoPoints, false);
-
-            SimpleFastPointOverlayOptions options = SimpleFastPointOverlayOptions.getDefaultStyle()
-                    .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MAXIMUM_OPTIMIZATION)
-                    .setRadius(7);
-
-            final SimpleFastPointOverlay pointOverlay = new SimpleFastPointOverlay(pointTheme, options);
-
-            currentlyDisplayedPointsOverlay = pointOverlay;
-            map.getOverlays().add(pointOverlay);
         }
     }
 
     private void clearBumpyPoints() {
-        if (currentlyDisplayedPointsOverlay != null) {
-            map.getOverlays().remove(currentlyDisplayedPointsOverlay);
-            map.invalidate();
+        for (Marker marker : currentlyDisplayedMarkers) {
+            map.getOverlays().remove(marker);
         }
     }
 }
