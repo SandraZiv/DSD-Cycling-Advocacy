@@ -169,7 +169,7 @@ def calculate_bumps(trip_uuid, gnss_data, motion_df):
                 elif curr_acc_z > const.BUMPS_THRESHOLDS[4] * m_acc_z:
                     bumpy_score, lon, lat = 5, gnss['lon'], gnss['lat']
                 bumpy_scores.append({
-                    "bump_score": bumpy_score,
+                    "bumpy_score": bumpy_score,
                     "loc": {
                         "type": "Point",
                         "coordinates": [lon, lat]
