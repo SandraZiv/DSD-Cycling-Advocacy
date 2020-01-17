@@ -4,9 +4,13 @@ server {
     root /home/youruser/bumpy/DSD-Cycling-Advocacy/frontend/bumpy-web/build;
     index index.html;
 
-    location /api {
+    location = /api {
+        return 302 /api/;
+    }
+
+    location /api/ {
         include proxy_params;
-        proxy_pass http://unix:/home/youruser/bumpy/DSD-Cycling-Advocacy/backend/bumpy-backend.sock;
+        proxy_pass http://unix:/home/youruser/bumpy/DSD-Cycling-Advocacy/backend/bumpy-backend.sock:/;
     }
 
     location / {
