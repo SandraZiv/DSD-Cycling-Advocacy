@@ -5,7 +5,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.net.model.BumpyPointsResponse;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
+import com.cycling_advocacy.bumpy.ui.map.BumpyPointsListener;
 import com.cycling_advocacy.bumpy.ui.map.RoadQualityListener;
 import com.cycling_advocacy.bumpy.ui.past_trips.PastTripsReceivedListener;
 import com.cycling_advocacy.bumpy.ui.trip_stats.StatisticListener;
@@ -126,6 +128,40 @@ public class DataRetriever {
                     public void onError(Throwable e) {
                         Log.d("Get road quality", "Failed to retrieve road quality: "  + e.getMessage());
                         Toast.makeText(context, R.string.get_road_quality_not_successful, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public static void getBumpyPoints(final Context context,
+                                      final BumpyPointsListener listener,
+                                      double bottomLeftLat,
+                                      double bottomLeftLon,
+                                      double topRightLat,
+                                      double topRightLon) {
+        BumpyService bumpyService = BumpyServiceBuilder.createService(BumpyService.class);
+        bumpyService.getBumpyIssuePoints(bottomLeftLat, bottomLeftLon, topRightLat, topRightLon)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Response<List<BumpyPointsResponse>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        //Do nothing
+                    }
+
+                    @Override
+                    public void onSuccess(Response<List<BumpyPointsResponse>> response) {
+                        Log.d("Get bumpy points", "Get bumpy points response: " + response.message());
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(context, R.string.get_bumpy_points_not_successful, Toast.LENGTH_SHORT).show();
+                        } else {
+                            listener.onBumpyPointsObtained(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("Get bumpy points", "Failed to retrieve bumpy points: "  + e.getMessage());
+                        Toast.makeText(context, R.string.get_bumpy_points_not_successful, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cycling_advocacy.bumpy.BuildConfig;
 import com.cycling_advocacy.bumpy.R;
+import com.cycling_advocacy.bumpy.net.model.BumpyPointsResponse;
 import com.cycling_advocacy.bumpy.ui.TripInProgressActivity;
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.DataRetriever;
@@ -28,6 +29,7 @@ import com.cycling_advocacy.bumpy.net.DataSender;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
 import com.cycling_advocacy.bumpy.utils.GeneralUtil;
 
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.DelayedMapListener;
@@ -41,12 +43,15 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
+import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapFragment extends Fragment implements RoadQualityListener {
+public class MapFragment extends Fragment implements RoadQualityListener, BumpyPointsListener {
 
     private static final int REQ_CODE_TRIP_UPLOAD = 21021;
     public static final String EXTRA_TRIP = "EXTRA_TRIP";
@@ -59,6 +64,8 @@ public class MapFragment extends Fragment implements RoadQualityListener {
     private static final double MAP_ZOOM_DISPLAY_THRESHOLD = 15.5;
 
     private List<Polyline> currentlyDisplayedSegments = new ArrayList<>();
+
+    private SimpleFastPointOverlay currentlyDisplayedPointsOverlay;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -158,6 +165,7 @@ public class MapFragment extends Fragment implements RoadQualityListener {
             public boolean onScroll(ScrollEvent event) {
                 if (map.getZoomLevelDouble() >= MAP_ZOOM_DISPLAY_THRESHOLD) {
                     getRoadQualitySegments();
+                    getBumpyPoints();
                 }
                 return true;
             }
@@ -166,11 +174,13 @@ public class MapFragment extends Fragment implements RoadQualityListener {
             public boolean onZoom(ZoomEvent event) {
                 if (event.getZoomLevel() >= MAP_ZOOM_DISPLAY_THRESHOLD) {
                     getRoadQualitySegments();
+                    getBumpyPoints();
                 } else {
                     // If map is too zoomed out we won't display road quality
                     // This Toast seems to not trigger sometimes
                     Toast.makeText(ctx, R.string.zoom_in_message, Toast.LENGTH_SHORT).show();
                     clearPolylines();
+                    clearBumpyPoints();
                 }
                 return true;
             }
@@ -227,6 +237,49 @@ public class MapFragment extends Fragment implements RoadQualityListener {
         // I tried using map.getOverlayManager.clear() but that seems to remove the 'current position' guy as well and I wasn't able to re-draw him
         for (Polyline segment : currentlyDisplayedSegments) {
             map.getOverlayManager().remove(segment);
+        }
+        map.invalidate();
+    }
+
+    private void getBumpyPoints() {
+        BoundingBox boundingBox = map.getBoundingBox();
+
+        double latNorth = boundingBox.getLatNorth();
+        double latSouth = boundingBox.getLatSouth();
+        double lonEast = boundingBox.getLonEast();
+        double lonWest = boundingBox.getLonWest();
+
+        DataRetriever.getBumpyPoints(ctx, this, latSouth, lonWest, latNorth, lonEast);
+    }
+
+    @Override
+    public void onBumpyPointsObtained(List<BumpyPointsResponse> bumpyPoints) {
+        // Clear existing bumpy points
+        clearBumpyPoints();
+
+        if (!bumpyPoints.isEmpty()) {
+            List<IGeoPoint> bumpyGeoPoints = new ArrayList<>();
+            for (BumpyPointsResponse point : bumpyPoints) {
+                bumpyGeoPoints.add(new GeoPoint(point.getLat(), point.getLon()));
+            }
+
+            SimplePointTheme pointTheme = new SimplePointTheme(bumpyGeoPoints, false);
+
+            SimpleFastPointOverlayOptions options = SimpleFastPointOverlayOptions.getDefaultStyle()
+                    .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MAXIMUM_OPTIMIZATION)
+                    .setRadius(7);
+
+            final SimpleFastPointOverlay pointOverlay = new SimpleFastPointOverlay(pointTheme, options);
+
+            currentlyDisplayedPointsOverlay = pointOverlay;
+            map.getOverlays().add(pointOverlay);
+        }
+    }
+
+    private void clearBumpyPoints() {
+        if (currentlyDisplayedPointsOverlay != null) {
+            map.getOverlays().remove(currentlyDisplayedPointsOverlay);
+            map.invalidate();
         }
     }
 }
