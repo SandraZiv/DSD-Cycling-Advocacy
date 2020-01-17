@@ -207,7 +207,28 @@ public class PastTripStatisticsActivity extends AppCompatActivity
                     marker.setPosition(new GeoPoint(point.getLat(), point.getLon()));
                     marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
-                    // TODO: Add pop-up based on score, change icon
+                    marker.setIcon(getResources().getDrawable(R.drawable.ic_bump_marker));
+
+                    if (point.getBumpyScore() != null) {
+                        switch (point.getBumpyScore()) {
+                            case 1:
+                                marker.setTitle(getString(R.string.bump_intensity_one));
+                                break;
+                            case 2: marker.setTitle(getString(R.string.bump_intensity_two));
+                                break;
+                            case 3: marker.setTitle(getString(R.string.bump_intensity_three));
+                                break;
+                            case 4: marker.setTitle(getString(R.string.bump_intensity_four));
+                                break;
+                            case 5: marker.setTitle(getString(R.string.bump_intensity_five));
+                                break;
+                            default:
+                                marker.setTitle(getString(R.string.bump_intensity_unknown));
+                                break;
+                        }
+                    } else {
+                        marker.setTitle(getString(R.string.bump_intensity_unknown));
+                    }
 
                     routeMap.getOverlays().add(marker);
                 }

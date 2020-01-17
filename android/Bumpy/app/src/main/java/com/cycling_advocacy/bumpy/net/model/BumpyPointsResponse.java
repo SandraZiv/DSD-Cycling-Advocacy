@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 public class BumpyPointsResponse {
 
     @SerializedName("bumpyScore")
-    private int bumpyScore;
+    private Integer bumpyScore;
 
     @SerializedName("lat")
     private double lat;
@@ -13,15 +13,15 @@ public class BumpyPointsResponse {
     @SerializedName("lon")
     private double lon;
 
-    public BumpyPointsResponse(int bumpyScore, double lat, double lon) {
+    public BumpyPointsResponse(Integer bumpyScore, double lat, double lon) {
         this.bumpyScore = bumpyScore;
         this.lat = lat;
         this.lon = lon;
     }
 
-    public int getBumpyScore() { return bumpyScore; }
+    public Integer getBumpyScore() { return bumpyScore; }
 
-    public void setBumpyScore(int bumpyScore) { this.bumpyScore = bumpyScore; }
+    public void setBumpyScore(Integer bumpyScore) { this.bumpyScore = bumpyScore; }
 
     public double getLat() { return lat; }
 

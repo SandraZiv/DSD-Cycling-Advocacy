@@ -25,6 +25,13 @@
     <string name="get_road_quality_not_successful">Unable to obtain road quality</string>
     <string name="get_bumpy_points_not_successful">Unable to obtain bump points</string>
     <string name="zoom_in_message">Please zoom in to display road quality</string>
+    <string name="bump_intensity_one">Very little bump</string>
+    <string name="bump_intensity_two">Little bump</string>
+    <string name="bump_intensity_three">Moderate bump</string>
+    <string name="bump_intensity_four">Large bump</string>
+    <string name="bump_intensity_five">Very large bump</string>
+    <string name="bump_intensity_unknown">Bump intensity unknown</string>
+
 
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>
