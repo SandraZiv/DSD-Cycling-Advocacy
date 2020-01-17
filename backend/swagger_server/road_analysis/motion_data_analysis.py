@@ -132,7 +132,7 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     normalized_road_quality = []
     if np.max(road_quality) - np.min(road_quality) != 0:
         normalized_road_quality = (road_quality - np.min(road_quality)) / (np.max(road_quality) - np.min(road_quality))
-    print(normalized_road_quality)
+    #print(normalized_road_quality)
     # switch from road badness to road goodness
     # normalized_road_quality = 1 - normalized_road_quality
     for index, chunk_road_quality in enumerate(normalized_road_quality):
@@ -140,10 +140,16 @@ def calculate_road_quality(trip_uuid, gnss_data, motion_df):
     mongodb_interface.update_road_quality_statistics(trip_uuid, normalized_road_quality.min() * 100,
                                                      normalized_road_quality.max() * 100,
                                                      normalized_road_quality.mean() * 100)
-    print(gnss_data)
     coords = [[gp['lon'], gp['lat']] for gp in mongodb_interface.get_trip_by_trip_uuid(trip_uuid)['gnss_data']]
+
+    # removing any possible NaN from coming out of here
+    def nan_cleaner(el):
+        if np.isnan(el):
+            return None
+        return el
+
     track = {'loc': {'type': 'LineString', 'coordinates': coords},
-             'quality_scores': road_quality}
+             'quality_scores': list(map(nan_cleaner, road_quality))}
     return track, log
 
 
