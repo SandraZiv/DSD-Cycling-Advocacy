@@ -169,7 +169,7 @@ public class PastTripDetailedResponse {
     public class BumpyPoint {
 
         @SerializedName("bumpyScore")
-        private double bumpyScore;
+        private Integer bumpyScore;
 
         @SerializedName("lat")
         private double lat;
@@ -177,15 +177,15 @@ public class PastTripDetailedResponse {
         @SerializedName("lon")
         private double lon;
 
-        public BumpyPoint(double bumpyScore, double lat, double lon) {
+        public BumpyPoint(Integer bumpyScore, double lat, double lon) {
             this.bumpyScore = bumpyScore;
             this.lat = lat;
             this.lon = lon;
         }
 
-        public double getBumpyScore() { return bumpyScore; }
+        public Integer getBumpyScore() { return bumpyScore; }
 
-        public void setBumpyScore(double bumpyScore) { this.bumpyScore = bumpyScore; }
+        public void setBumpyScore(Integer bumpyScore) { this.bumpyScore = bumpyScore; }
 
         public double getLat() { return lat; }
 

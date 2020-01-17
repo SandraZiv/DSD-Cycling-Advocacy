@@ -156,8 +156,6 @@ public class PastTripStatisticsActivity extends AppCompatActivity
             tvTripAvgVibration.setText(GeneralUtil.formatDecimal(statistics.getVibration().getAvgVibration()));
         }
 
-        tvTripBumpsDetection.setText(GeneralUtil.formatInt(statistics.getBumpyPoints().size()));
-
         if (statistics.getGnssData() != null) {
             if (!statistics.getGnssData().isEmpty()) {
                 List<GnssData> gnssPoints = statistics.getGnssData();
@@ -189,11 +187,44 @@ public class PastTripStatisticsActivity extends AppCompatActivity
                 routeMap.getOverlays().add(startMarker);
                 routeMap.getOverlays().add(endMarker);
                 routeMap.invalidate();
-            } else {
-                Toast.makeText(this, R.string.trip_stat_gnss_empty_message, Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, R.string.trip_stat_gnss_null_message, Toast.LENGTH_SHORT).show();
+        }
+
+        if (statistics.getBumpyPoints() != null) {
+            tvTripBumpsDetection.setText(GeneralUtil.formatInt(statistics.getBumpyPoints().size()));
+
+            if (!statistics.getBumpyPoints().isEmpty()) {
+                for (PastTripDetailedResponse.BumpyPoint point : statistics.getBumpyPoints()) {
+                    Marker marker = new Marker(routeMap);
+                    marker.setPosition(new GeoPoint(point.getLat(), point.getLon()));
+                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+
+                    marker.setIcon(getResources().getDrawable(R.drawable.ic_bump_marker));
+
+                    if (point.getBumpyScore() != null) {
+                        switch (point.getBumpyScore()) {
+                            case 1:
+                                marker.setTitle(getString(R.string.bump_intensity_one));
+                                break;
+                            case 2: marker.setTitle(getString(R.string.bump_intensity_two));
+                                break;
+                            case 3: marker.setTitle(getString(R.string.bump_intensity_three));
+                                break;
+                            case 4: marker.setTitle(getString(R.string.bump_intensity_four));
+                                break;
+                            case 5: marker.setTitle(getString(R.string.bump_intensity_five));
+                                break;
+                            default:
+                                marker.setTitle(getString(R.string.bump_intensity_unknown));
+                                break;
+                        }
+                    } else {
+                        marker.setTitle(getString(R.string.bump_intensity_unknown));
+                    }
+
+                    routeMap.getOverlays().add(marker);
+                }
+            }
         }
     }
 

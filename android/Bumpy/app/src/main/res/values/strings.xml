@@ -22,8 +22,14 @@
     <string name="submit">SUBMIT</string>
     <string name="grant_location">Grant location permission to start trip</string>
     <string name="content_description_current_location">Current Location</string>
-    <string name="get_road_quality_not_successful">Unable to obtain road quality</string>
     <string name="zoom_in_message">Please zoom in to display road quality</string>
+    <string name="bump_intensity_one">Very little bump</string>
+    <string name="bump_intensity_two">Little bump</string>
+    <string name="bump_intensity_three">Moderate bump</string>
+    <string name="bump_intensity_four">Large bump</string>
+    <string name="bump_intensity_five">Very large bump</string>
+    <string name="bump_intensity_unknown">Bump intensity unknown</string>
+
 
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>
@@ -95,8 +101,6 @@
     <string name="trip_stat_avg_vibration">Avg vibration</string>
     <string name="trip_stat_max_vibration">Max vibration</string>
     <string name="trip_stat_bumps_detected">Bumps detected</string>
-    <string name="trip_stat_gnss_null_message">Cannot raw route: GNSS data not obtained</string>
-    <string name="trip_stat_gnss_empty_message">Cannot raw route: GNSS data has no points</string>
     <string name="delete">Delete</string>
     <string name="deleted_successfully">Trip deleted successfully</string>
     <string name="deleted_error">Trip could not be deleted</string>

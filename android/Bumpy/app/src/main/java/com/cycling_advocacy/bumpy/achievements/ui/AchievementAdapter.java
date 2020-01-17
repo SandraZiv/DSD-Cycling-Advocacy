@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cycling_advocacy.bumpy.R;
@@ -40,8 +41,12 @@ public class AchievementAdapter extends RecyclerView.Adapter<AchievementAdapter.
 
         if (achievement.isCompleted()) {
             holder.imageTrophy.setVisibility(View.VISIBLE);
+            holder.title.setTextColor(ContextCompat.getColor(context, R.color.cyclingAdvocacyYellow));
+            holder.detail.setTextColor(ContextCompat.getColor(context, R.color.cyclingAdvocacyYellow));
         } else {
             holder.imageTrophy.setVisibility(View.INVISIBLE);
+            holder.title.setTextColor(ContextCompat.getColor(context, R.color.cyclingAdvocacyYellowHint));
+            holder.detail.setTextColor(ContextCompat.getColor(context, R.color.cyclingAdvocacyYellowHint));
         }
     }
 
