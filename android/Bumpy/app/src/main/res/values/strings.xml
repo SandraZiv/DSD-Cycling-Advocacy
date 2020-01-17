@@ -22,8 +22,6 @@
     <string name="submit">SUBMIT</string>
     <string name="grant_location">Grant location permission to start trip</string>
     <string name="content_description_current_location">Current Location</string>
-    <string name="get_road_quality_not_successful">Unable to obtain road quality</string>
-    <string name="get_bumpy_points_not_successful">Unable to obtain bump points</string>
     <string name="zoom_in_message">Please zoom in to display road quality</string>
     <string name="bump_intensity_one">Very little bump</string>
     <string name="bump_intensity_two">Little bump</string>

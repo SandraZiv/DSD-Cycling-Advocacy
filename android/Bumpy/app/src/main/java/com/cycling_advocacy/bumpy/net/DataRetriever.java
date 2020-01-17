@@ -117,9 +117,7 @@ public class DataRetriever {
                     @Override
                     public void onSuccess(Response<List<RoadQualitySegmentsResponse>> response) {
                         Log.d("Get road quality", "Get road quality response: " + response.message());
-                        if (!response.isSuccessful()) {
-                            Toast.makeText(context, R.string.get_road_quality_not_successful, Toast.LENGTH_SHORT).show();
-                        } else {
+                        if (response.isSuccessful()) {
                             listener.onRoadQualitySegmentsObtained(response.body());
                         }
                     }
@@ -127,7 +125,6 @@ public class DataRetriever {
                     @Override
                     public void onError(Throwable e) {
                         Log.d("Get road quality", "Failed to retrieve road quality: "  + e.getMessage());
-                        Toast.makeText(context, R.string.get_road_quality_not_successful, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -151,9 +148,7 @@ public class DataRetriever {
                     @Override
                     public void onSuccess(Response<List<BumpyPointsResponse>> response) {
                         Log.d("Get bumpy points", "Get bumpy points response: " + response.message());
-                        if (!response.isSuccessful()) {
-                            Toast.makeText(context, R.string.get_bumpy_points_not_successful, Toast.LENGTH_SHORT).show();
-                        } else {
+                        if (response.isSuccessful()) {
                             listener.onBumpyPointsObtained(response.body());
                         }
                     }
@@ -161,7 +156,6 @@ public class DataRetriever {
                     @Override
                     public void onError(Throwable e) {
                         Log.d("Get bumpy points", "Failed to retrieve bumpy points: "  + e.getMessage());
-                        Toast.makeText(context, R.string.get_bumpy_points_not_successful, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
