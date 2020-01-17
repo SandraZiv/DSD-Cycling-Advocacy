@@ -2,6 +2,7 @@ package com.cycling_advocacy.bumpy.net.service;
 
 import com.cycling_advocacy.bumpy.entities.Trip;
 import com.cycling_advocacy.bumpy.net.model.ApiResponse;
+import com.cycling_advocacy.bumpy.net.model.BumpyPointsResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripDetailedResponse;
 import com.cycling_advocacy.bumpy.net.model.PastTripGeneralResponse;
 import com.cycling_advocacy.bumpy.net.model.RoadQualitySegmentsResponse;
@@ -50,4 +51,10 @@ public interface BumpyService {
                                                                                @Query("bottomLeftLon") double bottomLeftLon,
                                                                                @Query("topRightLat") double topRightLat,
                                                                                @Query("topRightLon") double topRightLon);
+
+    @GET("mapData/getBumpyIssuePoints")
+    Single<Response<List<BumpyPointsResponse>>> getBumpyIssuePoints(@Query("bottomLeftLat") double bottomLeftLat,
+                                                                    @Query("bottomLeftLon") double bottomLeftLon,
+                                                                    @Query("topRightLat") double topRightLat,
+                                                                    @Query("topRightLon") double topRightLon);
 }
