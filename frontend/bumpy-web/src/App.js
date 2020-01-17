@@ -1,26 +1,33 @@
 import React from 'react';
-import logo from './logo.svg';
+import {Route, Switch, Redirect, Router} from 'react-router-dom';
+import Store from "./Store";
+import {Navigation} from "./components/Navigation";
+import {Home} from './components/Home';  // Home without {} does not work no default export
+import {UserUUID} from "./components/UserUUID";
+import {PastTrips} from './components/PastTrips';  // PastTrips without {} does not work no default export
+import {TripPreview} from './components/TripPreview';
+import history from './setupHistory'
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <Store>
+            <Router history={history}>
+                <div className="App">
+                    <Navigation/>
+                    <div className="App-body">
+                        <Switch>
+                            <Route exact path='/' component={Home}/>
+                            <Route path='/user/' component={PastTrips}/>
+                            <Route path='/trips/' component={TripPreview}/>
+                            <Route exact path='/login' component={UserUUID}/>
+                            <Redirect to="/"/>
+                        </Switch>
+                    </div>
+                </div>
+            </Router>
+        </Store>
+    );
+};
 
 export default App;

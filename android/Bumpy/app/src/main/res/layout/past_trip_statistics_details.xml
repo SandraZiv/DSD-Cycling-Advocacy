@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cyclingAdvocacyBlack">
+
+    <TextView
+        android:id="@+id/tv_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:layout_marginLeft="@dimen/margin_standard"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toStartOf="@+id/tv_distance_value"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="21/01/2012 10:21" />
+
+    <TextView
+        android:id="@+id/tv_distance_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_extra_mini"
+        android:layout_marginRight="@dimen/margin_extra_mini"
+        android:textSize="@dimen/text_size_big"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toStartOf="@id/tv_distance_label"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="45.97" />
+
+    <TextView
+        android:id="@+id/tv_distance_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_extra_mini"
+        android:text="@string/trip_stat_km"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_distance_value"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- First row -->
+    <TextView
+        android:id="@+id/tv_duration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:text="@string/duration"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_start" />
+
+    <TextView
+        android:id="@+id/tv_duration_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_duration_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_duration_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_duration_label"
+        tools:text="01:42:36" />
+
+    <TextView
+        android:id="@+id/tv_avg_speed_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trip_stat_avg_speed"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintEnd_toStartOf="@+id/tv_max_speed_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_duration_label"
+        app:layout_constraintTop_toTopOf="@id/tv_duration_label" />
+
+    <TextView
+        android:id="@+id/tv_avg_speed_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_avg_speed_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_avg_speed_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_avg_speed_label"
+        tools:text="21.02" />
+
+    <TextView
+        android:id="@+id/tv_max_speed_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        android:text="@string/trip_stat_max_speed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_duration_label" />
+
+    <TextView
+        android:id="@+id/tv_max_speed_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_max_speed_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_max_speed_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_max_speed_label"
+        tools:text="25.67" />
+
+    <!-- Second row -->
+    <TextView
+        android:id="@+id/tv_min_elevation_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_double"
+        android:layout_marginLeft="@dimen/margin_double"
+        android:layout_marginTop="@dimen/margin_double"
+        android:text="@string/trip_stat_min_elevation"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_duration_value" />
+
+
+    <TextView
+        android:id="@+id/tv_min_elevation_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_min_elevation_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_min_elevation_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_min_elevation_label"
+        tools:text="160" />
+
+    <TextView
+        android:id="@+id/tv_avg_elevation_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_double"
+        android:text="@string/trip_stat_avg_elevation"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintEnd_toStartOf="@+id/tv_max_elevation_label"
+        app:layout_constraintStart_toEndOf="@+id/tv_min_elevation_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_avg_speed_value" />
+
+    <TextView
+        android:id="@+id/tv_avg_elevation_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_avg_elevation_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_avg_elevation_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_avg_elevation_label"
+        tools:text="120" />
+
+    <TextView
+        android:id="@+id/tv_max_elevation_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_double"
+        android:layout_marginEnd="@dimen/margin_double"
+        android:layout_marginRight="@dimen/margin_double"
+        android:text="@string/trip_stat_max_elevation"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_max_speed_value" />
+
+    <TextView
+        android:id="@+id/tv_max_elevation_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_large"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        app:layout_constraintEnd_toEndOf="@+id/tv_max_elevation_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_max_elevation_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_max_elevation_label"
+        tools:text="180" />
+
+    <!-- Third row -->
+    <TextView
+        android:id="@+id/tv_avg_vibration_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="@dimen/margin_double"
+        android:layout_marginEnd="@dimen/margin_standard"
+        android:text="@string/trip_stat_avg_vibration"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintEnd_toStartOf="@id/tv_bumps_detected_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_min_elevation_value" />
+
+    <TextView
+        android:id="@+id/tv_avg_vibration_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintEnd_toEndOf="@+id/tv_avg_vibration_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_avg_vibration_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_avg_vibration_label"
+        tools:text="25" />
+
+    <TextView
+        android:id="@+id/tv_bumps_detected_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_double"
+        android:layout_marginEnd="@dimen/margin_extra_double"
+        android:text="@string/trip_stat_bumps_detected"
+        android:textColor="@color/cyclingAdvocacyYellowHint"
+        app:layout_constraintBottom_toTopOf="@id/tv_bumps_detected_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_avg_vibration_label"
+        app:layout_constraintTop_toBottomOf="@id/tv_max_elevation_value" />
+
+    <TextView
+        android:id="@+id/tv_bumps_detected_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cyclingAdvocacyYellow"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintEnd_toEndOf="@+id/tv_bumps_detected_label"
+        app:layout_constraintStart_toStartOf="@+id/tv_bumps_detected_label"
+        app:layout_constraintTop_toBottomOf="@id/tv_bumps_detected_label"
+        tools:text="4" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_map">
+
+    <fragment
+        android:id="@+id/navigation_pastTrips"
+        android:name="com.cycling_advocacy.bumpy.ui.past_trips.PastTripsFragment"
+        android:label="@string/bottom_nav_title_past_trips"
+        tools:layout="@layout/fragment_past_trips" />
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.cycling_advocacy.bumpy.ui.map.MapFragment"
+        android:label="@string/bottom_nav_title_map"
+        tools:layout="@layout/fragment_map" />
+
+    <fragment
+        android:id="@+id/navigation_achievements"
+        android:name="com.cycling_advocacy.bumpy.achievements.ui.AchievementsFragment"
+        android:label="@string/bottom_nav_title_achievements"
+        tools:layout="@layout/fragment_achievements" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.cycling_advocacy.bumpy.ui.SettingsActivity$SettingsFragment"
+        android:label="@string/bottom_nav_title_settings"
+        tools:layout="@xml/preferences"/>
+
+</navigation>

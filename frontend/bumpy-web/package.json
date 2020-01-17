@@ -1,11 +1,25 @@
 {
   "name": "bumpy-web",
   "version": "0.1.0",
+  "proxy": "http://161.53.67.132:5000",
   "private": true,
   "dependencies": {
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0"
+    "bootstrap": "^4.4.1",
+    "http-proxy-middleware": "^0.20.0",
+    "jquery": "^3.4.1",
+    "leaflet": "^1.6.0",
+    "leaflet-routing-machine": "^3.2.12",
+    "react": "^16.12.0",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-bootstrap-table-next": "^3.3.1",
+    "react-bootstrap-table2-editor": "^1.4.0",
+    "react-bootstrap-table2-paginator": "^2.1.0",
+    "react-dom": "^16.12.0",
+    "react-leaflet": "^2.6.0",
+    "react-leaflet-control": "^2.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
+    "history": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

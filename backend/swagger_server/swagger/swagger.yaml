@@ -426,6 +426,8 @@ components:
         endTS:
           type: string
           format: date-time
+        distance:
+          type: number
         gnssData:
           type: array
           items:
@@ -463,14 +465,14 @@ components:
           minElevation: 5.637376656633329
           maxElevation: 5.962133916683182
           avgElevation: 2.3021358869347655
-        distance: 0.080082819046101150206595775671303272247314453125
+        distance: 0.08008281904610115
         bumpyPointsCount: 0
-        endTS: 2000-01-23T04:56:07.000+00:00
-        startTS: 2000-01-23T04:56:07.000+00:00
+        endTS: {}
+        startTS: {}
         vibration:
-          minVibration: 1.46581298050294517310021547018550336360931396484375
-          maxVibration: 6.02745618307040320615897144307382404804229736328125
-          avgVibration: 5.962133916683182377482808078639209270477294921875
+          minVibration: 1.4658129805029452
+          maxVibration: 6.027456183070403
+          avgVibration: 5.962133916683182
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         speed:
@@ -515,14 +517,14 @@ components:
           maxElevation: 5.962133916683182
           avgElevation: 2.3021358869347655
         bumpyPoints:
-        - bumpyScore: 5.962133916683182377482808078639209270477294921875
-          lon: 26.3846336490530148921607178635895252227783203125
-          lat: 54.2471056476336315199660020880401134490966796875
-        - bumpyScore: 5.962133916683182377482808078639209270477294921875
-          lon: 26.3846336490530148921607178635895252227783203125
-          lat: 54.2471056476336315199660020880401134490966796875
-        distance: 0.080082819046101150206595775671303272247314453125
-        endTS: 2000-01-23T04:56:07.000+00:00
+        - bumpyScore: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+        - bumpyScore: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+        distance: 0.08008281904610115
+        endTS: {}
         gnssData:
         - timeTS: {}
           precision: 5.962133916683182
@@ -536,11 +538,11 @@ components:
           lat: 54.24710564763363
           speed: 2.3021358869347655
           ele: 5.637376656633329
-        startTS: 2000-01-23T04:56:07.000+00:00
+        startTS: {}
         vibration:
-          minVibration: 1.46581298050294517310021547018550336360931396484375
-          maxVibration: 6.02745618307040320615897144307382404804229736328125
-          avgVibration: 5.962133916683182377482808078639209270477294921875
+          minVibration: 1.4658129805029452
+          maxVibration: 6.027456183070403
+          avgVibration: 5.962133916683182
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         speed:
@@ -579,9 +581,9 @@ components:
         bumpyScore:
           type: number
       example:
-        bumpyScore: 5.962133916683182377482808078639209270477294921875
-        lon: 26.3846336490530148921607178635895252227783203125
-        lat: 54.2471056476336315199660020880401134490966796875
+        bumpyScore: 5.962133916683182
+        lon: 26.384633649053015
+        lat: 54.24710564763363
     ApiResponse:
       type: object
       properties:
@@ -702,7 +704,7 @@ components:
         avgVibration:
           type: number
       example:
-        minVibration: 1.46581298050294517310021547018550336360931396484375
-        maxVibration: 6.02745618307040320615897144307382404804229736328125
-        avgVibration: 5.962133916683182377482808078639209270477294921875
+        minVibration: 1.4658129805029452
+        maxVibration: 6.027456183070403
+        avgVibration: 5.962133916683182
 
