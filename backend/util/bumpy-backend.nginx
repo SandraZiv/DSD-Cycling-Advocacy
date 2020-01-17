@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+    root /home/youruser/bumpy/DSD-Cycling-Advocacy/frontend/bumpy-web/build;
+    index index.html;
+
+    location /api {
+        include proxy_params;
+        proxy_pass http://unix:/home/youruser/bumpy/DSD-Cycling-Advocacy/backend/bumpy-backend.sock;
+    }
+
+    location / {
+
+    }
+}
