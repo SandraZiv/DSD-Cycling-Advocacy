@@ -14,7 +14,7 @@ class TripGnssData(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, time_ts: datetime=None, lat: float=None, lon: float=None, ele: float=None, speed: float=None):  # noqa: E501
+    def __init__(self, time_ts: datetime=None, lat: float=None, lon: float=None, precision: float=None, ele: float=None, speed: float=None):  # noqa: E501
         """TripGnssData - a model defined in Swagger
 
         :param time_ts: The time_ts of this TripGnssData.  # noqa: E501
@@ -23,6 +23,8 @@ class TripGnssData(Model):
         :type lat: float
         :param lon: The lon of this TripGnssData.  # noqa: E501
         :type lon: float
+        :param precision: The precision of this TripGnssData.  # noqa: E501
+        :type precision: float
         :param ele: The ele of this TripGnssData.  # noqa: E501
         :type ele: float
         :param speed: The speed of this TripGnssData.  # noqa: E501
@@ -32,6 +34,7 @@ class TripGnssData(Model):
             'time_ts': datetime,
             'lat': float,
             'lon': float,
+            'precision': float,
             'ele': float,
             'speed': float
         }
@@ -40,12 +43,14 @@ class TripGnssData(Model):
             'time_ts': 'timeTS',
             'lat': 'lat',
             'lon': 'lon',
+            'precision': 'precision',
             'ele': 'ele',
             'speed': 'speed'
         }
         self._time_ts = time_ts
         self._lat = lat
         self._lon = lon
+        self._precision = precision
         self._ele = ele
         self._speed = speed
 
@@ -122,6 +127,29 @@ class TripGnssData(Model):
         """
 
         self._lon = lon
+
+    @property
+    def precision(self) -> float:
+        """Gets the precision of this TripGnssData.
+
+        Expressed in meters  # noqa: E501
+
+        :return: The precision of this TripGnssData.
+        :rtype: float
+        """
+        return self._precision
+
+    @precision.setter
+    def precision(self, precision: float):
+        """Sets the precision of this TripGnssData.
+
+        Expressed in meters  # noqa: E501
+
+        :param precision: The precision of this TripGnssData.
+        :type precision: float
+        """
+
+        self._precision = precision
 
     @property
     def ele(self) -> float:

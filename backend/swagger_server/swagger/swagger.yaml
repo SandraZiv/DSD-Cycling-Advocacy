@@ -3,9 +3,9 @@ info:
   title: Bumpy API
   description: This is the amazing Bumpy API that powers both our web interface and
     the Android app.
-  version: 1.0.0
+  version: 1.2.0
 servers:
-- url: https://api.bumpy.com/v1
+- url: http://localhost/v1
 tags:
 - name: trip
   description: Everything about trips
@@ -18,29 +18,64 @@ paths:
     post:
       tags:
       - trip
-      summary: Uploads a csv motion file, no checks are performed.
+      summary: Uploads a csv motion file, only a few checks are performed.
       operationId: upload_motion_file
       requestBody:
         content:
-          text/csv:
-            examples:
-              csv:
-                externalValue: https://pastebin.com/raw/ZSFR8b7X
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/body'
         required: true
       responses:
-        200:
+        "200":
           description: Upload successful
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-        405:
+        "405":
           description: Validation exception
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-        500:
+        "500":
+          description: Unexpected exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-openapi-router-controller: swagger_server.controllers.trip_controller
+  /trip/getMotionFile:
+    get:
+      tags:
+      - trip
+      summary: Gets a csv motion file.
+      operationId: get_motion_file
+      parameters:
+      - name: tripUUID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Upload successful
+          content:
+            text/csv:
+              schema:
+                type: string
+                x-content-type: text/csv
+        "404":
+          description: Trip not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
           description: Unexpected exception
           content:
             application/json:
@@ -60,19 +95,48 @@ paths:
               $ref: '#/components/schemas/Trip'
         required: true
       responses:
-        200:
+        "200":
           description: Validation successful
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-        405:
+        "405":
           description: Validation exception
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-        500:
+        "500":
+          description: Unexpected exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-openapi-router-controller: swagger_server.controllers.trip_controller
+  /trip/deleteTrip:
+    delete:
+      tags:
+      - trip
+      summary: Deletes a trip.
+      operationId: delete_trip
+      parameters:
+      - name: tripUUID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "200":
+          description: Deletion successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
           description: Unexpected exception
           content:
             application/json:
@@ -95,16 +159,16 @@ paths:
           type: string
           format: uuid
       responses:
-        200:
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Trip'
+                  $ref: '#/components/schemas/ProcessedTrip'
                 x-content-type: application/json
-        500:
+        "500":
           description: Unexpected exception
           content:
             application/json:
@@ -127,19 +191,19 @@ paths:
           type: string
           format: uuid
       responses:
-        200:
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trip'
-        404:
+                $ref: '#/components/schemas/FullProcessedTrip'
+        "404":
           description: Trip not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-        500:
+        "500":
           description: Unexpected exception
           content:
             application/json:
@@ -194,16 +258,16 @@ paths:
           minimum: 0
           type: number
       responses:
-        200:
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Path'
+                  $ref: '#/components/schemas/Track'
                 x-content-type: application/json
-        500:
+        "500":
           description: Unexpected exception
           content:
             application/json:
@@ -258,7 +322,7 @@ paths:
           minimum: 0
           type: number
       responses:
-        200:
+        "200":
           description: Successful operation
           content:
             application/json:
@@ -267,77 +331,83 @@ paths:
                 items:
                   $ref: '#/components/schemas/BumpyPoint'
                 x-content-type: application/json
-        500:
+        "500":
           description: Unexpected exception
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       x-openapi-router-controller: swagger_server.controllers.map_data_controller
-  /mapData/getFixMyStreetIssuePoints:
+  /device/getShortDeviceUUID:
     get:
       tags:
-      - mapData
-      summary: Get the FixMyStreet points
-      operationId: get_fix_my_street_issue_points
+      - device
+      summary: Get the short device UUID from the long device UUID
+      operationId: get_short_device_uuid
       parameters:
-      - name: bottomLeftLat
+      - name: deviceUUID
         in: query
-        description: The bottom left coordinate of the corner of the screen
         required: true
         style: form
         explode: true
         schema:
-          maximum: 90
-          minimum: 0
-          type: number
-      - name: bottomLeftLon
-        in: query
-        description: The bottom left coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 180
-          minimum: 0
-          type: number
-      - name: topRightLat
-        in: query
-        description: The top right coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 90
-          minimum: 0
-          type: number
-      - name: topRightLon
-        in: query
-        description: The top right coordinate of the corner of the screen
-        required: true
-        style: form
-        explode: true
-        schema:
-          maximum: 180
-          minimum: 0
-          type: number
+          type: string
+          format: uuid
       responses:
-        200:
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FixMyStreetPoint'
+                maxLength: 6
+                minLength: 6
+                type: string
                 x-content-type: application/json
-        500:
+        "500":
           description: Unexpected exception
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
-      x-openapi-router-controller: swagger_server.controllers.map_data_controller
+      x-openapi-router-controller: swagger_server.controllers.device_controller
+  /device/getLongDeviceUUID:
+    get:
+      tags:
+      - device
+      summary: Get the long device UUID from the short device UUID
+      operationId: get_long_device_uuid
+      parameters:
+      - name: shortDeviceUUID
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          maxLength: 6
+          minLength: 6
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+                x-content-type: application/json
+        "404":
+          description: Device UUID not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "500":
+          description: Unexpected exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      x-openapi-router-controller: swagger_server.controllers.device_controller
 components:
   schemas:
     Trip:
@@ -356,61 +426,149 @@ components:
           type: string
           format: date-time
         distance:
+          type: number
+        gnssData:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trip_gnssData'
+    ProcessedTrip:
+      type: object
+      properties:
+        deviceUUID:
+          type: string
+          format: uuid
+        tripUUID:
+          type: string
+          format: uuid
+        startTS:
+          type: string
+          format: date-time
+        endTS:
+          type: string
+          format: date-time
+        distance:
           minimum: 0
           type: number
           description: Expressed in meters
+        speed:
+          $ref: '#/components/schemas/ProcessedTrip_speed'
+        elevation:
+          $ref: '#/components/schemas/ProcessedTrip_elevation'
+        vibration:
+          $ref: '#/components/schemas/ProcessedTrip_vibration'
+        bumpyPointsCount:
+          minimum: 0
+          type: integer
+      example:
+        elevation:
+          minElevation: 5.637376656633329
+          maxElevation: 5.962133916683182
+          avgElevation: 2.3021358869347655
+        distance: 0.08008281904610115
+        bumpyPointsCount: 0
+        endTS: {}
+        startTS: {}
+        vibration:
+          minVibration: 1.4658129805029452
+          maxVibration: 6.027456183070403
+          avgVibration: 5.962133916683182
+        tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        speed:
+          maxSpeed: 0.6027456183070403
+          avgSpeed: 0.14658129805029452
+    FullProcessedTrip:
+      type: object
+      properties:
+        deviceUUID:
+          type: string
+          format: uuid
+        tripUUID:
+          type: string
+          format: uuid
+        startTS:
+          type: string
+          format: date-time
+        endTS:
+          type: string
+          format: date-time
+        distance:
+          minimum: 0
+          type: number
+          description: Expressed in meters
+        speed:
+          $ref: '#/components/schemas/ProcessedTrip_speed'
+        elevation:
+          $ref: '#/components/schemas/ProcessedTrip_elevation'
+        vibration:
+          $ref: '#/components/schemas/ProcessedTrip_vibration'
+        bumpyPoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/BumpyPoint'
         gnssData:
           type: array
           items:
             $ref: '#/components/schemas/Trip_gnssData'
       example:
-        distance: 0.080082819046101150206595775671303272247314453125
-        endTS: 2000-01-23T04:56:07.000+00:00
+        elevation:
+          minElevation: 5.637376656633329
+          maxElevation: 5.962133916683182
+          avgElevation: 2.3021358869347655
+        bumpyPoints:
+        - bumpyScore: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+        - bumpyScore: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+        distance: 0.08008281904610115
+        endTS: {}
         gnssData:
-        - timeTS: 2000-01-23T04:56:07.000+00:00
-          lon: 26.3846336490530148921607178635895252227783203125
-          lat: 54.2471056476336315199660020880401134490966796875
-          speed: 5.63737665663332876420099637471139430999755859375
-          ele: 5.962133916683182377482808078639209270477294921875
-        - timeTS: 2000-01-23T04:56:07.000+00:00
-          lon: 26.3846336490530148921607178635895252227783203125
-          lat: 54.2471056476336315199660020880401134490966796875
-          speed: 5.63737665663332876420099637471139430999755859375
-          ele: 5.962133916683182377482808078639209270477294921875
-        startTS: 2000-01-23T04:56:07.000+00:00
+        - timeTS: {}
+          precision: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+          speed: 2.3021358869347655
+          ele: 5.637376656633329
+        - timeTS: {}
+          precision: 5.962133916683182
+          lon: 26.384633649053015
+          lat: 54.24710564763363
+          speed: 2.3021358869347655
+          ele: 5.637376656633329
+        startTS: {}
+        vibration:
+          minVibration: 1.4658129805029452
+          maxVibration: 6.027456183070403
+          avgVibration: 5.962133916683182
         tripUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         deviceUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-    Path:
+        speed:
+          maxSpeed: 0.6027456183070403
+          avgSpeed: 0.14658129805029452
+    Track:
       type: object
       properties:
-        pathUUID:
-          type: string
-          format: uuid
         segments:
           type: array
           items:
-            $ref: '#/components/schemas/Path_segments'
+            $ref: '#/components/schemas/Track_segments'
       example:
-        pathUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
         segments:
-        - startLat: 7.20745371414910351859361981041729450225830078125
-          endLat: 13.19231682452650744608035893179476261138916015625
-          startLon: 108.494211295267263039932004176080226898193359375
-          endLon: 107.3184105002972756892631878145039081573486328125
-          qualityScore: 5.63737665663332876420099637471139430999755859375
-          segmentUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        - startLat: 7.20745371414910351859361981041729450225830078125
-          endLat: 13.19231682452650744608035893179476261138916015625
-          startLon: 108.494211295267263039932004176080226898193359375
-          endLon: 107.3184105002972756892631878145039081573486328125
-          qualityScore: 5.63737665663332876420099637471139430999755859375
-          segmentUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        - startLat: 7.2074537141491035
+          endLat: 13.192316824526507
+          startLon: 108.49421129526726
+          endLon: 107.31841050029728
+          qualityScore: 5.637376656633329
+        - startLat: 7.2074537141491035
+          endLat: 13.192316824526507
+          startLon: 108.49421129526726
+          endLon: 107.31841050029728
+          qualityScore: 5.637376656633329
     BumpyPoint:
       type: object
       properties:
-        pointUUID:
-          type: string
-          format: uuid
         lat:
           maximum: 90
           minimum: 0
@@ -419,35 +577,12 @@ components:
           maximum: 180
           minimum: 0
           type: number
-        bumpScore:
+        bumpyScore:
           type: number
       example:
-        lon: 108.494211295267263039932004176080226898193359375
-        pointUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        lat: 7.20745371414910351859361981041729450225830078125
-        bumpScore: 1.46581298050294517310021547018550336360931396484375
-    FixMyStreetPoint:
-      type: object
-      properties:
-        pointUUID:
-          type: string
-          format: uuid
-        lat:
-          maximum: 90
-          minimum: 0
-          type: number
-        lon:
-          maximum: 180
-          minimum: 0
-          type: number
-        fixMyStreetUrl:
-          type: string
-          format: url
-      example:
-        fixMyStreetUrl: http://example.com/aeiou
-        lon: 108.494211295267263039932004176080226898193359375
-        pointUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
-        lat: 7.20745371414910351859361981041729450225830078125
+        bumpyScore: 5.962133916683182
+        lon: 26.384633649053015
+        lat: 54.24710564763363
     ApiResponse:
       type: object
       properties:
@@ -461,6 +596,15 @@ components:
         code: 0
         type: type
         message: message
+    body:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        tripUUID:
+          type: string
+          format: uuid
     Trip_gnssData:
       type: object
       properties:
@@ -475,6 +619,9 @@ components:
           maximum: 180
           minimum: 0
           type: number
+        precision:
+          type: number
+          description: Expressed in meters
         ele:
           type: number
           description: Expressed in meters
@@ -482,17 +629,45 @@ components:
           type: number
           description: Expressed in meters per second
       example:
-        timeTS: 2000-01-23T04:56:07.000+00:00
-        lon: 26.3846336490530148921607178635895252227783203125
-        lat: 54.2471056476336315199660020880401134490966796875
-        speed: 5.63737665663332876420099637471139430999755859375
-        ele: 5.962133916683182377482808078639209270477294921875
-    Path_segments:
+        timeTS: {}
+        precision: 5.962133916683182
+        lon: 26.384633649053015
+        lat: 54.24710564763363
+        speed: 2.3021358869347655
+        ele: 5.637376656633329
+    ProcessedTrip_speed:
       type: object
       properties:
-        segmentUUID:
-          type: string
-          format: uuid
+        maxSpeed:
+          minimum: 0
+          type: number
+          description: Expressed in meters per second
+        avgSpeed:
+          minimum: 0
+          type: number
+          description: Expressed in meters per second
+      example:
+        maxSpeed: 0.6027456183070403
+        avgSpeed: 0.14658129805029452
+    ProcessedTrip_elevation:
+      type: object
+      properties:
+        maxElevation:
+          type: number
+          description: Expressed in meters
+        minElevation:
+          type: number
+          description: Expressed in meters
+        avgElevation:
+          type: number
+          description: Expressed in meters
+      example:
+        minElevation: 5.637376656633329
+        maxElevation: 5.962133916683182
+        avgElevation: 2.3021358869347655
+    Track_segments:
+      type: object
+      properties:
         startLat:
           maximum: 90
           minimum: 0
@@ -511,11 +686,24 @@ components:
           type: number
         qualityScore:
           type: number
+          nullable: true
       example:
-        startLat: 7.20745371414910351859361981041729450225830078125
-        endLat: 13.19231682452650744608035893179476261138916015625
-        startLon: 108.494211295267263039932004176080226898193359375
-        endLon: 107.3184105002972756892631878145039081573486328125
-        qualityScore: 5.63737665663332876420099637471139430999755859375
-        segmentUUID: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        startLat: 7.2074537141491035
+        endLat: 13.192316824526507
+        startLon: 108.49421129526726
+        endLon: 107.31841050029728
+        qualityScore: 5.637376656633329
+    ProcessedTrip_vibration:
+      type: object
+      properties:
+        maxVibration:
+          type: number
+        minVibration:
+          type: number
+        avgVibration:
+          type: number
+      example:
+        minVibration: 1.4658129805029452
+        maxVibration: 6.027456183070403
+        avgVibration: 5.962133916683182
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Map as LeafletMap, TileLayer, Polyline, Marker, Popup} from 'react-leaflet';
-import L from 'leaflet';
+import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
+import {bumpToMarker} from "../bumpyIssues";
 
 export class Home extends Component {
 
@@ -44,12 +44,13 @@ export class Home extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({roadQualityHeatMap: data});
-            })
-/*        fetch(`/v1/mapData/BumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
+            });
+
+        fetch(`/v1/mapData/getBumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
             .then(response => response.json())
             .then(data => {
-                        this.setState({bumpyPoints: data});
-                    })*/
+                this.setState({bumpyPoints: data});
+            })
     }
 
     render() {
@@ -85,6 +86,15 @@ export class Home extends Component {
             });
 
         }
+
+        let bumpyIssueMarkers = "";
+        if (this.state.bumpyPoints !== undefined) {
+            let bumpyData = this.state.bumpyPoints;
+
+            let i = 0; // used for keys
+            bumpyIssueMarkers = bumpyData.map(bump => bumpToMarker(bump, i++));
+        }
+
         return (
             <div>
                 <h5>Road Quality Map</h5>
@@ -107,16 +117,9 @@ export class Home extends Component {
                     easeLinearity={0.35}>
                     <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
                     {roadQualityPolys}
-                    {/*<Marker icon ={iconMarker} position={[45.79100789999999, 15.991219900000003]}>*/}
-                    {/*      <Popup>Bump</Popup>*/}
-                    {/*</Marker>*/}
+                    {bumpyIssueMarkers}
                 </LeafletMap>
             </div>
         );
     }
 }
-
-export const iconMarker = new L.icon({
-    iconUrl: require('./../images/marker.png'),
-    iconSize: [15,25]
-});

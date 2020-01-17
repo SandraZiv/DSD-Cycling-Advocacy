@@ -14,35 +14,30 @@ class BumpyPoint(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, point_uuid: str=None, lat: float=None, lon: float=None, bump_score: float=None):  # noqa: E501
+    def __init__(self, lat: float=None, lon: float=None, bumpy_score: float=None):  # noqa: E501
         """BumpyPoint - a model defined in Swagger
 
-        :param point_uuid: The point_uuid of this BumpyPoint.  # noqa: E501
-        :type point_uuid: str
         :param lat: The lat of this BumpyPoint.  # noqa: E501
         :type lat: float
         :param lon: The lon of this BumpyPoint.  # noqa: E501
         :type lon: float
-        :param bump_score: The bump_score of this BumpyPoint.  # noqa: E501
-        :type bump_score: float
+        :param bumpy_score: The bumpy_score of this BumpyPoint.  # noqa: E501
+        :type bumpy_score: float
         """
         self.swagger_types = {
-            'point_uuid': str,
             'lat': float,
             'lon': float,
-            'bump_score': float
+            'bumpy_score': float
         }
 
         self.attribute_map = {
-            'point_uuid': 'pointUUID',
             'lat': 'lat',
             'lon': 'lon',
-            'bump_score': 'bumpScore'
+            'bumpy_score': 'bumpyScore'
         }
-        self._point_uuid = point_uuid
         self._lat = lat
         self._lon = lon
-        self._bump_score = bump_score
+        self._bumpy_score = bumpy_score
 
     @classmethod
     def from_dict(cls, dikt) -> 'BumpyPoint':
@@ -54,27 +49,6 @@ class BumpyPoint(Model):
         :rtype: BumpyPoint
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def point_uuid(self) -> str:
-        """Gets the point_uuid of this BumpyPoint.
-
-
-        :return: The point_uuid of this BumpyPoint.
-        :rtype: str
-        """
-        return self._point_uuid
-
-    @point_uuid.setter
-    def point_uuid(self, point_uuid: str):
-        """Sets the point_uuid of this BumpyPoint.
-
-
-        :param point_uuid: The point_uuid of this BumpyPoint.
-        :type point_uuid: str
-        """
-
-        self._point_uuid = point_uuid
 
     @property
     def lat(self) -> float:
@@ -119,22 +93,22 @@ class BumpyPoint(Model):
         self._lon = lon
 
     @property
-    def bump_score(self) -> float:
-        """Gets the bump_score of this BumpyPoint.
+    def bumpy_score(self) -> float:
+        """Gets the bumpy_score of this BumpyPoint.
 
 
-        :return: The bump_score of this BumpyPoint.
+        :return: The bumpy_score of this BumpyPoint.
         :rtype: float
         """
-        return self._bump_score
+        return self._bumpy_score
 
-    @bump_score.setter
-    def bump_score(self, bump_score: float):
-        """Sets the bump_score of this BumpyPoint.
+    @bumpy_score.setter
+    def bumpy_score(self, bumpy_score: float):
+        """Sets the bumpy_score of this BumpyPoint.
 
 
-        :param bump_score: The bump_score of this BumpyPoint.
-        :type bump_score: float
+        :param bumpy_score: The bumpy_score of this BumpyPoint.
+        :type bumpy_score: float
         """
 
-        self._bump_score = bump_score
+        self._bumpy_score = bumpy_score

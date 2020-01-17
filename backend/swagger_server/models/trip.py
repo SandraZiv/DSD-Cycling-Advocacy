@@ -154,7 +154,6 @@ class Trip(Model):
     def distance(self) -> float:
         """Gets the distance of this Trip.
 
-        Expressed in meters  # noqa: E501
 
         :return: The distance of this Trip.
         :rtype: float
@@ -165,7 +164,6 @@ class Trip(Model):
     def distance(self, distance: float):
         """Sets the distance of this Trip.
 
-        Expressed in meters  # noqa: E501
 
         :param distance: The distance of this Trip.
         :type distance: float

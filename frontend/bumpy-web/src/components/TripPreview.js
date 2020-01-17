@@ -4,6 +4,7 @@ import {Map as LeafletMap, TileLayer, Polyline, Marker, Popup} from 'react-leafl
 import {formatDateDefault} from "../dateformat";
 import {buildDuration, formatFloat} from "../utils";
 import L from 'leaflet';
+import {bumpToMarker} from "../bumpyIssues";
 
 export class TripPreview extends Component {
 
@@ -87,6 +88,11 @@ export class TripPreview extends Component {
             let start = points[0];
             let end = points[points.length-1];
 
+
+            let bumpyData = tripData.bumpyPoints;
+            let i = 0; // used for keys
+            let bumpyIssueMarkers = bumpyData.map(bump => bumpToMarker(bump, i++));
+
             card = <Card className="text-left">
                 <Card.Header as="h5">{formatDateDefault(tripData.startTS)}
                     <Button className="btn float-right" onClick={() => this.exportData()}>Export</Button>
@@ -167,6 +173,7 @@ export class TripPreview extends Component {
                         easeLinearity={0.35}>
                         <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'/>
                         <Polyline positions={points} color={'red'}/>
+                        {bumpyIssueMarkers}
                         <Marker position={start} icon={iconStart}>
                             <Popup>
                                 <span>Trip Start<br/>{new Date(tripData.startTS).toLocaleTimeString()}</span>
