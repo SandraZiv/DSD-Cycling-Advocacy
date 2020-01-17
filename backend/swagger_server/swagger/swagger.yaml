@@ -215,6 +215,7 @@ paths:
       tags:
       - mapData
       summary: Get the paths composed of segments to display the heatmap
+      description: WARNING this measure is derived from vibration
       operationId: get_road_quality_segments
       parameters:
       - name: bottomLeftLat
