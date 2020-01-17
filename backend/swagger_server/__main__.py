@@ -10,7 +10,7 @@ import logging
 def main():
 
     # logger setup (application-wide)
-    logging.basicConfig(filename='swagger_server/logs/default_log.log', level=logging.INFO,
+    logging.basicConfig(filename='server_log.log', level=logging.INFO,
                         format='%(asctime)s %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
     # connect to a running rabbitmq server and executes incoming jobs
