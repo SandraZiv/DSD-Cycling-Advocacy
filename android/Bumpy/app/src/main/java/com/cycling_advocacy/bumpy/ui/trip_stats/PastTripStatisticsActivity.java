@@ -202,20 +202,15 @@ public class PastTripStatisticsActivity extends AppCompatActivity
             tvTripBumpsDetection.setText(GeneralUtil.formatInt(statistics.getBumpyPoints().size()));
 
             if (!statistics.getBumpyPoints().isEmpty()) {
-                List<IGeoPoint> bumpyPoints = new ArrayList<>();
                 for (PastTripDetailedResponse.BumpyPoint point : statistics.getBumpyPoints()) {
-                    bumpyPoints.add(new GeoPoint(point.getLat(), point.getLon()));
+                    Marker marker = new Marker(routeMap);
+                    marker.setPosition(new GeoPoint(point.getLat(), point.getLon()));
+                    marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+
+                    // TODO: Add pop-up based on score, change icon
+
+                    routeMap.getOverlays().add(marker);
                 }
-
-                SimplePointTheme pointTheme = new SimplePointTheme(bumpyPoints, false);
-
-                SimpleFastPointOverlayOptions options = SimpleFastPointOverlayOptions.getDefaultStyle()
-                        .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MAXIMUM_OPTIMIZATION)
-                        .setRadius(7);
-
-                final SimpleFastPointOverlay pointOverlay = new SimpleFastPointOverlay(pointTheme, options);
-
-                routeMap.getOverlays().add(pointOverlay);
             } else {
                 Toast.makeText(this, R.string.trip_stat_bump_points_empty_message, Toast.LENGTH_SHORT).show();
             }

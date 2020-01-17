@@ -269,7 +269,6 @@ public class MapFragment extends Fragment implements RoadQualityListener, BumpyP
                 currentlyDisplayedMarkers.add(marker);
                 map.getOverlays().add(marker);
             }
-
         }
     }
 
