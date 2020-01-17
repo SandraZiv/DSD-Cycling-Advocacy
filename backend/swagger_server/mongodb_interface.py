@@ -3,9 +3,9 @@ from bson.objectid import ObjectId
 import gridfs
 import pymongo
 
-mongodbUri = 'mongodb+srv://app:kk1AVXNUwsAoqnyx@bumpy-tdkiu.gcp.mongodb.net/test?retryWrites=true&w=majority'
+mongodbUri = 'mongodb://localhost'
 
-app = Flask(__name__)
+#app = Flask(__name__)
 client = pymongo.MongoClient(mongodbUri, maxPoolSize=10, connect=False)
 main_db = client.main_db
 file_db = client.file_db
