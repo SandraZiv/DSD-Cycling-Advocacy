@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve bumpy-backend
+After=network.target
+
+[Service]
+User=youruser
+Group=www-data
+WorkingDirectory=/home/youruser/bumpy/DSD-Cycling-Advocacy/backend
+Environment="PATH=/home/youruser/bumpy/DSD-Cycling-Advocacy/backend/venv/bin"
+ExecStart=/home/youruser/bumpy/DSD-Cycling-Advocacy/backend/venv/bin/gunicorn --workers 3 --bind unix:myproject.sock -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
