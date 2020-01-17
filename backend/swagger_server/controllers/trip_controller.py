@@ -72,7 +72,7 @@ def get_trip_by_trip_uuid():  # noqa: E501
         output_points.append({
             'lat': raw_point['loc']['coordinates'][1],
             'lon': raw_point['loc']['coordinates'][0],
-            'bump_score': raw_point['bump_score']
+            'bumpy_score': raw_point['bumpy_score']
         })
     trip['bumpy_points'] = list(map(BumpyPoint.from_dict, output_points))
     return FullProcessedTrip().from_dict(trip), 200
