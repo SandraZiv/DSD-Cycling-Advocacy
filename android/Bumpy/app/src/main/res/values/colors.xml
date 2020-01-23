@@ -2,11 +2,9 @@
 <resources>
     <color name="cyclingAdvocacyYellow">#FFDD00</color>
     <color name="cyclingAdvocacyYellowHint">#81FFDD00</color>
-    <color name="cyclingAdvocacyYellowLogo">#ffff01</color>
     <color name="cyclingAdvocacyBlack">#000000</color>
 
     <color name="grey">#DA8D8989</color>
-    <color name="white">#ffffff</color>
 
     <!-- Gauge View -->
     <color name="darkGrey">#D2464545</color>

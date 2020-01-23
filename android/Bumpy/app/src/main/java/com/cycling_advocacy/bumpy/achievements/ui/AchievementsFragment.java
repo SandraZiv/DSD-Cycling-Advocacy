@@ -33,7 +33,7 @@ public class AchievementsFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
-        achievementsViewModel.achievementsLiveData.observe(this, achievementEntities -> {
+        achievementsViewModel.achievementsLiveData.observe(getViewLifecycleOwner(), achievementEntities -> {
             List<Achievement> achievementsJoined = new ArrayList<>();
             for(AchievementEntity entity : achievementEntities) {
                 achievementsJoined.add(AchievementManager.convertToAchievement(entity));

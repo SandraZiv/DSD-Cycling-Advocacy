@@ -19,7 +19,6 @@
     <!--Map and buttons -->
     <string name="start_trip">Start Trip</string>
     <string name="end_trip">End Trip</string>
-    <string name="submit">SUBMIT</string>
     <string name="grant_location">Grant location permission to start trip</string>
     <string name="content_description_current_location">Current Location</string>
     <string name="zoom_in_message">Please zoom in to display road quality</string>
@@ -34,7 +33,6 @@
     <!--Trip in Progress-->
     <string name="trip_in_progress">Trip in Progress</string>
     <string name="google_api_install">You need to install Google Play Services to use the App properly</string>
-    <string name="vibration_unit">%</string>
     <string name="speed">Speed (km/h)</string>
     <string name="vibration">Vibration (%)</string>
     <string name="distance">Distance (km)</string>
@@ -61,7 +59,6 @@
     <string name="no_data_available">Seems you haven\'t completed any trip yet\nLet\'s start cycling!</string>
 
     <!--Settings-->
-    <string name="title_activity_settings">Settings</string>
     <string name="settings_uid_title">User Identifier</string>
     <string name="settings_upload_trip_data_title">Upload trip data</string>
     <string name="settings_uid_summary_error">Not generated, please try again later</string>
@@ -99,7 +96,6 @@
     <string name="trip_stat_max_elevation">Max elevation</string>
     <string name="trip_stat_avg_elevation">Avg elevation</string>
     <string name="trip_stat_avg_vibration">Avg vibration</string>
-    <string name="trip_stat_max_vibration">Max vibration</string>
     <string name="trip_stat_bumps_detected">Bumps detected</string>
     <string name="delete">Delete</string>
     <string name="deleted_successfully">Trip deleted successfully</string>

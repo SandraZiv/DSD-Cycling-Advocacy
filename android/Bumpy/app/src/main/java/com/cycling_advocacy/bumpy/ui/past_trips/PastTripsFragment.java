@@ -54,7 +54,7 @@ public class PastTripsFragment extends Fragment
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(adapter);
 
-        pendingTripsViewModel.pendingTripsLiveData.observe(this, pendingTrips -> {
+        pendingTripsViewModel.pendingTripsLiveData.observe(getViewLifecycleOwner(), pendingTrips -> {
             pastTrips = new ArrayList<>();
             for (PendingTrip pendingTrip : pendingTrips) {
                 PastTrip pastTrip = new PastTrip(pendingTrip);

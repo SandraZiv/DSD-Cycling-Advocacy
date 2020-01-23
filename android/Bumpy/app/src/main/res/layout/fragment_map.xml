@@ -16,7 +16,7 @@
         android:background="@color/cyclingAdvocacyBlack"
         android:tint="@color/cyclingAdvocacyYellow"
         app:srcCompat="@drawable/location"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:contentDescription="@string/content_description_current_location"
         android:padding="@dimen/margin_extra_mini"
         android:layout_margin="@dimen/margin_standard"/>

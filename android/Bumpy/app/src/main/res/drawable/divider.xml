@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--todo create divider for rv items-->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="line"
-    android:width="200px"
-    android:color = "@color/cyclingAdvocacyYellow">
-</shape>
