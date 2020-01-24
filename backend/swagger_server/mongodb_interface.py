@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 import gridfs
 import pymongo
 
-mongodbUri = 'mongodb://localhost'
+mongodbUri = 'mongodb+srv://app:kk1AVXNUwsAoqnyx@bumpy-tdkiu.gcp.mongodb.net/test?retryWrites=true&w=majority''
 
 #app = Flask(__name__)
 client = pymongo.MongoClient(mongodbUri, maxPoolSize=10, connect=False)
