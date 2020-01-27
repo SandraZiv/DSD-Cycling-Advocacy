@@ -40,13 +40,13 @@ export class Home extends Component {
         let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat;
         let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng;
 
-        fetch(`/v1/mapData/getRoadQualitySegments?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
+        fetch(`/api/v1/mapData/getRoadQualitySegments?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
             .then(response => response.json())
             .then(data => {
                 this.setState({roadQualityHeatMap: data});
             });
 
-        fetch(`/v1/mapData/getBumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
+        fetch(`/api/v1/mapData/getBumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
             .then(response => response.json())
             .then(data => {
                 this.setState({bumpyPoints: data});

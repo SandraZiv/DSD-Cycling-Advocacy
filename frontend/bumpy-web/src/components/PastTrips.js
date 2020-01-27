@@ -22,7 +22,7 @@ export const PastTrips = (props) => {
 
         document.title = "Bumpy - Trips";
 
-        fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${urlUUID}`)
+        fetch(`/api/v1/device/getLongDeviceUUID?shortDeviceUUID=${urlUUID}`)
             .then(response => {
                 if (response.ok) {
                     setShortUuid(urlUUID);
@@ -40,7 +40,7 @@ export const PastTrips = (props) => {
                 let clearText = text.split("\"");
                 let longUuid = (clearText.length > 1) ? clearText[1] : clearText[0];
 
-                fetch(`/v1/trip/getTripsByDeviceUUID?deviceUUID=${longUuid}`)
+                fetch(`/api/v1/trip/getTripsByDeviceUUID?deviceUUID=${longUuid}`)
                     .then(response => response.json())
                     .then(data => {
                         setTrips(data.map(function (trip) {
@@ -68,7 +68,7 @@ export const PastTrips = (props) => {
     let deleteFormatter = (cell, row) =>
         (<Button className = "btn bg-danger text-white border-white" onClick={() => {
             if (window.confirm('Are you sure you wish to delete this trip?')){
-                fetch(`/v1/trip/deleteTrip?tripUUID=${row.tripUUID}`, {
+                fetch(`/api/v1/trip/deleteTrip?tripUUID=${row.tripUUID}`, {
                     method: 'DELETE'
                 }).then(response => {
                     window.location.reload();

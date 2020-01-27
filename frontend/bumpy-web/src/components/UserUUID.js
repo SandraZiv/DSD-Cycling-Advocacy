@@ -13,7 +13,7 @@ export const UserUUID = (props) => {
     const validateUUID = (uuid) => {
         try {
             let uuidUpperCase = uuid.toUpperCase();
-            fetch(`/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuidUpperCase}`)
+            fetch(`/api/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuidUpperCase}`)
                 .then(response => {
                     if (response.ok) {
                         setShortUuid(uuidUpperCase);
