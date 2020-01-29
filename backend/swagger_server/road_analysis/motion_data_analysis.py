@@ -181,7 +181,10 @@ def calculate_bumps(trip_uuid, gnss_data, motion_df):
                         "coordinates": [lon, lat]
                     }
                 })
-    bumps_ids = mongodb_interface.insert_new_points(bumpy_scores).inserted_ids
+    if bumpy_scores:
+        bumps_ids = mongodb_interface.insert_new_points(bumpy_scores).inserted_ids
+    else:
+        bumps_ids=[]
     return bumpy_scores, bumps_ids
 
 

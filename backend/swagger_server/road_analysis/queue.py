@@ -28,7 +28,7 @@ new_listener starts the listener on a new thread.
 class Job:
 
     def __init__(self, job_type, job_data):
-        self.job_id = uuid.uuid4().__str__()
+        self.job_id = str(uuid.uuid4())
         self.job_type = job_type
         self.job_data = job_data
 
@@ -61,14 +61,17 @@ class Listener:
 # job getters are fundamental because jobs are json messages, and they need to be parsed
 
 def get_job_type(serialized_job):
+    serialized_job = serialized_job.decode("utf-8")
     return json.loads(serialized_job)['type']
 
 
 def get_job_data(serialized_job):
+    serialized_job = serialized_job.decode("utf-8")
     return json.loads(serialized_job)['data']
 
 
 def get_job_id(serialized_job):
+    serialized_job = serialized_job.decode("utf-8")
     return json.loads(serialized_job)['id']
 
 
