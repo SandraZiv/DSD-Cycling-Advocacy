@@ -1,3 +1,4 @@
+#!/bin/bash
 
 #get the root directory path of the project files 
 #here we get it by getting the location of this script in the runtime environment
