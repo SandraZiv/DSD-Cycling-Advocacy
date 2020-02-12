@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.4.1",
+    "fetch-absolute": "^1.0.0",
     "history": "latest",
     "http-proxy-middleware": "^0.20.0",
     "jquery": "^3.4.1",

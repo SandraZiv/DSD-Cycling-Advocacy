@@ -5,6 +5,7 @@ import {formatDateDefault} from "../dateformat";
 import {buildDuration, formatFloat} from "../utils";
 import L from 'leaflet';
 import {bumpToMarker} from "../bumpyIssues";
+import {fetchApi} from "../App";
 
 export class TripPreview extends Component {
 
@@ -20,7 +21,7 @@ export class TripPreview extends Component {
         // const tripUUID = 'db68af06-d350-4207-ac7b-52f6e6a37e0c';
         let tripUUID = this.props.location.pathname.split('/').pop();
 
-        fetch(`/api/v1/trip/getTripByTripUUID?tripUUID=${tripUUID}`)
+        fetchApi(`/trip/getTripByTripUUID?tripUUID=${tripUUID}`)
             .then(response => {
                 if (response.ok) {
                     return response.json();
@@ -38,7 +39,7 @@ export class TripPreview extends Component {
 
     deleteTrip() {
         if (this.state.trip !== undefined && window.confirm('Are you sure you wish to delete this trip?')) {
-            fetch(`/api/v1/trip/deleteTrip?tripUUID=${this.state.trip.tripUUID}`, {
+            fetchApi(`/trip/deleteTrip?tripUUID=${this.state.trip.tripUUID}`, {
                 method: 'DELETE'
             }).then(response => {
                 this.props.history.goBack();
@@ -48,8 +49,8 @@ export class TripPreview extends Component {
 
      exportData() {
          if (this.state.trip !== undefined) {
-             let url = `/api/v1/trip/getMotionFile?tripUUID=${this.state.trip.tripUUID}`
-             fetch(url)
+             let url = `/trip/getMotionFile?tripUUID=${this.state.trip.tripUUID}`
+             fetchApi(url)
              .then(response => {
                 window.open(url, '_blank');
              })

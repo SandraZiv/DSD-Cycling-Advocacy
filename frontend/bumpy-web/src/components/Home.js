@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Map as LeafletMap, TileLayer, Polyline} from 'react-leaflet';
 import {bumpToMarker} from "../bumpyIssues";
+import {fetchApi} from "../App";
 
 export class Home extends Component {
 
@@ -40,13 +41,13 @@ export class Home extends Component {
         let bottomLeftLat = this._map.leafletElement.getBounds()._southWest.lat;
         let bottomLeftLon = this._map.leafletElement.getBounds()._southWest.lng;
 
-        fetch(`/api/v1/mapData/getRoadQualitySegments?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
+        fetchApi(`/mapData/getRoadQualitySegments?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
             .then(response => response.json())
             .then(data => {
                 this.setState({roadQualityHeatMap: data});
             });
 
-        fetch(`/api/v1/mapData/getBumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
+        fetchApi(`/mapData/getBumpyIssuePoints?bottomLeftLat=${bottomLeftLat}&bottomLeftLon=${bottomLeftLon}&topRightLat=${topRightLat}&topRightLon=${topRightLon}`)
             .then(response => response.json())
             .then(data => {
                 this.setState({bumpyPoints: data});

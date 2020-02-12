@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import {Button, Form} from "react-bootstrap";
 import {ShortUuidContext} from "../Store";
+import {fetchApi} from "../App";
 import './UserUUID.css'
 
 export const UserUUID = (props) => {
@@ -13,7 +14,7 @@ export const UserUUID = (props) => {
     const validateUUID = (uuid) => {
         try {
             let uuidUpperCase = uuid.toUpperCase();
-            fetch(`/api/v1/device/getLongDeviceUUID?shortDeviceUUID=${uuidUpperCase}`)
+            fetchApi(`/device/getLongDeviceUUID?shortDeviceUUID=${uuidUpperCase}`)
                 .then(response => {
                     if (response.ok) {
                         setShortUuid(uuidUpperCase);

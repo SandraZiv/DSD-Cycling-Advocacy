@@ -9,6 +9,9 @@ import {TripPreview} from './components/TripPreview';
 import history from './setupHistory'
 import './App.css';
 
+const fetchAbsolute = require('fetch-absolute');
+export const fetchApi = fetchAbsolute(fetch)('/api/v1');
+
 const App = () => {
     return (
         <Store>
