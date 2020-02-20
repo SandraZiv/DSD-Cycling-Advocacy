@@ -161,6 +161,6 @@ public class BumpyServiceBuilder {
 EOF
 
 echo "Configuration complete. Your app has been configured to be served from $ipname:$port/$prefix"
-echo "You will need to restart nginx: sudo systemctl restart nginx"
-exho "NOTE: If you chose a suffix that is not 'bumpy' you will need to re-run node build. Position yourself into $DIR/frontend/bumpy-web and run 'node run build' "
+echo "You will need to restart nginx: run 'sudo systemctl restart nginx'"
+echo "NOTE: If you chose a suffix that is not 'bumpy' you will need to re-run node build. Position yourself into $DIR/frontend/bumpy-web and run 'node run build' "
 echo "Android app has been configured as well. You may build and publish it"
