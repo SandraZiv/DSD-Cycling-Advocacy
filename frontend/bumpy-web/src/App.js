@@ -10,7 +10,7 @@ import history from './setupHistory'
 import './App.css';
 
 const fetchAbsolute = require('fetch-absolute');
-export const fetchApi = fetchAbsolute(fetch)('/api/v1');
+export const fetchApi = fetchAbsolute(fetch)(window['runConfig'].apiRoot);
 
 const App = () => {
     return (
