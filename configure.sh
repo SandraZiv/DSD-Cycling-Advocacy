@@ -50,7 +50,7 @@ server {
         proxy_pass http://unix:/$DIR/backend/bumpy-backend.sock:/;
     }
 
-    location = /$suffix {
+    location /$suffix {
         alias $DIR/frontend/bumpy-web/build;
         index index.html;
     }
