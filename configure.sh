@@ -58,7 +58,7 @@ server {
 EOF
 
 #configure frontend
-cat << EOF > $DIR/frontend/bumpy-web/build
+cat << EOF > $DIR/frontend/bumpy-web/build/runtime-config.js
 window['runConfig'] = {
     apiRoot: '/$suffix/api/v1'
 }
