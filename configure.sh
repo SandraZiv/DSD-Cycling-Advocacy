@@ -120,6 +120,14 @@ cat << EOF > $DIR/frontend/bumpy-web/package.json
 }
 EOF
 
+cat << EOF > $DIR/frontend/bumpy-web/src/setupHistory.js
+import { createBrowserHistory } from 'history';
+
+export default createBrowserHistory({
+    basename: "/$suffix"
+});
+EOF
+
 #configure android
 cat << EOF > $DIR/android/Bumpy/app/src/main/java/com/cycling_advocacy/bumpy/net/service/BumpyServiceBuilder.java
 
