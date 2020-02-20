@@ -54,10 +54,14 @@ server {
         alias $DIR/frontend/bumpy-web/build;
         index index.html;
     }
-
 }
 EOF
 
 #configure frontend
+cat << EOF > $DIR/frontend/bumpy-web/build
+window['runConfig'] = {
+    apiRoot: '/$suffix/api/v1'
+}
+EOF
 
 #configure android 
