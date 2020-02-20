@@ -3,19 +3,19 @@
 helpFunction()
 {
    echo ""
-   echo "Usage: $0 -p port -i ip "
+   echo "Usage: $0 -p port -i ip -s suffix "
    echo -e "\t-p Port on which to serve bumpy"
    echo -e "\t-i public ip/domain which will be exposed to the internet"
-   echo -e "\t-r suffix to add to the root domain when serving eg:root/suffix"
+   echo -e "\t-s suffix to add to the root domain when serving eg:root/suffix"
    exit 1 # Exit script after printing help
 }
 
-while getopts "p:i:r" opt
+while getopts "p:i:s" opt
 do
    case "$opt" in
       p ) port="$OPTARG" ;;
       i ) ipname="$OPTARG" ;;
-      r ) suffix="$OPTARG" ;;
+      s ) suffix="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
