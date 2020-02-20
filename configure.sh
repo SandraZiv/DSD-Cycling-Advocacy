@@ -75,7 +75,7 @@ cat << EOF > $DIR/frontend/bumpy-web/package.json
   "name": "bumpy-web",
   "version": "0.1.0",
   "proxy": "http://161.53.67.132:5000",
-  "homepage": "/bumpy",
+  "homepage": "/$suffix",
   "private": true,
   "dependencies": {
     "bootstrap": "^4.4.1",
@@ -162,5 +162,5 @@ EOF
 
 echo "Configuration complete. Your app has been configured to be served from $ipname:$port/$prefix"
 echo "You will need to restart nginx: run 'sudo systemctl restart nginx'"
-echo "NOTE: If you chose a suffix that is not 'bumpy' you will need to re-run node build. Position yourself into $DIR/frontend/bumpy-web and run 'node run build' "
+echo "NOTE: If you chose a suffix that is not 'bumpy' you will need to re-run node build. Position yourself into $DIR/frontend/bumpy-web and run 'sudo npm run build' "
 echo "Android app has been configured as well. You may build and publish it"
