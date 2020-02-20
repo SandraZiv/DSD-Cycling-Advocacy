@@ -10,7 +10,7 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
-while getopts "p:i:s" opt
+while getopts "p:i:s:" opt
 do
    case "$opt" in
       p ) port="$OPTARG" ;;
