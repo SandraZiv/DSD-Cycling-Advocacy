@@ -7,7 +7,6 @@ helpFunction()
    echo -e "\t-p Port on which to serve bumpy"
    echo -e "\t-i public ip/domain which will be exposed to the internet"
    echo -e "\t-s suffix to add to the root domain when serving eg: bumpy"
-   exit 1 # Exit script after printing help
 }
 
 while getopts "p:i:s:" opt
@@ -16,14 +15,22 @@ do
       p ) port="$OPTARG" ;;
       i ) ipname="$OPTARG" ;;
       s ) suffix="$OPTARG" ;;
-      ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
+      ? ) helpFunction
+          exit 1 ;; # Print helpFunction in case parameter is non-existent
    esac
 done
 
 # Notify in case parameters are empty
 if [ -z "$port" ] || [ -z "$ipname" ] || [ -z "$suffix" ]
 then
+   helpFunction;
    echo "Some or all of the parameters are empty";
+   read -p "Are you sure you want to continue? " -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ ! $REPLY =~ ^[Yy]$ ]]
+    then
+        [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # handle exits from shell or function but don't exit interactive shell
+    fi
 fi
 
 # Begin script in case all parameters are correct
