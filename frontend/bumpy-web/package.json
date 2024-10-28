@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.4.1",
-    "http-proxy-middleware": "^0.20.0",
+    "http-proxy-middleware": "^3.0.3",
     "jquery": "^3.4.1",
     "leaflet": "^1.6.0",
     "leaflet-routing-machine": "^3.2.12",
@@ -18,7 +18,7 @@
     "react-leaflet": "^2.6.0",
     "react-leaflet-control": "^2.1.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "5.0.1",
     "history": "latest"
   },
   "scripts": {
